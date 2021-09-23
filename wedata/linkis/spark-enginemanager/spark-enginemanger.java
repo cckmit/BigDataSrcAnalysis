@@ -1,5 +1,7 @@
 
 
+// 启动脚本: EngineManagerReceiver.receiveAndReply(){case request: RequestEngine} -> engineManager.requestEngine() -> AbstractEngineManager.requestEngine()-> Future.onComplete(){ engine.init() };
+
 EngineManagerReceiver.receiveAndReply(){
     case request: RequestEngine =>
       val engine = if(duration != null) engineManager.requestEngine(request, duration.toMillis) {//AbstractEngineManager.requestEngine()
@@ -50,16 +52,23 @@ EngineManagerReceiver.receiveAndReply(){
 				case user: UserEngineResource =>
 					rmClient.requestResource(user.getUser, user.getCreator, resourceRequest.getResource)
 			}
-			resultResource match {
+			resultResource match { // 分辨和处理返回的 ResultResource结果; 如果有资源就进一步创建执行引擎
 				case NotEnoughResource(reason) =>
 					throw new EngineManagerWarnException(30001, LogUtils.generateWarn(reason))
 				case AvailableResource(ticketId) =>
 					//The first step: get the creation request(第一步：拿到创建请求)
 					val engine = getEngineManagerContext.getOrCreateEngineCreator.create(ticketId, resource, realRequest)
 					engine.setResource(resource.getResource)	
-					engine.init()
-					Future {
-						engine.init()
+					getEngineManagerContext.getOrCreateEngineFactory.addEngine(engine);
+					Future { // 异步执行该 engine.init() 即初始化/启动SparkSubmit脚本的方法; 
+						engine.init();{//ProcessEngine.init()
+							process = processBuilder.start();{// SparkSubmitProcessBuilder.start
+								var command = args_.mkString(" ")
+								val pb = new ProcessBuilder(sudoCommand: _*)
+								pb.start();
+							}
+							Utils.waitUntil(() => _state != Starting, Duration(timeout, TimeUnit.MILLISECONDS))
+						}
 						getEngineManagerContext.getOrCreateEngineHook.foreach(hook => hook.afterCreatedSession(engine, realRequest))
 					}
 						.onComplete ()
@@ -79,8 +88,6 @@ EngineManagerReceiver.receiveAndReply(){
     case _ => warn(s"cannot recognize the message $message.")
 	
 }
-
-
 
 
 
@@ -284,7 +291,77 @@ EntranceReceiver.receiveAndReply(){
 
 
 
-// Spark-SQL 执行完整源码
+// 线程Engine-Manager-Thread-1 : 执行spark-submit脚本:  带RM资源分配下来后, request match AvailableResource 就调用  进程构建的start() 构建spark-submit脚本,并调用pd.start()其新进程; 
+
+// 启动脚本: EngineManagerReceiver.receiveAndReply(){case request: RequestEngine} -> engineManager.requestEngine() -> AbstractEngineManager.requestEngine()-> Future.onComplete(){ engine.init() };
+EngineManagerReceiver.receiveAndReply(){
+	case request: RequestEngine => engineManager.requestEngine(request, duration.toMillis){resultResource match {
+		case AvailableResource(ticketId) => Future { // 启动异步线程:  Engine-Manager-Thread-1
+			
+			engine.init();{//ProcessEngine.init()
+				process = processBuilder.start();{// SparkSubmitProcessBuilder.start(); 更多细节在如下 代码中; 
+					var command = args_.mkString(" ")
+					info(s"Running ${command}")
+					val sudoCommand = Array(JavaProcessEngineBuilder.sudoUserScript.getValue, request.user, command)
+						- linkis/linkis-ujes-spark-enginemanager/bin/rootScript.sh 
+						- bigdata 
+						- command="spark-submit --master yarn --driver-memory 1G --class DataWorkCloudEngineApplication"
+					val pb = new ProcessBuilder(sudoCommand: _*)
+					
+					pb.start();
+				}
+				Utils.waitUntil(() => _state != Starting, Duration(timeout, TimeUnit.MILLISECONDS))
+			}
+			getEngineManagerContext.getOrCreateEngineHook.foreach(hook => hook.afterCreatedSession(engine, realRequest))
+		}.onComplete()
+	}}
+}
+
+{ // SparkSubmitProcessBuilder.start() 方法的详解
+
+	SparkSubmitProcessBuilder.start(){
+		var args_ = ArrayBuffer(fromPath(_executable))
+		addOpt("--master", _master) addOpt("--deploy-mode", _deployMode) addOpt("--name", _name)
+		addList("--jars", _jars.map(fromPath))
+		addOpt("--driver-memory", _driverMemory)	addClasspath("--driver-class-path", _driverClassPath)
+		addOpt("--executor-memory", _executorMemory)
+		addOpt("--num-executors", _numExecutors)
+		addOpt("--class", _className)
+		addOpt("", Some(ENGINE_JAR.getValue)) // ../lib/linkis-ujes-spark-engine-0.11.0.jar
+		
+		args_ ++= args		// 多个--dwc-conf 参数;
+		var command = args_.mkString(" ")
+		info(s"Running ${command}") // 这就是 Spark-EM的out日志中答应的那一行日志; 
+		
+		val sudoCommand = Array(JavaProcessEngineBuilder.sudoUserScript.getValue, request.user, command)
+		val pb = new ProcessBuilder(sudoCommand: _*)
+		val env = pb.environment() // 来自哪里?
+		for ((key, value) <- _env) {
+			env.put(key, value)
+		}
+		
+		pb.start();// Linux 脚本?
+	}
+
+	/* 拼接出的最终spark-submit脚本
+	spark-submit 
+	--master yarn --deploy-mode client --name linkis 
+	--conf spark.driver.extraJavaOptions="-Dwds.linkis.configuration=linkis-engine.properties -Duser.timezone=Asia/Shanghai " --conf spark.driver.cores=1 
+	--driver-memory 1G --driver-class-path "/opt/spark/conf:/opt/hadoop/data/conf:/opt/dss_linkis/linkis_dss_release/linkis/linkis-ujes-spark-enginemanager/conf:/opt/dss_linkis/linkis_dss_release/linkis/linkis-ujes-spark-enginemanager/lib/*" 
+	--driver-cores 1 --executor-memory 3G --executor-cores 1 --num-executors 1 --queue default 
+	--class com.webank.wedatasphere.linkis.engine.DataWorkCloudEngineApplication  /opt/dss_linkis/dss_linkis-0.9.1/linkis/linkis-ujes-spark-enginemanager/lib/linkis-ujes-spark-engine-0.11.0.jar 
+		--dwc-conf _req_entrance_instance=sparkEntrance,192.168.51.111:9106 --dwc-conf wds.linkis.yarnqueue.memory.max=300G 
+		--dwc-conf wds.linkis.preheating.time=9:00 --dwc-conf wds.linkis.instance=1 	
+	*/
+	
+	SparkSubmitProcessBuilder.build(engineRequest: EngineResource, request: RequestEngine){
+		this.master("yarn")
+		this.conf(SPARK_DRIVER_EXTRA_JAVA_OPTIONS.key, SPARK_DRIVER_EXTRA_JAVA_OPTIONS.getValue)
+		properties.getOrDefault("jars", "").split(",").map(RelativePath).foreach(jar)
+		getValueAndRemove(properties, SPARK_APPLICATION_JARS).split(",").map(RelativePath).foreach(jar)
+	}
+	
+}
 
 
 
