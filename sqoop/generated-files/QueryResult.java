@@ -4,35 +4,23 @@
 // Debug information:
 // Generated date: Tue Sep 21 23:02:25 CST 2021
 // For connector: org.apache.sqoop.manager.MySQLManager
-import org.apache.hadoop.io.BytesWritable;
+import com.cloudera.sqoop.lib.*;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapred.lib.db.DBWritable;
-import com.cloudera.sqoop.lib.JdbcWritableBridge;
-import com.cloudera.sqoop.lib.DelimiterSet;
-import com.cloudera.sqoop.lib.FieldFormatter;
-import com.cloudera.sqoop.lib.RecordParser;
-import com.cloudera.sqoop.lib.BooleanParser;
-import com.cloudera.sqoop.lib.BlobRef;
-import com.cloudera.sqoop.lib.ClobRef;
-import com.cloudera.sqoop.lib.LargeObjectLoader;
-import com.cloudera.sqoop.lib.SqoopRecord;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Arrays;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 public class QueryResult extends SqoopRecord  implements DBWritable, Writable {
   private final int PROTOCOL_VERSION = 3;
