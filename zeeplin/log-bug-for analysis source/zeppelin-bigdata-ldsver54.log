@@ -1,0 +1,271 @@
+ INFO [2020-08-08 15:09:19,885] ({main} ZeppelinConfiguration.java[create]:165) - Load configuration from file:/home/bigdata/data/zeppelin/conf/zeppelin-site.xml
+ INFO [2020-08-08 15:09:20,023] ({main} ZeppelinConfiguration.java[create]:173) - Server Host: 0.0.0.0
+ INFO [2020-08-08 15:09:20,024] ({main} ZeppelinConfiguration.java[create]:175) - Server Port: 48080
+ INFO [2020-08-08 15:09:20,024] ({main} ZeppelinConfiguration.java[create]:179) - Context Path: /
+ INFO [2020-08-08 15:09:20,024] ({main} ZeppelinConfiguration.java[create]:180) - Zeppelin Version: 0.9.0-preview2
+    - 加载配置: ZeppelinServer.conf = ZeppelinConfiguration.create();
+    
+ INFO [2020-08-08 15:09:20,053] ({main} Log.java[initialized]:169) - Logging initialized @1260ms to org.eclipse.jetty.util.log.Slf4jLog
+ WARN [2020-08-08 15:09:20,421] ({main} ZeppelinConfiguration.java[getConfigFSDir]:661) - zeppelin.config.fs.dir is not specified, fall back to local conf directory zeppelin.conf.dir
+ WARN [2020-08-08 15:09:20,421] ({main} ZeppelinConfiguration.java[getConfigFSDir]:661) - zeppelin.config.fs.dir is not specified, fall back to local conf directory zeppelin.conf.dir
+ WARN [2020-08-08 15:09:20,421] ({main} ZeppelinConfiguration.java[getConfigFSDir]:661) - zeppelin.config.fs.dir is not specified, fall back to local conf directory zeppelin.conf.dir
+ WARN [2020-08-08 15:09:20,510] ({main} LocalConfigStorage.java[loadCredentials]:88) - Credential file /home/bigdata/data/zeppelin/conf/credentials.json is not existed
+ INFO [2020-08-08 15:09:20,612] ({ImmediateThread-1596870560412} PluginManager.java[loadNotebookRepo]:78) - Loading NotebookRepo Plugin: org.apache.zeppelin.notebook.repo.GitNotebookRepo
+ INFO [2020-08-08 15:09:20,831] ({ImmediateThread-1596870560412} VFSNotebookRepo.java[setNotebookDirectory]:70) - Using notebookDir: /home/bigdata/data/zeppelin/noteDir
+ INFO [2020-08-08 15:09:20,856] ({main} ZeppelinServer.java[setupWebAppContext]:547) - warPath is: /home/bigdata/app/zeppelin-release/zeppelin-web-0.9.0-preview2.war
+ INFO [2020-08-08 15:09:20,857] ({main} ZeppelinServer.java[setupWebAppContext]:560) - ZeppelinServer Webapp path: /home/bigdata/app/zeppelin-release/webapps
+ INFO [2020-08-08 15:09:20,937] ({main} ZeppelinServer.java[setupWebAppContext]:547) - warPath is: /home/bigdata/app/zeppelin-release/zeppelin-web-angular-0.9.0-preview2.war
+ INFO [2020-08-08 15:09:20,937] ({main} ZeppelinServer.java[setupWebAppContext]:560) - ZeppelinServer Webapp path: /home/bigdata/app/zeppelin-release/webapps/next
+ INFO [2020-08-08 15:09:21,053] ({ImmediateThread-1596870560412} GitNotebookRepo.java[init]:77) - Opening a git repo at '/home/bigdata/data/zeppelin/noteDir'
+ 
+ INFO [2020-08-08 15:09:21,080] ({main} NotebookServer.java[<init>]:152) - NotebookServer instantiated: org.apache.zeppelin.socket.NotebookServer@788fcafb
+ INFO [2020-08-08 15:09:21,082] ({main} NotebookServer.java[setNotebook]:163) - Injected NotebookProvider
+ INFO [2020-08-08 15:09:21,082] ({main} NotebookServer.java[setServiceLocator]:157) - Injected ServiceLocator: ServiceLocatorImpl(shared-locator,0,1534694976)
+ INFO [2020-08-08 15:09:21,083] ({main} NotebookServer.java[setNotebookService]:170) - Injected NotebookServiceProvider
+ INFO [2020-08-08 15:09:21,083] ({main} NotebookServer.java[setAuthorizationServiceProvider]:177) - Injected NotebookAuthorizationServiceProvider
+ INFO [2020-08-08 15:09:21,083] ({main} NotebookServer.java[setConnectionManagerProvider]:183) - Injected ConnectionManagerProvider
+ INFO [2020-08-08 15:09:21,084] ({main} ZeppelinServer.java[setupClusterManagerServer]:447) - Cluster mode is disabled
+ INFO [2020-08-08 15:09:21,091] ({main} ZeppelinServer.java[main]:247) - Starting zeppelin server
+    - 到这里, 前面的 ClusterManagerServer, JettyServer都创建好了, 但没启动; 开始执行: jettyWebServer.start();
+    
+ INFO [2020-08-08 15:09:21,094] ({main} Server.java[doStart]:359) - jetty-9.4.27.v20200227; built: 2020-02-27T18:37:21.340Z; git: a304fd9f351f337e7c0e2a7c28878dd536149c6c; jvm 1.8.0_261-b12
+ INFO [2020-08-08 15:09:21,335] ({main} StandardDescriptorProcessor.java[visitServlet]:276) - NO JSP Support for /, did not find org.eclipse.jetty.jsp.JettyJspServlet
+ INFO [2020-08-08 15:09:21,350] ({main} DefaultSessionIdManager.java[doStart]:334) - DefaultSessionIdManager workerName=node0
+ INFO [2020-08-08 15:09:21,350] ({main} DefaultSessionIdManager.java[doStart]:339) - No SessionScavenger set, using defaults
+ INFO [2020-08-08 15:09:21,353] ({main} HouseKeeper.java[startScavenging]:140) - node0 Scavenging every 660000ms
+ INFO [2020-08-08 15:09:23,780] ({main} ContextHandler.java[doStart]:828) - Started o.e.j.w.WebAppContext@6e6d5d29{zeppelin-web,/,jar:file:///home/bigdata/app/zeppelin-0.9.0-preview2-bin-all/zeppelin-web-0.9.0-preview2.war!/,AVAILABLE}{/home/bigdata/app/zeppelin-release/zeppelin-web-0.9.0-preview2.war}
+ INFO [2020-08-08 15:09:23,824] ({main} StandardDescriptorProcessor.java[visitServlet]:276) - NO JSP Support for /next, did not find org.eclipse.jetty.jsp.JettyJspServlet
+ INFO [2020-08-08 15:09:24,553] ({main} ContextHandler.java[doStart]:828) - Started o.e.j.w.WebAppContext@73dce0e6{zeppelin-web-angular,/next,jar:file:///home/bigdata/app/zeppelin-0.9.0-preview2-bin-all/zeppelin-web-angular-0.9.0-preview2.war!/,AVAILABLE}{/home/bigdata/app/zeppelin-release/zeppelin-web-angular-0.9.0-preview2.war}
+ INFO [2020-08-08 15:09:24,600] ({main} AbstractConnector.java[doStart]:331) - Started ServerConnector@4d154ccd{HTTP/1.1, (http/1.1)}{0.0.0.0:48080}
+ INFO [2020-08-08 15:09:24,601] ({main} Server.java[doStart]:399) - Started @5808ms
+ INFO [2020-08-08 15:09:29,602] ({main} ZeppelinServer.java[main]:261) - Done, zeppelin server started
+    - LOG.info("Done, zeppelin server started"); 到这里, jettyWebServer.start()执行完, 启动服务成功; 
+        -> 下面要添加钩子函数,  加载并恢复 Netobook服务;
+        
+ 
+ WARN [2020-08-08 15:09:29,660] ({main} VFSNotebookRepo.java[listFolder]:108) - Skip hidden folder: /home/bigdata/data/zeppelin/noteDir/.git
+ INFO [2020-08-08 15:09:29,685] ({main} LocalConfigStorage.java[loadNotebookAuthorization]:80) - Load notebook authorization from file: /home/bigdata/data/zeppelin/conf/notebook-authorization.json
+ 
+ 
+ INFO [2020-08-08 15:09:30,154] ({Thread-12} RemoteInterpreterEventServer.java[run]:105) - InterpreterEventServer is starting at 192.168.51.154:40820
+ INFO [2020-08-08 15:09:30,643] ({main} RemoteInterpreterEventServer.java[start]:129) - RemoteInterpreterEventServer is started
+    -> 
+    
+ INFO [2020-08-08 15:09:30,663] ({main} InterpreterSettingManager.java[<init>]:190) - Using RecoveryStorage: org.apache.zeppelin.interpreter.recovery.NullRecoveryStorage
+ INFO [2020-08-08 15:09:30,668] ({main} InterpreterSettingManager.java[<init>]:196) - Using LifecycleManager: org.apache.zeppelin.interpreter.lifecycle.NullLifecycleManager
+ INFO [2020-08-08 15:09:30,755] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: neo4j
+ INFO [2020-08-08 15:09:30,765] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: geode
+ INFO [2020-08-08 15:09:30,776] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: pig
+ INFO [2020-08-08 15:09:30,786] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: scalding
+ INFO [2020-08-08 15:09:30,796] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: sap
+ INFO [2020-08-08 15:09:30,801] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: sparql
+ INFO [2020-08-08 15:09:30,805] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: alluxio
+ INFO [2020-08-08 15:09:30,813] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: file
+ INFO [2020-08-08 15:09:30,818] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: python
+ INFO [2020-08-08 15:09:30,823] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: flink
+ INFO [2020-08-08 15:09:30,829] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: ignite
+ INFO [2020-08-08 15:09:30,834] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: hazelcastjet
+ INFO [2020-08-08 15:09:30,838] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: kylin
+ INFO [2020-08-08 15:09:30,843] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: r
+ INFO [2020-08-08 15:09:30,846] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: angular
+ INFO [2020-08-08 15:09:30,850] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: java
+ INFO [2020-08-08 15:09:30,855] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: bigquery
+ INFO [2020-08-08 15:09:30,858] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: kotlin
+ INFO [2020-08-08 15:09:30,864] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: submarine
+ INFO [2020-08-08 15:09:30,868] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: mongodb
+ INFO [2020-08-08 15:09:30,873] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: jdbc
+ INFO [2020-08-08 15:09:30,877] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: influxdb
+ INFO [2020-08-08 15:09:30,885] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: sh
+ WARN [2020-08-08 15:09:30,940] ({main} InterpreterSettingManager.java[loadInterpreterSettingFromDefaultDir]:406) - No interpreter-setting.json found in /home/bigdata/app/zeppelin-release/interpreter/scio
+ INFO [2020-08-08 15:09:30,942] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: lens
+ INFO [2020-08-08 15:09:30,946] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: ksql
+ INFO [2020-08-08 15:09:30,950] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: livy
+ INFO [2020-08-08 15:09:30,957] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: cassandra
+ INFO [2020-08-08 15:09:30,962] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: md
+ INFO [2020-08-08 15:09:30,966] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: hbase
+ INFO [2020-08-08 15:09:30,970] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: beam
+ INFO [2020-08-08 15:09:30,978] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: groovy
+ INFO [2020-08-08 15:09:30,982] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: jupyter
+ INFO [2020-08-08 15:09:30,987] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: elasticsearch
+ INFO [2020-08-08 15:09:30,992] ({main} InterpreterSettingManager.java[registerInterpreterSetting]:509) - Register InterpreterSettingTemplate: spark
+ INFO [2020-08-08 15:09:30,992] ({main} LocalConfigStorage.java[loadInterpreterSettings]:63) - Load Interpreter Setting from file: /home/bigdata/data/zeppelin/conf/interpreter.json
+ INFO [2020-08-08 15:09:31,108] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting ignite from interpreter.json
+ INFO [2020-08-08 15:09:31,108] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting beam from interpreter.json
+ INFO [2020-08-08 15:09:31,109] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting geode from interpreter.json
+ INFO [2020-08-08 15:09:31,110] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting jdbc from interpreter.json
+ INFO [2020-08-08 15:09:31,110] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting influxdb from interpreter.json
+ INFO [2020-08-08 15:09:31,111] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting lens from interpreter.json
+ INFO [2020-08-08 15:09:31,111] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting pig from interpreter.json
+ INFO [2020-08-08 15:09:31,111] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting file from interpreter.json
+ INFO [2020-08-08 15:09:31,112] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting java from interpreter.json
+ INFO [2020-08-08 15:09:31,112] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting jupyter from interpreter.json
+ INFO [2020-08-08 15:09:31,112] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting submarine from interpreter.json
+ INFO [2020-08-08 15:09:31,113] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting elasticsearch from interpreter.json
+ INFO [2020-08-08 15:09:31,113] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting sh from interpreter.json
+ INFO [2020-08-08 15:09:31,113] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting spark from interpreter.json
+ INFO [2020-08-08 15:09:31,114] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting md from interpreter.json
+ INFO [2020-08-08 15:09:31,114] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting hazelcastjet from interpreter.json
+ INFO [2020-08-08 15:09:31,114] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting alluxio from interpreter.json
+ INFO [2020-08-08 15:09:31,114] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting bigquery from interpreter.json
+ INFO [2020-08-08 15:09:31,115] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting mongodb from interpreter.json
+ INFO [2020-08-08 15:09:31,115] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting hbase from interpreter.json
+ INFO [2020-08-08 15:09:31,115] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting python from interpreter.json
+ INFO [2020-08-08 15:09:31,115] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting sap from interpreter.json
+ INFO [2020-08-08 15:09:31,116] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting kotlin from interpreter.json
+ INFO [2020-08-08 15:09:31,116] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting scalding from interpreter.json
+ INFO [2020-08-08 15:09:31,116] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting flink from interpreter.json
+ INFO [2020-08-08 15:09:31,116] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting angular from interpreter.json
+ INFO [2020-08-08 15:09:31,117] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting ksql from interpreter.json
+ INFO [2020-08-08 15:09:31,117] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting r from interpreter.json
+ INFO [2020-08-08 15:09:31,117] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting livy from interpreter.json
+ INFO [2020-08-08 15:09:31,117] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting neo4j from interpreter.json
+ INFO [2020-08-08 15:09:31,117] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting groovy from interpreter.json
+ INFO [2020-08-08 15:09:31,118] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting cassandra from interpreter.json
+ INFO [2020-08-08 15:09:31,118] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting sparql from interpreter.json
+ INFO [2020-08-08 15:09:31,118] ({main} InterpreterSettingManager.java[loadFromFile]:295) - Create Interpreter Setting kylin from interpreter.json
+ INFO [2020-08-08 15:09:31,162] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter ignite status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,163] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter beam status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,165] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter geode status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,166] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter jdbc status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,167] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter influxdb status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,168] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter lens status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,169] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter pig status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,170] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter file status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,171] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter java status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,173] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter jupyter status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,175] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter submarine status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,176] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter elasticsearch status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,177] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter sh status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,178] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter spark status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,179] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter md status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,180] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter hazelcastjet status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,164] ({Thread-13} InterpreterSetting.java[setStatus]:755) - Set interpreter ignite status to READY
+ INFO [2020-08-08 15:09:31,183] ({Thread-27} InterpreterSetting.java[setStatus]:755) - Set interpreter md status to READY
+ INFO [2020-08-08 15:09:31,180] ({Thread-26} InterpreterSetting.java[setStatus]:755) - Set interpreter spark status to READY
+ INFO [2020-08-08 15:09:31,179] ({Thread-25} InterpreterSetting.java[setStatus]:755) - Set interpreter sh status to READY
+ INFO [2020-08-08 15:09:31,178] ({Thread-24} InterpreterSetting.java[setStatus]:755) - Set interpreter elasticsearch status to READY
+ INFO [2020-08-08 15:09:31,177] ({Thread-23} InterpreterSetting.java[setStatus]:755) - Set interpreter submarine status to READY
+ INFO [2020-08-08 15:09:31,176] ({Thread-22} InterpreterSetting.java[setStatus]:755) - Set interpreter jupyter status to READY
+ INFO [2020-08-08 15:09:31,174] ({Thread-21} InterpreterSetting.java[setStatus]:755) - Set interpreter java status to READY
+ INFO [2020-08-08 15:09:31,173] ({Thread-20} InterpreterSetting.java[setStatus]:755) - Set interpreter file status to READY
+ INFO [2020-08-08 15:09:31,170] ({Thread-19} InterpreterSetting.java[setStatus]:755) - Set interpreter pig status to READY
+ INFO [2020-08-08 15:09:31,170] ({Thread-18} InterpreterSetting.java[setStatus]:755) - Set interpreter lens status to READY
+ INFO [2020-08-08 15:09:31,168] ({Thread-17} InterpreterSetting.java[setStatus]:755) - Set interpreter influxdb status to READY
+ INFO [2020-08-08 15:09:31,167] ({Thread-16} InterpreterSetting.java[setStatus]:755) - Set interpreter jdbc status to READY
+ INFO [2020-08-08 15:09:31,166] ({Thread-15} InterpreterSetting.java[setStatus]:755) - Set interpreter geode status to READY
+ INFO [2020-08-08 15:09:31,166] ({Thread-14} InterpreterSetting.java[setStatus]:755) - Set interpreter beam status to READY
+ INFO [2020-08-08 15:09:31,187] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter alluxio status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,188] ({Thread-28} InterpreterSetting.java[setStatus]:755) - Set interpreter hazelcastjet status to READY
+ INFO [2020-08-08 15:09:31,188] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter bigquery status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,189] ({Thread-29} InterpreterSetting.java[setStatus]:755) - Set interpreter alluxio status to READY
+ INFO [2020-08-08 15:09:31,190] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter mongodb status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,191] ({Thread-30} InterpreterSetting.java[setStatus]:755) - Set interpreter bigquery status to READY
+ INFO [2020-08-08 15:09:31,192] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter hbase status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,193] ({Thread-31} InterpreterSetting.java[setStatus]:755) - Set interpreter mongodb status to READY
+ INFO [2020-08-08 15:09:31,193] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter python status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,194] ({Thread-32} InterpreterSetting.java[setStatus]:755) - Set interpreter hbase status to READY
+ INFO [2020-08-08 15:09:31,194] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter sap status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,195] ({Thread-33} InterpreterSetting.java[setStatus]:755) - Set interpreter python status to READY
+ INFO [2020-08-08 15:09:31,196] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter kotlin status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,198] ({Thread-34} InterpreterSetting.java[setStatus]:755) - Set interpreter sap status to READY
+ INFO [2020-08-08 15:09:31,198] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter scalding status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,199] ({Thread-35} InterpreterSetting.java[setStatus]:755) - Set interpreter kotlin status to READY
+ INFO [2020-08-08 15:09:31,199] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter flink status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,200] ({Thread-36} InterpreterSetting.java[setStatus]:755) - Set interpreter scalding status to READY
+ INFO [2020-08-08 15:09:31,201] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter angular status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,202] ({Thread-37} InterpreterSetting.java[setStatus]:755) - Set interpreter flink status to READY
+ INFO [2020-08-08 15:09:31,203] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter ksql status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,205] ({Thread-38} InterpreterSetting.java[setStatus]:755) - Set interpreter angular status to READY
+ INFO [2020-08-08 15:09:31,205] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter r status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,206] ({Thread-39} InterpreterSetting.java[setStatus]:755) - Set interpreter ksql status to READY
+ INFO [2020-08-08 15:09:31,207] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter livy status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,209] ({Thread-40} InterpreterSetting.java[setStatus]:755) - Set interpreter r status to READY
+ INFO [2020-08-08 15:09:31,209] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter neo4j status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,210] ({Thread-41} InterpreterSetting.java[setStatus]:755) - Set interpreter livy status to READY
+ INFO [2020-08-08 15:09:31,215] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter groovy status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,216] ({Thread-42} InterpreterSetting.java[setStatus]:755) - Set interpreter neo4j status to READY
+ INFO [2020-08-08 15:09:31,216] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter cassandra status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,219] ({Thread-43} InterpreterSetting.java[setStatus]:755) - Set interpreter groovy status to READY
+ INFO [2020-08-08 15:09:31,219] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter sparql status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,220] ({Thread-44} InterpreterSetting.java[setStatus]:755) - Set interpreter cassandra status to READY
+ INFO [2020-08-08 15:09:31,220] ({main} InterpreterSetting.java[setStatus]:755) - Set interpreter kylin status to DOWNLOADING_DEPENDENCIES
+ INFO [2020-08-08 15:09:31,221] ({Thread-45} InterpreterSetting.java[setStatus]:755) - Set interpreter sparql status to READY
+ INFO [2020-08-08 15:09:31,223] ({main} LocalConfigStorage.java[save]:53) - Save Interpreter Setting to /home/bigdata/data/zeppelin/conf/interpreter.json
+ INFO [2020-08-08 15:09:31,241] ({Thread-46} InterpreterSetting.java[setStatus]:755) - Set interpreter kylin status to READY
+ INFO [2020-08-08 15:09:31,352] ({main} LuceneSearch.java[<init>]:95) - Use /tmp/zeppelin-index for storing lucene search index
+ INFO [2020-08-08 15:09:48,246] ({qtp1047460013-17} NoAuthenticationService.java[<init>]:38) - NoAuthenticationService is initialized
+ WARN [2020-08-08 15:09:48,263] ({qtp1047460013-17} SecurityRestApi.java[ticket]:89) - {"status":"OK","message":"","body":{"principal":"anonymous","ticket":"anonymous","roles":"[]"}}
+ WARN [2020-08-08 15:09:48,569] ({qtp1047460013-21} ClusterRestApi.java[<init>]:61) - Cluster mode is disabled, ClusterRestApi won't work
+ INFO [2020-08-08 15:09:48,634] ({qtp1047460013-19} NotebookServer.java[onOpen]:242) - New connection from 192.168.51.1:61155
+
+ "main"线程: 完成ZpnServer的启动;
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 启动成功
+ INFO [2020-08-08 15:10:33,914] ({qtp1047460013-18} Helium.java[loadConf]:140) - Add helium local registry /home/bigdata/app/zeppelin-release/helium
+ WARN [2020-08-08 15:10:33,916] ({qtp1047460013-18} Helium.java[loadConf]:148) - /home/bigdata/data/zeppelin/conf/helium.json does not exists
+ INFO [2020-08-08 15:10:34,052] ({qtp1047460013-22} InterpreterSetting.java[getOrCreateInterpreterGroup]:473) - Create InterpreterGroup with groupId: flink-shared_process for ExecutionContext{user='anonymous', noteId='2FERNUMV5', defaultInterpreterGroup='spark', inIsolatedMode=false, startTime=}
+ 
+ INFO [2020-08-08 15:10:34,063] ({qtp1047460013-22} InterpreterSetting.java[createInterpreters]:844) - Interpreter org.apache.zeppelin.flink.FlinkInterpreter created for user: anonymous, sessionId: shared_session
+ INFO [2020-08-08 15:10:34,064] ({qtp1047460013-22} InterpreterSetting.java[createInterpreters]:844) - Interpreter org.apache.zeppelin.flink.FlinkBatchSqlInterpreter created for user: anonymous, sessionId: shared_session
+ INFO [2020-08-08 15:10:34,064] ({qtp1047460013-22} InterpreterSetting.java[createInterpreters]:844) - Interpreter org.apache.zeppelin.flink.FlinkStreamSqlInterpreter created for user: anonymous, sessionId: shared_session
+ INFO [2020-08-08 15:10:34,064] ({qtp1047460013-22} InterpreterSetting.java[createInterpreters]:844) - Interpreter org.apache.zeppelin.flink.PyFlinkInterpreter created for user: anonymous, sessionId: shared_session
+ INFO [2020-08-08 15:10:34,064] ({qtp1047460013-22} InterpreterSetting.java[createInterpreters]:844) - Interpreter org.apache.zeppelin.flink.IPyFlinkInterpreter created for user: anonymous, sessionId: shared_session
+ INFO [2020-08-08 15:10:34,065] ({qtp1047460013-22} ManagedInterpreterGroup.java[getOrCreateSession]:179) - Create Session: shared_session in InterpreterGroup: flink-shared_process for user: anonymous
+ WARN [2020-08-08 15:10:34,249] ({qtp1047460013-22} GitNotebookRepo.java[revisionHistory]:210) - No Head found for FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln, No HEAD exists and no explicit starting revision was specified
+ WARN [2020-08-08 15:10:35,048] ({qtp1047460013-19} InterpreterSettingManager.java[getEditorSetting]:611) - 
+ INFO [2020-08-08 15:11:04,307] ({qtp1047460013-18} NotebookService.java[runParagraph]:312) - Start to run paragraph: paragraph_1596815391574_304359641 of note: 2FERNUMV5
+ INFO [2020-08-08 15:11:04,308] ({qtp1047460013-18} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:11:04,360] ({qtp1047460013-18} SchedulerFactory.java[<init>]:62) - Scheduler Thread Pool Size: 100
+ INFO [2020-08-08 15:11:04,410] ({FIFOScheduler-interpreter_1197452462-Worker-1} AbstractScheduler.java[runJob]:125) - Job paragraph_1596815391574_304359641 started by scheduler interpreter_1197452462
+ INFO [2020-08-08 15:11:04,411] ({FIFOScheduler-interpreter_1197452462-Worker-1} NotebookServer.java[onStatusChange]:1907) - Job paragraph_1596815391574_304359641 starts to RUNNING
+ INFO [2020-08-08 15:11:04,411] ({FIFOScheduler-interpreter_1197452462-Worker-1} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:11:04,462] ({FIFOScheduler-interpreter_1197452462-Worker-1} Paragraph.java[jobRun]:388) - Run paragraph [paragraph_id: paragraph_1596815391574_304359641, interpreter: org.apache.zeppelin.interpreter.ConfInterpreter, note_id: 2FERNUMV5, user: anonymous]
+ INFO [2020-08-08 15:11:04,795] ({FIFOScheduler-interpreter_1197452462-Worker-1} NotebookServer.java[onStatusChange]:1902) - Job paragraph_1596815391574_304359641 is finished successfully, status: FINISHED
+ INFO [2020-08-08 15:11:04,795] ({FIFOScheduler-interpreter_1197452462-Worker-1} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:11:04,800] ({FIFOScheduler-interpreter_1197452462-Worker-1} AbstractScheduler.java[runJob]:152) - Job paragraph_1596815391574_304359641 finished by scheduler interpreter_1197452462
+ INFO [2020-08-08 15:11:10,243] ({qtp1047460013-64} NotebookService.java[runParagraph]:312) - Start to run paragraph: paragraph_1596813460722_1105107557 of note: 2FERNUMV5
+ INFO [2020-08-08 15:11:10,244] ({qtp1047460013-64} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:11:10,281] ({SchedulerFactory3} AbstractScheduler.java[runJob]:125) - Job paragraph_1596813460722_1105107557 started by scheduler RemoteInterpreter-flink-shared_process-shared_session
+ INFO [2020-08-08 15:11:10,282] ({SchedulerFactory3} Paragraph.java[jobRun]:388) - Run paragraph [paragraph_id: paragraph_1596813460722_1105107557, interpreter: org.apache.zeppelin.flink.FlinkStreamSqlInterpreter, note_id: 2FERNUMV5, user: anonymous]
+ INFO [2020-08-08 15:11:10,284] ({SchedulerFactory3} ManagedInterpreterGroup.java[getOrCreateInterpreterProcess]:64) - Create InterpreterProcess for InterpreterGroup: flink-shared_process
+ INFO [2020-08-08 15:11:10,290] ({SchedulerFactory3} PluginManager.java[loadInterpreterLauncher]:158) - Loading Interpreter Launcher Plugin: org.apache.zeppelin.interpreter.launcher.FlinkInterpreterLauncher
+ INFO [2020-08-08 15:11:10,314] ({SchedulerFactory3} StandardInterpreterLauncher.java[launchDirectly]:49) - Launching new interpreter process of flink
+ INFO [2020-08-08 15:11:10,421] ({SchedulerFactory3} ProcessLauncher.java[transition]:109) - Process state is transitioned to LAUNCHED
+ INFO [2020-08-08 15:11:10,422] ({SchedulerFactory3} ProcessLauncher.java[launch]:96) - Process is launched: [/home/bigdata/app/zeppelin-release/bin/interpreter.sh, -d, /home/bigdata/app/zeppelin-release/interpreter/flink, -c, 192.168.51.154, -p, 40820, -r, :, -i, flink-shared_process, -l, /home/bigdata/app/zeppelin-release/local-repo/flink, -g, flink]
+ INFO [2020-08-08 15:11:10,744] ({Exec Stream Pumper} ProcessLauncher.java[processLine]:188) - Interpreter launch command:  /usr/java/jdk-release/bin/java -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/bigdata/log/zeppeline/zpn_intp_heapdump_1596870670.hprof -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=10995 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=45076 -Dfile.encoding=UTF-8 -Dlog4j.configuration='file:///home/bigdata/data/zeppelin/conf/log4j.properties' -Dlog4j.configurationFile='file:///home/bigdata/data/zeppelin/conf/log4j2.properties' -Dzeppelin.log.file='/home/bigdata/log/zeppeline/zeppelin-interpreter-flink-shared_process-bigdata-ldsver54.log' -Xms1024m -Xmx1024m -XX:NewRatio=2 -cp ":/home/bigdata/app/flink-release/lib/slf4j-log4j12-1.7.15.jar:/home/bigdata/app/flink-release/lib/log4j-1.2.17.jar:/home/bigdata/app/flink-release/lib/flink-table-blink_2.11-1.10.1.jar:/home/bigdata/app/flink-release/lib/flink-table_2.11-1.10.1.jar:/home/bigdata/app/flink-release/lib/flink-dist_2.11-1.10.1.jar:/home/bigdata/app/zeppelin-release/interpreter/flink/*:.:/usr/java/jdk-release/jre/lib/rt.jar:/usr/java/jdk-release/lib/dt.jar:/usr/java/jdk-release/lib/tools.jar:/home/bigdata/app/zeppelin-release/lib/*:/home/bigdata/app/zeppelin-release/*::/home/bigdata/data/zeppelin/conf:/home/bigdata/data/hadoop/conf:/home/bigdata/app/zeppelin-release/interpreter/zeppelin-interpreter-shaded-0.9.0-preview2.jar:/home/bigdata/app/flink-release/opt/flink-python_2.11-1.10.1.jar:/home/bigdata/data/hadoop/conf:/home/bigdata/data/hadoop/conf:/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/share/hadoop/common/lib/*:/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/share/hadoop/common/*:/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/share/hadoop/hdfs:/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/share/hadoop/hdfs/lib/*:/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/share/hadoop/hdfs/*:/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/share/hadoop/yarn/lib/*:/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/share/hadoop/yarn/*:/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/share/hadoop/mapreduce/lib/*:/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/share/hadoop/mapreduce/*:/home/bigdata/app/hadoop-release/contrib/capacity-scheduler/*.jar" org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer 192.168.51.154 40820 "flink-shared_process" :
+ INFO [2020-08-08 15:11:12,632] ({pool-7-thread-1} RemoteInterpreterEventServer.java[registerInterpreterProcess]:170) - Register interpreter process: 192.168.51.154:38832, flink-shared_process
+ INFO [2020-08-08 15:11:12,632] ({pool-7-thread-1} ProcessLauncher.java[transition]:109) - Process state is transitioned to RUNNING
+ INFO [2020-08-08 15:11:12,646] ({SchedulerFactory3} RemoteInterpreter.java[lambda$internal_create$1]:166) - Create RemoteInterpreter org.apache.zeppelin.flink.FlinkInterpreter
+ INFO [2020-08-08 15:11:12,839] ({SchedulerFactory3} RemoteInterpreter.java[lambda$internal_create$1]:166) - Create RemoteInterpreter org.apache.zeppelin.flink.FlinkBatchSqlInterpreter
+ INFO [2020-08-08 15:11:12,849] ({SchedulerFactory3} RemoteInterpreter.java[lambda$internal_create$1]:166) - Create RemoteInterpreter org.apache.zeppelin.flink.FlinkStreamSqlInterpreter
+ INFO [2020-08-08 15:11:12,852] ({SchedulerFactory3} RemoteInterpreter.java[lambda$internal_create$1]:166) - Create RemoteInterpreter org.apache.zeppelin.flink.PyFlinkInterpreter
+ INFO [2020-08-08 15:11:12,865] ({SchedulerFactory3} RemoteInterpreter.java[lambda$internal_create$1]:166) - Create RemoteInterpreter org.apache.zeppelin.flink.IPyFlinkInterpreter
+ INFO [2020-08-08 15:11:12,881] ({SchedulerFactory3} RemoteInterpreter.java[lambda$open$0]:139) - Open RemoteInterpreter org.apache.zeppelin.flink.FlinkStreamSqlInterpreter
+ INFO [2020-08-08 15:11:12,882] ({SchedulerFactory3} RemoteInterpreter.java[pushAngularObjectRegistryToRemote]:408) - Push local angular object registry from ZeppelinServer to remote interpreter group flink-shared_process
+ INFO [2020-08-08 15:11:13,075] ({JobStatusPoller-paragraph_1596813460722_1105107557} NotebookServer.java[onStatusChange]:1907) - Job paragraph_1596813460722_1105107557 starts to RUNNING
+ INFO [2020-08-08 15:11:13,076] ({JobStatusPoller-paragraph_1596813460722_1105107557} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:11:54,185] ({SchedulerFactory3} NotebookServer.java[onStatusChange]:1902) - Job paragraph_1596813460722_1105107557 is finished successfully, status: FINISHED
+ INFO [2020-08-08 15:11:54,186] ({SchedulerFactory3} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:11:54,194] ({SchedulerFactory3} AbstractScheduler.java[runJob]:152) - Job paragraph_1596813460722_1105107557 finished by scheduler RemoteInterpreter-flink-shared_process-shared_session
+ INFO [2020-08-08 15:12:30,917] ({qtp1047460013-68} NotebookService.java[runParagraph]:312) - Start to run paragraph: paragraph_1596859840507_661297985 of note: 2FERNUMV5
+ INFO [2020-08-08 15:12:30,918] ({qtp1047460013-68} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:12:30,936] ({SchedulerFactory3} AbstractScheduler.java[runJob]:125) - Job paragraph_1596859840507_661297985 started by scheduler RemoteInterpreter-flink-shared_process-shared_session
+ INFO [2020-08-08 15:12:30,936] ({SchedulerFactory3} Paragraph.java[jobRun]:388) - Run paragraph [paragraph_id: paragraph_1596859840507_661297985, interpreter: org.apache.zeppelin.flink.FlinkStreamSqlInterpreter, note_id: 2FERNUMV5, user: anonymous]
+ INFO [2020-08-08 15:12:31,065] ({JobStatusPoller-paragraph_1596859840507_661297985} NotebookServer.java[onStatusChange]:1907) - Job paragraph_1596859840507_661297985 starts to RUNNING
+ INFO [2020-08-08 15:12:31,067] ({JobStatusPoller-paragraph_1596859840507_661297985} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:12:32,124] ({SchedulerFactory3} NotebookServer.java[onStatusChange]:1902) - Job paragraph_1596859840507_661297985 is finished successfully, status: FINISHED
+ INFO [2020-08-08 15:12:32,124] ({SchedulerFactory3} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:12:32,134] ({SchedulerFactory3} AbstractScheduler.java[runJob]:152) - Job paragraph_1596859840507_661297985 finished by scheduler RemoteInterpreter-flink-shared_process-shared_session
+ INFO [2020-08-08 15:12:55,054] ({qtp1047460013-68} NotebookService.java[runParagraph]:312) - Start to run paragraph: paragraph_1596860684530_1963853915 of note: 2FERNUMV5
+ INFO [2020-08-08 15:12:55,054] ({qtp1047460013-68} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:12:55,060] ({SchedulerFactory5} AbstractScheduler.java[runJob]:125) - Job paragraph_1596860684530_1963853915 started by scheduler RemoteInterpreter-flink-shared_process-shared_session
+ INFO [2020-08-08 15:12:55,072] ({SchedulerFactory5} Paragraph.java[jobRun]:388) - Run paragraph [paragraph_id: paragraph_1596860684530_1963853915, interpreter: org.apache.zeppelin.flink.FlinkStreamSqlInterpreter, note_id: 2FERNUMV5, user: anonymous]
+ INFO [2020-08-08 15:12:55,201] ({JobStatusPoller-paragraph_1596860684530_1963853915} NotebookServer.java[onStatusChange]:1907) - Job paragraph_1596860684530_1963853915 starts to RUNNING
+ INFO [2020-08-08 15:12:55,206] ({JobStatusPoller-paragraph_1596860684530_1963853915} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln
+ INFO [2020-08-08 15:13:07,129] ({pool-7-thread-1} VFSNotebookRepo.java[save]:145) - Saving note 2FERNUMV5 to FlinkStreamingSQL_FromKafkaToKafka_2FERNUMV5.zpln

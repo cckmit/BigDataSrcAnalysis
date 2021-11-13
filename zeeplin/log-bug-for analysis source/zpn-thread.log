@@ -1,0 +1,419 @@
+	at org.apache.flink.core.fs.SafetyNetCloseableRegistry$CloseableReaperThread.run(SafetyNetCloseableRegistry.java:193)
+
+"Reduce (SUM(1)) (1/1)" #534 prio=5 os_prio=0 tid=0x00007f02e4370800 nid=0xdf1 runnable [0x00007f02ac7f1000]
+   java.lang.Thread.State: RUNNABLE
+--
+	at org.apache.flink.util.ChildFirstClassLoader.loadClass(ChildFirstClassLoader.java:66)
+	- locked <0x00000000f5ea2ce0> (a org.apache.flink.util.ChildFirstClassLoader)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:348)
+	at org.apache.flink.util.InstantiationUtil$ClassLoaderObjectInputStream.resolveClass(InstantiationUtil.java:78)
+	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1946)
+	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1829)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:2120)
+--
+	at org.apache.flink.util.InstantiationUtil.deserializeObject(InstantiationUtil.java:576)
+	at org.apache.flink.util.InstantiationUtil.deserializeObject(InstantiationUtil.java:562)
+	at org.apache.flink.util.InstantiationUtil.deserializeObject(InstantiationUtil.java:550)
+	at org.apache.flink.util.InstantiationUtil.readObjectFromConfig(InstantiationUtil.java:511)
+	at org.apache.flink.runtime.operators.util.TaskConfig.getStubWrapper(TaskConfig.java:288)
+	at org.apache.flink.runtime.operators.BatchTask.initStub(BatchTask.java:646)
+	at org.apache.flink.runtime.operators.BatchTask.initInputLocalStrategy(BatchTask.java:966)
+	at org.apache.flink.runtime.operators.BatchTask.initLocalStrategies(BatchTask.java:804)
+	at org.apache.flink.runtime.operators.BatchTask.invoke(BatchTask.java:345)
+	at org.apache.flink.runtime.taskmanager.Task.doRun(Task.java:708)
+	at org.apache.flink.runtime.taskmanager.Task.run(Task.java:533)
+	at java.lang.Thread.run(Thread.java:748)
+
+"Flink-RestClusterClient-IO-thread-4" #533 daemon prio=5 os_prio=0 tid=0x00007f02f0109000 nid=0xdf0 waiting on condition [0x00007f02a3397000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000f4f1f068> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"Flink-RestClusterClient-Retry-thread-1" #532 daemon prio=5 os_prio=0 tid=0x00007f02f4086000 nid=0xdef waiting on condition [0x00007f02cd1bb000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000f4f2b680> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"Flink-RestClusterClient-IO-thread-3" #531 daemon prio=5 os_prio=0 tid=0x00007f02abd24800 nid=0xdee waiting on condition [0x00007f02addfa000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000f4f1f068> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"Flink-RestClusterClient-IO-thread-2" #530 daemon prio=5 os_prio=0 tid=0x00007f02abd23800 nid=0xded waiting on condition [0x00007f02a3296000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000f4f1f068> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"flink-rest-client-netty-thread-1" #529 daemon prio=5 os_prio=0 tid=0x00007f02e40d2800 nid=0xdec runnable [0x00007f02af7fe000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000f4f29fa0> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000f4f21d68> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000f4f21c50> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"Flink-RestClusterClient-IO-thread-1" #527 daemon prio=5 os_prio=0 tid=0x00007f02abd22000 nid=0xdea waiting on condition [0x00007f02a369a000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000f4f1f068> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+	at org.apache.zeppelin.flink.JobManager$FlinkJobProgressPoller.run(JobManager.java:193)
+	- locked <0x00000000f4f1d130> (a java.util.concurrent.atomic.AtomicBoolean)
+
+"pool-11-thread-1" #522 prio=5 os_prio=0 tid=0x00007f02abd20800 nid=0xde5 waiting on condition [0x00007f02a57a6000]
+--
+"flink-metrics-13" #519 prio=1 os_prio=0 tid=0x00007f02e413c800 nid=0xde2 waiting on condition [0x00007f02aeffc000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c0828148> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"flink-akka.actor.default-dispatcher-350" #513 prio=5 os_prio=0 tid=0x00007f02e8028000 nid=0xdd2 waiting on condition [0x00007f02a3d9d000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c07e5448> (a akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinPool)
+--
+"flink-akka.actor.default-dispatcher-348" #511 prio=5 os_prio=0 tid=0x00007f02e8026000 nid=0xdc7 waiting on condition [0x00007f02fdd45000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c07e5448> (a akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinPool)
+--
+"flink-rest-server-netty-worker-thread-4" #117 daemon prio=5 os_prio=0 tid=0x00007f02e005c000 nid=0xbb8 runnable [0x00007f02a43a1000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000c6aed878> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000c6aee978> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000c6aee8a0> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"flink-rest-server-netty-worker-thread-3" #116 daemon prio=5 os_prio=0 tid=0x00007f02e0052800 nid=0xbb7 runnable [0x00007f02a54a3000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000c6af11a8> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000c6b02298> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000c6b021c0> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"Flink-MetricRegistry-thread-1" #114 daemon prio=5 os_prio=0 tid=0x00007f02d80e7000 nid=0xbb5 waiting on condition [0x00007f02a56a5000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c03e3cb0> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"flink-rest-server-netty-worker-thread-2" #110 daemon prio=5 os_prio=0 tid=0x00007f02e005a000 nid=0xbb0 runnable [0x00007f02ac1f1000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000c6b04ac8> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000c6b05bc8> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000c6b05af0> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"jobmanager-future-thread-2" #106 daemon prio=5 os_prio=0 tid=0x00007f02f00d0800 nid=0xbac waiting on condition [0x00007f02ac3f3000]
+--
+"FlinkCompletableFutureDelayScheduler-thread-1" #103 daemon prio=5 os_prio=0 tid=0x00007f02f00ca800 nid=0xba9 waiting on condition [0x00007f02ac2f2000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c92dfef0> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"flink-rest-server-netty-worker-thread-1" #97 daemon prio=5 os_prio=0 tid=0x00007f02e0057800 nid=0xba3 runnable [0x00007f02ad8f7000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000c6b083f8> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000c6b19518> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000c6b19440> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"NonBlockingInputStreamThread" #91 daemon prio=5 os_prio=0 tid=0x00007f02a9c70000 nid=0xb9d in Object.wait() [0x00007f02aeefb000]
+--
+"Flink-DispatcherRestEndpoint-thread-4" #86 daemon prio=5 os_prio=0 tid=0x00007f031811d800 nid=0xb8e waiting on condition [0x00007f02af0fd000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c6ada918> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"Flink-DispatcherRestEndpoint-thread-3" #85 daemon prio=5 os_prio=0 tid=0x00007f02f40ce000 nid=0xb8d waiting on condition [0x00007f02bfbfc000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c6ada918> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"Flink-DispatcherRestEndpoint-thread-2" #83 daemon prio=5 os_prio=0 tid=0x00007f02f40d0000 nid=0xb8b waiting on condition [0x00007f02cd5c0000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c6ada918> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"Flink-DispatcherRestEndpoint-thread-1" #80 daemon prio=5 os_prio=0 tid=0x00007f02a9c12000 nid=0xb88 waiting on condition [0x00007f02be7c4000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c6ada918> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+--
+"flink-rest-server-netty-boss-thread-1" #78 daemon prio=5 os_prio=0 tid=0x00007f02a9bd5000 nid=0xb86 runnable [0x00007f02bee01000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000c6ae1e60> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000c6b35718> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000c6ae1dc8> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"Flink Netty Server (0) Thread 0" #75 daemon prio=5 os_prio=0 tid=0x00007f02a982d800 nid=0xb85 runnable [0x00007f02bf2f3000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000c07c7260> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000c07c9878> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000c07c71c8> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"IOManager reader thread #1" #71 daemon prio=5 os_prio=0 tid=0x00007f02b57f0000 nid=0xb84 waiting on condition [0x00007f02bf3f4000]
+--
+	at org.apache.flink.runtime.io.disk.iomanager.IOManagerAsync$ReaderThread.run(IOManagerAsync.java:354)
+
+"IOManager writer thread #1" #70 daemon prio=5 os_prio=0 tid=0x00007f02b57ee000 nid=0xb83 waiting on condition [0x00007f02bf4f5000]
+   java.lang.Thread.State: WAITING (parking)
+--
+	at org.apache.flink.runtime.io.disk.iomanager.IOManagerAsync$WriterThread.run(IOManagerAsync.java:460)
+
+"Flink Netty Server (0) Thread 0" #67 daemon prio=5 os_prio=0 tid=0x00007f02b3ffa800 nid=0xb82 runnable [0x00007f02bf5f6000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000c0787698> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000c0789cb0> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000c0787600> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"IOManager reader thread #1" #63 daemon prio=5 os_prio=0 tid=0x00007f02b974d000 nid=0xb81 waiting on condition [0x00007f02bf6f7000]
+--
+	at org.apache.flink.runtime.io.disk.iomanager.IOManagerAsync$ReaderThread.run(IOManagerAsync.java:354)
+
+"IOManager writer thread #1" #62 daemon prio=5 os_prio=0 tid=0x00007f02b974b800 nid=0xb80 waiting on condition [0x00007f02bf7f8000]
+   java.lang.Thread.State: WAITING (parking)
+--
+	at org.apache.flink.runtime.io.disk.iomanager.IOManagerAsync$WriterThread.run(IOManagerAsync.java:460)
+
+"Flink Netty Server (0) Thread 0" #59 daemon prio=5 os_prio=0 tid=0x00007f02b974a800 nid=0xb7f runnable [0x00007f02bf8f9000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000c07a78f8> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000c07a9f10> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000c07a7860> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"IOManager reader thread #1" #55 daemon prio=5 os_prio=0 tid=0x00007f02b974f000 nid=0xb7e waiting on condition [0x00007f02bf9fa000]
+--
+	at org.apache.flink.runtime.io.disk.iomanager.IOManagerAsync$ReaderThread.run(IOManagerAsync.java:354)
+
+"IOManager writer thread #1" #54 daemon prio=5 os_prio=0 tid=0x00007f02b9750800 nid=0xb7d waiting on condition [0x00007f02bfafb000]
+   java.lang.Thread.State: WAITING (parking)
+--
+	at org.apache.flink.runtime.io.disk.iomanager.IOManagerAsync$WriterThread.run(IOManagerAsync.java:460)
+
+"Flink Netty Server (0) Thread 0" #50 daemon prio=5 os_prio=0 tid=0x00007f02b95c5800 nid=0xb7b runnable [0x00007f02cd6c1000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+--
+	- locked <0x00000000c07661c0> (a org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySet)
+	- locked <0x00000000c07687d8> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000000c0766128> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.SelectedSelectionKeySetSelector.select(SelectedSelectionKeySetSelector.java:62)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.select(NioEventLoop.java:806)
+	at org.apache.flink.shaded.netty4.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:454)
+	at org.apache.flink.shaded.netty4.io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:918)
+	at org.apache.flink.shaded.netty4.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at java.lang.Thread.run(Thread.java:748)
+
+"IOManager reader thread #1" #47 daemon prio=5 os_prio=0 tid=0x00007f02ec266000 nid=0xb7a waiting on condition [0x00007f02bfefd000]
+--
+	at org.apache.flink.runtime.io.disk.iomanager.IOManagerAsync$ReaderThread.run(IOManagerAsync.java:354)
+
+"IOManager writer thread #1" #46 daemon prio=5 os_prio=0 tid=0x00007f02ec264000 nid=0xb79 waiting on condition [0x00007f02bfffe000]
+   java.lang.Thread.State: WAITING (parking)
+--
+	at org.apache.flink.runtime.io.disk.iomanager.IOManagerAsync$WriterThread.run(IOManagerAsync.java:460)
+
+"Timer-2" #44 daemon prio=5 os_prio=0 tid=0x00007f02ec2d6000 nid=0xb78 in Object.wait() [0x00007f02cc1af000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+--
+	at org.apache.flink.runtime.blob.BlobServer.run(BlobServer.java:254)
+
+"Timer-0" #39 daemon prio=5 os_prio=0 tid=0x00007f02ec2c6000 nid=0xb75 in Object.wait() [0x00007f02cc4b2000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+--
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.NioServerBoss.select(NioServerBoss.java:163)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.run(AbstractNioSelector.java:212)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.NioServerBoss.run(NioServerBoss.java:42)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.ThreadRenamingRunnable.run(ThreadRenamingRunnable.java:108)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.internal.DeadLockProofWorker$1.run(DeadLockProofWorker.java:42)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+--
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.SelectorUtil.select(SelectorUtil.java:68)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.select(AbstractNioSelector.java:434)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.run(AbstractNioSelector.java:212)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioWorker.run(AbstractNioWorker.java:89)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:178)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.ThreadRenamingRunnable.run(ThreadRenamingRunnable.java:108)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.internal.DeadLockProofWorker$1.run(DeadLockProofWorker.java:42)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+--
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.SelectorUtil.select(SelectorUtil.java:68)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.select(AbstractNioSelector.java:434)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.run(AbstractNioSelector.java:212)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioWorker.run(AbstractNioWorker.java:89)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:178)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.ThreadRenamingRunnable.run(ThreadRenamingRunnable.java:108)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.internal.DeadLockProofWorker$1.run(DeadLockProofWorker.java:42)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+--
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.SelectorUtil.select(SelectorUtil.java:68)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.select(AbstractNioSelector.java:434)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.run(AbstractNioSelector.java:212)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.NioClientBoss.run(NioClientBoss.java:42)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.ThreadRenamingRunnable.run(ThreadRenamingRunnable.java:108)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.internal.DeadLockProofWorker$1.run(DeadLockProofWorker.java:42)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+--
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.SelectorUtil.select(SelectorUtil.java:68)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.select(AbstractNioSelector.java:434)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.run(AbstractNioSelector.java:212)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioWorker.run(AbstractNioWorker.java:89)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:178)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.ThreadRenamingRunnable.run(ThreadRenamingRunnable.java:108)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.internal.DeadLockProofWorker$1.run(DeadLockProofWorker.java:42)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+--
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.SelectorUtil.select(SelectorUtil.java:68)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.select(AbstractNioSelector.java:434)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioSelector.run(AbstractNioSelector.java:212)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.AbstractNioWorker.run(AbstractNioWorker.java:89)
+	at org.apache.flink.shaded.akka.org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:178)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.ThreadRenamingRunnable.run(ThreadRenamingRunnable.java:108)
+	at org.apache.flink.shaded.akka.org.jboss.netty.util.internal.DeadLockProofWorker$1.run(DeadLockProofWorker.java:42)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+--
+"flink-metrics-akka.remote.default-remote-dispatcher-4" #30 prio=1 os_prio=0 tid=0x00007f03197dc800 nid=0xb6e waiting on condition [0x00007f02ccdb9000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c081f560> (a akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinPool)
+--
+"flink-metrics-akka.remote.default-remote-dispatcher-3" #29 prio=1 os_prio=0 tid=0x00007f03197dc000 nid=0xb6d waiting on condition [0x00007f02cceba000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0x00000000c081f560> (a akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinPool)
+--
+"flink-metrics-scheduler-1" #27 prio=5 os_prio=0 tid=0x00007f02ed488800 nid=0xb6b sleeping[0x00007f02cd2bc000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at akka.actor.LightArrayRevolverScheduler.waitNanos(LightArrayRevolverScheduler.scala:85)
+--
+"flink-scheduler-1" #24 prio=5 os_prio=0 tid=0x00007f02ec398000 nid=0xb68 sleeping[0x00007f02cd9c2000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at akka.actor.LightArrayRevolverScheduler.waitNanos(LightArrayRevolverScheduler.scala:85)
+--
+	at org.apache.flink.api.java.ExecutionEnvironment.execute(ExecutionEnvironment.java:864)
+	at org.apache.flink.api.java.ScalaShellEnvironment.execute(ScalaShellEnvironment.java:81)
+	at org.apache.flink.api.java.ExecutionEnvironment.execute(ExecutionEnvironment.java:844)
+	at org.apache.flink.api.java.DataSet.collect(DataSet.java:413)
+	at org.apache.flink.api.java.DataSet.print(DataSet.java:1652)
+	at org.apache.flink.api.scala.DataSet.print(DataSet.scala:1864)
+	at $line28.$read$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw.<init>(<console>:78)
+	at $line28.$read$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw.<init>(<console>:83)
+	at $line28.$read$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw$$iw.<init>(<console>:85)
+--
+	at org.apache.zeppelin.flink.FlinkScalaInterpreter$$anonfun$interpret$1$$anonfun$apply$3.apply(FlinkScalaInterpreter.scala:616)
+	at org.apache.zeppelin.flink.FlinkScalaInterpreter$$anonfun$interpret$1$$anonfun$apply$3.apply(FlinkScalaInterpreter.scala:607)
+	at scala.collection.TraversableLike$WithFilter$$anonfun$foreach$1.apply(TraversableLike.scala:733)
+	at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33)
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:186)
+--
+	at org.apache.zeppelin.flink.FlinkScalaInterpreter$$anonfun$interpret$1.apply(FlinkScalaInterpreter.scala:607)
+	at org.apache.zeppelin.flink.FlinkScalaInterpreter$$anonfun$interpret$1.apply(FlinkScalaInterpreter.scala:598)
+	at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)
+	at scala.Console$.withOut(Console.scala:65)
+	at org.apache.zeppelin.flink.FlinkScalaInterpreter.interpret(FlinkScalaInterpreter.scala:598)
+	at org.apache.zeppelin.flink.FlinkInterpreter.interpret(FlinkInterpreter.java:94)
+	at org.apache.zeppelin.interpreter.LazyOpenInterpreter.interpret(LazyOpenInterpreter.java:110)
+	at org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer$InterpretJob.jobRun(RemoteInterpreterServer.java:776)
+	at org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer$InterpretJob.jobRun(RemoteInterpreterServer.java:668)

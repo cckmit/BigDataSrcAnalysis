@@ -1,0 +1,321 @@
+
+
+1. Yarn的ApplicationMaster源码和进程
+
+ApplicationMaster.main(){
+	SignalUtils.registerLogger(log)
+		- 20/02/01 16:25:50 INFO SignalUtils: Registered signal handler for TERM
+
+	SparkHadoopUtil.get.runAsSparkUser { () =>
+		master = new ApplicationMaster(amArgs, new YarnRMClient){
+			val sparkConf = new SparkConf()
+			val localResources = {resources = HashMap[]; resources.put()...;resources.toMap}
+		}
+		System.exit(master.run(){
+		  	val appAttemptId = YarnRMClient.getAttemptId()
+				- 20/02/01 16:25:55 INFO ApplicationMaster: ApplicationAttemptId: appattempt_1580439957506_0011_000001
+			val securityMgr = new SecurityManager(sparkConf)
+				- 20/02/01 16:25:55 INFO SecurityManager: Changing view acls to: app
+			
+			if(isClusterMode){
+				// ApplicationMaster.runDriver(): 源码详解如下: 
+				runDriver(securityMgr);
+			} 
+		}
+    }	
+}
+
+
+ApplicationMaster.runDriver(){
+	
+	# 定义用户App应用的运行(RecordWindowAggr.main()),并结束AppMaster:finish(SUCCEEDED)
+	userClassThread = startUserApplication()
+			- 20/02/01 21:44:32 INFO ApplicationMaster: Waiting for spark context initialization...
+	
+	val sc = ThreadUtils.awaitResult(sparkContextPromise.future,Duration()) # 创建SparkContext
+			- 20/02/02 15:53:00 INFO SparkContext: Running Spark version 2.2.0
+			- 20/02/02 15:53:10 INFO SparkUI: Bound SparkUI to 0.0.0.0, and started at http://192.168.41.143:39350
+			- 20/02/02 15:53:12 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 192.168.41.143, 35865, None)
+	
+	val driverRef = runAMEndpoint()
+	logInfo{}
+			- 20/02/01 16:26:02 INFO ApplicationMaster: ==================== YARN executor launch context:
+	
+	# 向YarnClient注册本ApplicationMaster: 
+	registerAM(sc.getConf, rpcEnv, driverRef, sc.ui.map(_.webUrl), securityMgr){
+		allocator:YarnAllocator = YarnRMClient.register(driverUrl,YarnConf,sparkConf)
+			- 20/02/01 16:26:02 INFO YarnRMClient: Registering the ApplicationMaster
+			
+		allocator[YarnAllocator].allocateResources(){
+			updateResourceRequests(){
+				val pendingAllocate = getPendingAllocate
+				val (localRequests, staleRequests, anyHostRequests) = splitPendingAllocationsByLocality()
+					- 20/02/01 21:44:41 INFO YarnAllocator: Submitted 2 unlocalized container requests.
+			}
+			
+			val allocateResponse = amClient.allocate(progressIndicator)
+			val allocatedContainers = allocateResponse.getAllocatedContainers()
+			val completedContainers = allocateResponse.getCompletedContainersStatuses()
+			
+			handleAllocatedContainers(allocatedContainers.asScala)
+				- 20/02/01 21:44:43 INFO YarnAllocator: Received 1 containers from YARN, launching executors on 1 of them.
+		}
+
+		reporterThread = launchReporterThread()
+				- 20/02/02 15:57:38 INFO ApplicationMaster: Started progress reporter thread with (heartbeat : 3000, initial allocation : 200) intervals
+				- 20/02/02 15:57:39 INFO DAGScheduler: Submitting 6 missing tasks from ShuffleMapStage 0 (MapPartitionsRDD[2] 
+	}
+	
+	startUserApplication(){
+				val mainMethod = userClassLoader.loadClass(args.userClass).getMethod("main", classOf[Array[String]])
+				new Thread(){ run(){
+					
+					// 此处开始执行用户定义的业务逻辑main()方法: RecordWindowAggr.main(); BootstrapClusterStreaming.main();
+					mainMethod.invoke(userArgs.toArray) #RecordWindowAggr.main()
+				}}.start()
+				ApplicationMaster.finish(FinalApplicationStatus.SUCCEEDED)
+			}
+		.join() # 等待上个线程代码(创建sc并runAMEndpoint() )运行完后,在本run App任务的线程;
+				- 20/02/02 16:04:18 INFO YarnClusterScheduler: Adding task set 0.0 with 6 tasks
+				- 20/02/02 16:04:18 INFO YarnAllocator: Launching container container_1580610082803_0016_01_000002 on host ldsver42 for executor with ID 1
+				- 20/02/02 16:04:33 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, ldsver43, executor 2, partition 0, NODE_LOCAL, 4844 bytes)
+				- ... DAGScheduler调度跑完所有Job/Stages/TaskSets;
+}
+
+
+
+
+
+BootstrapClusterStreaming.main(){
+	try{
+		SparkStreamingBinding binding[Kafka010SparkStreamingBinding] = SparkStreamingBindingFactory.build(BootstrapCluster.getProperties()){
+			SparkStreamingBindingFactory.create(){
+				bindingFactory[Kafka010SparkStreamingBindingFactory].create(){new Kafka010SparkStreamingBinding();};
+					* SparkStreamingBinding - Property => kafkaConfigBean.dataFormatConfig.csvSkipStartLines => 0
+					* SparkStreamingBinding - Property => kafkaConfigBean.dataFormatConfig.xmlMaxObjectLen => 4096
+			}
+		}
+		
+		# 主要任务: 创建ssc:SparkStreamingContext
+		binding[Kafka010SparkStreamingBinding extends SparkStreamingBinding].init();-> SparkStreamingBinding.init(){
+			for (Object key : properties.keySet()) {logMessage(key);}
+				logMessage("Property => " + key + " => " + properties.getProperty(key.toString()), isRunningInMesos);
+					* SparkStreamingBinding - Property => kafkaConfigBean.dataFormatConfig.csvSkipStartLines => 0
+					* SparkStreamingBinding - Property => kafkaConfigBean.dataFormatConfig.xmlMaxObjectLen => 4096
+			
+				SparkConf conf = new SparkConf()
+		
+			URI hdfsURI = FileSystem.getDefaultUri(hadoopConf);
+			hdfs = (new Path(hdfsURI)).getFileSystem(hadoopConf);
+					* SparkStreamingBinding - Default FS URI: hdfs://ldsver41:9000/
+		
+			# 获取kafka的Offset
+			offsetHelper = new SdcClusterOffsetHelper(checkPointPath, hdfs, Utils.getKafkaMaxWaitTime(properties));
+					* SdcClusterOffsetHelper - SDC Checkpoint File Path : hdfs://ldsver41:9000/user/app/.streamsets-spark-streaming/9f548e2c-0158-11ea-8fc5-137338da775b/HeJiaQing_In_commTest/2020_testDemo_cluster_0202-01/AllenTestDemoClusterRunef5d94c9-dec9-4e67-a25d-500c6287f806
+
+			ssc[JavaStreamingContext] = javaStreamingContextFactory[JavaStreamingContextFactoryImpl].create(){
+					createDStream(result, props){
+						
+						Map<TopicPartition, Long> fromOffsets = KafkaOffsetManagerImpl.get().getOffsetForDStream(topic, numberOfPartitions){
+							Map<Integer, Long> partitionsToOffset = KafkaOffsetManagerImpl.readOffsets(numberOfPartitions){
+								SparkStreamingBinding.offsetHelper.readOffsets(numberOfPartitions){
+									SdcClusterOffsetHelper.readClusterOffsetFile(){
+										deserializeKafkaPartitionOffset(lastSourceOffset, numberOfPartitions){
+											for (Map.Entry<String, Object> partitionOffsetEntry : deserializedPartitionOffset.entrySet()) {
+												int partition = Integer.parseInt(partitionOffsetEntry.getKey());
+												Long offset = Long.parseLong(partitionOffsetEntry.getValue().toString());
+												greatestPartitionFromOffset = (partition > greatestPartitionFromOffset) ? partition : greatestPartitionFromOffset;
+											}
+											LOG.info("Starting offsets: {}", partitionToOffsetMap);
+												* Starting offsets:
+										}
+									}
+								}
+							}
+						}
+						stream =KafkaUtils.createDirectStream()
+						
+					}
+					
+					JavaStreamingContext result = new JavaStreamingContext(sparkConf, new Duration(duration)){
+						new StreamingContext(){
+							createNewSparkContext(master, appName, sparkHome, jars){
+								# 创建SchedulerBackend, taskScheduler, DAGScheduler;
+								val (sched[YarnClusterSchedulerBackend], ts[YarnClusterScheduler]) = SparkContext.createTaskScheduler(this, master, deployMode){
+									val scheduler = cm.createTaskScheduler(sc, masterUrl)
+									val backend = cm.createSchedulerBackend(sc, masterUrl, scheduler)
+									cm.initialize(scheduler, backend){
+										TaskSchedulerImpl.start(){
+											backend[YarnClusterSchedulerBackend].start()
+										}
+									}
+								}
+								 _dagScheduler = new DAGScheduler(this)
+							}
+							
+							val scheduler = new JobScheduler(this)
+							val waiter = new ContextWaiter
+						}
+					}
+						* [thread:Driver]  INFO  SparkStreamingBinding - Adding extra kafka config, key.deserializer:org.apache.kafka.common.serialization.ByteArrayDeserializer
+						* [thread:Driver]  INFO  SparkStreamingBinding - Auto offset reset is set to earliest
+			}
+				
+			Runtime.getRuntime().addShutdownHook(shutdownHookThread=new Thread(){run(){
+				ssc.stop(true, true);
+					* LOG.debug("Gracefully stopping Spark Streaming Application");
+					* LOG.info("Application stopped");
+			}};
+			
+			ssc.checkPoint()
+				* [thread:Driver]  INFO  SparkStreamingBinding - Making calls through spark context
+		}
+		
+		# 根据pipeline是否有SparkTransformer?解析并创建SparkTransformer的实例?
+		BootstrapCluster.createTransformers(binding.getStreamingContext().sparkContext());
+		
+		# 启动SparkStreaming流; 哪spark计算逻辑在哪儿定义?
+		binding[Kafka010SparkStreamingBinding].startContext(){ ssc[SparkStreamingContext].start();}
+		# 循环等待处理数据;
+		binding.awaitTermination(){ ssc[SparkStreamingContext].awaitTermination();};
+	
+	}catch (Throwable error) {
+		LOG.error("Error trying to invoke BootstrapClusterStreaming.main: " + error, error);
+			* 
+		throw new IllegalStateException(msg, error);
+	}
+}
+
+
+
+
+Kafka010SparkStreamingBinding.create():ssc[JavaStreamingContext]={
+	JavaStreamingContext result = new JavaStreamingContext(sparkConf, new Duration(duration));
+		* logMessage(Utils.format("Adding extra kafka config, {}:{}", map.getKey(), map.getValue()), isRunningInMesos);
+		* logMessage("Auto offset reset is set to " + autoOffsetValue, isRunningInMesos);
+	
+	ssc:JavaStreamingContext= createDStream(result, props){
+		JavaInputDStream<ConsumerRecord<byte[], byte[]>> stream;
+		if (offsetHelper.isSDCCheckPointing()) {
+			stream =KafkaUtils.createDirectStream( ConsumerStrategies.<byte[], byte[]>Assign(new ArrayList<TopicPartition>(fromOffsets.keySet()), props, fromOffsets));
+		}else{
+			stream = KafkaUtils.createDirectStream( ConsumerStrategies.<byte[], byte[]>Subscribe(topics, props));
+		}
+		
+		# SDC的pipeline业务逻辑计算;
+		Driver$.MODULE$.foreach(dstream:DirectKafkaInputDStream=stream.dstream(),kafkaOffsetManagerImpl:KafkaOffsetManager= KafkaOffsetManagerImpl.get()){
+			offsetManager = kafkaOffsetManager
+			dstream.foreachRDD(rdd => {
+				val kvRDD:RDD[(Array[Byte], Array[Byte])]= rdd.map(c => {(c.key(), c.value())}) 
+				
+			  process(kvRDD :RDD[(Array[Byte], Array[Byte])]){
+				  previousIncomingData.foreach(_.unpersist(false))
+				  previousIncomingData.clear()
+				  
+				  previousGeneratedRDDs.foreach(_.unpersist(false))
+				  previousGeneratedRDDs.clear()
+				  
+				  previousIncomingData += rdd
+				  
+				  val incoming = if (transformers.nonEmpty) repartition(rdd) else rdd
+				  
+				  previousIncomingData += incoming
+				  
+				  var nextResult: RDD[Record] =  incoming.mapPartitions()
+				  previousGeneratedRDDs += nextResult
+				  
+				  # nextResult缓存,并出发Action 提交该Job计算;
+				  nextResult.cache().count()
+				  
+				  transformers.foreach()
+				  
+				  # 再出发nextResult的RDD,从新计算;
+				  nextResult.count()
+				  
+			  }
+			  offsetManager.saveOffsets(rdd)
+			})
+			
+		}
+		
+		return result;
+	}
+	
+	return ssc;
+	
+		
+}
+
+
+pipeline.spark.Driver{
+	
+	foreach(dstream: DStream[ConsumerRecord[Array[Byte], Array[Byte]]], kafkaOffsetManager: KafkaOffsetManager){
+		offsetManager = kafkaOffsetManager
+		dstream.foreachRDD(rdd => {
+		  process(rdd.map(c => {(c.key(), c.value())}))
+		  offsetManager.saveOffsets(rdd)
+		})
+	}
+}
+
+
+
+
+EmbeddedDataCollector extends DataCollector{
+
+	init(){}
+	
+	startPipeline(){
+		String slaveId = runtimeInfo.getMasterSDCId() + Constants.MASTER_SDC_ID_SEPARATOR + uniqueId;
+		LOG.info(Utils.format("Slave SDC Id is: '{}'", slaveId));
+			* INFO  EmbeddedDataCollector - Slave SDC Id is: '78b46fb1-ac76-11e9-9a8a-ff7ff863f21f:HJQOOMBugFindExecutor047529ab18-baa4-4d7c-9b77-dc618f89f1f2-3-8'
+		
+		runner[StandaloneRunner] = pipelineManager.getRunner(pipelineName, pipelineRev);
+			* INFO  StandaloneRunner - Preparing to start pipeline 'HJQOOMBugFindExecutor047529ab18-baa4-4d7c-9b77-dc618f89f1f2::0'
+        
+		runner[StandaloneRunner].start(pipelineUser){
+			startPipeline(user, runtimeParameters){
+				
+				 runner[ProductionPipelineRunner].addErrorListeners(errorListeners){
+					LOG.info("Adding error listeners" + errorListeners.size());
+						* INFO  ProductionPipelineRunner - Adding error listeners1
+					this.errorListeners.addAll(errorListeners);
+				 }
+				// 构建ProductionPipelineRunner实例并set各种参数,将其装入runnerExecutor中后, submit()线程任务;
+				prodPipeline = builder.build(runningUser,pipelineConfiguration);
+				
+				pipelineRunnable = new ProductionPipelineRunnable(threadHealthReporter, this, prodPipeline, name, rev, taskBuilder.build());
+				
+			}
+			
+			LOG.debug("Starting the runnable for pipeline {} {}", name, rev);
+				* INFO  StandaloneRunner - Starting pipeline HJQOOMBugFindExecutor047529ab18-baa4-4d7c-9b77-dc618f89f1f2 0
+			
+			if(!pipelineRunnable.isStopped()) {
+				pipelineRunnable[ProductionPipelineRunner ].run(){
+					pipeline[ProductionPipeline].run(){
+						
+						// 先创建Source的SourcePipe,初始化并 pipeline.runSourceLessBatch(pipeBatch)
+						pipeline.runSourceLessBatch(pipeBatch)
+						
+						pipeline[Pipeline].init(){
+							LOG.info("Processing lifecycle start event with stage");
+								* INFO  Pipeline - Processing lifecycle start event with stage
+						}
+						
+
+					}
+				}
+			}	
+		}
+	}
+	
+	
+	stopPipeline(){
+	
+	}
+
+}
+
+
+

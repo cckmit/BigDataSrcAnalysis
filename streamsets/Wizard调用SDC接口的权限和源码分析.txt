@@ -1,0 +1,19 @@
+
+
+接口:/rest/v1										请求方式	manager权限		源码响应接口								对应关键实现方法
+/system/restart 									POST		no				AdminResource.restart()						# ->PipelineTask.stop()
+/pipeline/{pipelineId}/import 		+requestBody	POST		no				PipelineStoreResource.importPipeline(PipelineEnvelopeJson pipelineEnvelope) # -> CachePipelineStoreTask.save(pipeline)
+/pipeline/{pipelineId}/export						GET			no				PipelineStoreResource.exportPipeline()		# ->CachePipelineStoreTask.load(name)
+/pipeline/{pipelineId}								GET			yes				PipelineStoreResource.getPipelineInfo()		# ->CachePipelineStoreTask.getInfo(name)
+/pipeline/{pipelineId} 				+requestBody 	POST		no				PipelineStoreResource.savePipeline(PipelineConfigurationJson pipeline) # -> CachePipelineStoreTask.save(name,pipeline)
+/pipeline/{pipelineId}								DELETE		no				PipelineStoreResource.deletePipeline() 		# ->CachePipelineStoreTask.delete(name);
+
+/pipeline/{pipelineId}/start						POST		yes				ManagerResource.startPipeline()				# -> StandaloneAndClusterPipelineManager.getRunner(pipelineId).start()
+/pipeline/{pipelineId}/stop							POST		yes				ManagerResource.stopPipeline()				# -> StandaloneAndClusterPipelineManager.getRunner(pipelineId).stop()
+/pipeline/{pipelineId}/status						GET			yes				ManagerResource.getPipelineStatus()			# -> StandaloneAndClusterPipelineManager.getPipelineState(pipelineId)
+
+/pipeline/{pipelineId}/preview						POST		yes				PreviewResource.previewWithOverride() 	# 发起新Preview,生成previewerId
+/pipeline/{pipelineId}/validate						GET			yes				PreviewResource.validateConfigs()		# 校验Pipeline
+/pipeline/{anyString}/preview/{previewerId}/status	GET			yes				PreviewResource.getPreviewStatus()		# 获取某previewerId对应的运行状态;
+/pipeline/{anyString}/preview/{previewerId}			GET			yes				PreviewResource.getPreviewData()		# 获取某previewerId对应的运行结果数据;
+
