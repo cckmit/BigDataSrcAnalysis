@@ -1,0 +1,10 @@
+create table tb_kafka_01(orgId String,modelId String,modelIdPath String,assetId String,pointId String,time UInt64,value Float64,dq UInt8,quality UInt8)ENGINE=Kafka('ldsver51','HJQ_testKafkaPerPartition','clickHouseGroup','JSONEachRow');
+
+wget http://repo.red-soft.biz/repos/clickhouse/stable/el7/clickhouse-client-1.1.54236-4.el7.x86_64.rpm
+wget http://repo.red-soft.biz/repos/clickhouse/stable/el7/clickhouse-compressor-1.1.54236-4.el7.x86_64.rpm
+wget http://repo.red-soft.biz/repos/clickhouse/stable/el7/clickhouse-debuginfo-1.1.54236-4.el7.x86_64.rpm
+wget http://repo.red-soft.biz/repos/clickhouse/stable/el7/clickhouse-server-1.1.54236-4.el7.x86_64.rpm
+wget http://repo.red-soft.biz/repos/clickhouse/stable/el7/clickhouse-server-common-1.1.54236-4.el7.x86_64.rpm
+
+
+docker run -d --name my-clickhouse-server --ulimit nofile=262144:262144 -p 8123:8123 --volume=$HOME/db/clickhouse:/var/lib/clickhouse  yandex/clickhouse-server

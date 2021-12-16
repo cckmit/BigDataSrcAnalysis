@@ -1,0 +1,535 @@
+Listening for transport dt_socket at address: 38767
+2021-12-14 00:35:25.150 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.SendAppender 63 <init> - SendAppender init success
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.3.2.RELEASE)
+
+2021-12-14 00:35:25.317 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 655 logStartupProfileInfo - The following profiles are active: engineconn
+2021-12-14 00:35:25.361 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 84 onApplicationEvent - add config from config server...
+2021-12-14 00:35:25.361 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 89 onApplicationEvent - initialize DataWorkCloud spring application...
+2021-12-14 00:35:27.533 WARN  [main] com.netflix.config.sources.URLConfigurationSource 121 <init> - No URLs will be polled as dynamic configuration sources.
+2021-12-14 00:35:27.534 INFO  [main] com.netflix.config.sources.URLConfigurationSource 122 <init> - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2021-12-14 00:35:27.547 INFO  [main] com.netflix.config.DynamicPropertyFactory 281 getInstance - DynamicPropertyFactory is initialized with configuration sources: com.netflix.config.ConcurrentCompositeConfiguration@105f875f
+2021-12-14 00:35:27.801 INFO  [main] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService
+2021-12-14 00:35:27.807 INFO  [main] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnSyncListenerBus 40 info - com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnSyncListenerBus@407bfc49 add a new listener => class com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl
+2021-12-14 00:35:27.821 INFO  [main] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultExecutorHeartbeatService
+2021-12-14 00:35:27.823 INFO  [main] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService
+2021-12-14 00:35:28.038 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init all receiverChoosers in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.MessageReceiverChooser@46969355, com.webank.wedatasphere.linkis.rpc.CommonReceiverChooser@39fc5c09)
+2021-12-14 00:35:28.043 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init all receiverSenderBuilders in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.CommonReceiverSenderBuilder@7c96ee9e)
+2021-12-14 00:35:28.045 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init RPCReceiverListenerBus with queueSize 5000 and consumeThreadSize 400.
+2021-12-14 00:35:28.046 INFO  [main] com.webank.wedatasphere.linkis.rpc.AsynRPCMessageBus 40 info - RPC-Receiver-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful$$anon$1
+2021-12-14 00:35:28.047 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init all receiverChoosers in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.MessageReceiverChooser@46969355, com.webank.wedatasphere.linkis.rpc.CommonReceiverChooser@56d8f131)
+2021-12-14 00:35:28.048 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init all receiverSenderBuilders in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.CommonReceiverSenderBuilder@4fc6dcb7)
+2021-12-14 00:35:28.086 INFO  [main] com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful 40 info - init all receiverChoosers in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.MessageReceiverChooser@46969355, com.webank.wedatasphere.linkis.rpc.CommonReceiverChooser@2be6103f)
+2021-12-14 00:35:28.087 INFO  [main] com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful 40 info - init all receiverSenderBuilders in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.CommonReceiverSenderBuilder@986deaf)
+2021-12-14 00:35:28.087 INFO  [main] com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful 40 info - init RPCReceiverListenerBus with queueSize 5000 and consumeThreadSize 400.
+2021-12-14 00:35:28.088 INFO  [main] com.webank.wedatasphere.linkis.rpc.AsynRPCMessageBus 40 info - RPC-Receiver-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful$$anon$1
+2021-12-14 00:35:29.141 WARN  [main] com.netflix.config.sources.URLConfigurationSource 121 <init> - No URLs will be polled as dynamic configuration sources.
+2021-12-14 00:35:29.142 INFO  [main] com.netflix.config.sources.URLConfigurationSource 122 <init> - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2021-12-14 00:35:29.522 WARN  [main] com.webank.wedatasphere.linkis.message.utils.MessageUtils 43 getBean - can not get bean from spring ioc:com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnConcurrentLockService
+2021-12-14 00:35:29.529 INFO  [main] com.webank.wedatasphere.linkis.scheduler.queue.parallelqueue.ParallelConsumerManager 40 info - The feature that auto clean up idle consumers for RpcMessageScheduler is enabled.
+2021-12-14 00:35:29.533 WARN  [main] com.webank.wedatasphere.linkis.message.utils.MessageUtils 43 getBean - can not get bean from spring ioc:org.springframework.transaction.PlatformTransactionManager
+2021-12-14 00:35:29.872 INFO  [main] com.webank.wedatasphere.linkis.rpc.conf.RPCSpringConfiguration$$EnhancerBySpringCGLIB$$17d75c8a 40 info - DataWorkCloud RPC need register RPCReceiveRestful, now add it to configuration.
+2021-12-14 00:35:29.872 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 84 onApplicationEvent - add config from config server...
+2021-12-14 00:35:29.872 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 89 onApplicationEvent - initialize DataWorkCloud spring application...
+2021-12-14 00:35:29.883 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 61 logStarted - Started DataWorkCloudApplication in 5.758 seconds (JVM running for 7.444)
+2021-12-14 00:35:29.988 INFO  [main] com.webank.wedatasphere.linkis.rpc.AsynRPCMessageBus 40 info - RPC-Sender-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.rpc.BaseRPCSender$$anon$1
+2021-12-14 00:35:30.129 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-engineconnmanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:30.145 INFO  [main] com.netflix.util.concurrent.ShutdownEnabledTimer 58 <init> - Shutdown hook installed for: NFLoadBalancer-PingTimer-linkis-cg-engineconnmanager
+2021-12-14 00:35:30.146 INFO  [main] com.netflix.loadbalancer.BaseLoadBalancer 197 initWithConfig - Client: linkis-cg-engineconnmanager instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-engineconnmanager,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2021-12-14 00:35:30.152 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 222 enableAndInitLearnNewServersFeature - Using serverListUpdater PollingServerListUpdater
+2021-12-14 00:35:30.177 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-engineconnmanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:30.180 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 150 restOfInit - DynamicServerListLoadBalancer for client linkis-cg-engineconnmanager initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-engineconnmanager,current list of Servers=[bdnode111.hjq.com:9102],Load balancer stats=Zone stats: {defaultzone=[Zone:defaultzone;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:bdnode111.hjq.com:9102;	Zone:defaultZone;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:org.springframework.cloud.netflix.ribbon.eureka.DomainExtractingServerList@44e4247a
+2021-12-14 00:35:30.253 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.hook.ComputationEngineConnHook 40 info - <--------------------SpringBoot App init succeed-------------------->
+2021-12-14 00:35:30.254 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to execute hook of beforeCreateEngineConn.
+2021-12-14 00:35:30.492 INFO  [main] com.webank.wedatasphere.linkis.common.conf.Configuration$ 40 info - gatewayUrl is http://192.168.51.111:9001
+2021-12-14 00:35:30.503 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.rpc.address, localhost
+2021-12-14 00:35:30.503 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.rpc.port, 6123
+2021-12-14 00:35:30.503 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.memory.process.size, 1600m
+2021-12-14 00:35:30.503 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: taskmanager.memory.process.size, 1728m
+2021-12-14 00:35:30.504 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: taskmanager.numberOfTaskSlots, 1
+2021-12-14 00:35:30.504 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: parallelism.default, 1
+2021-12-14 00:35:30.504 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.execution.failover-strategy, region
+2021-12-14 00:35:30.504 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.archive.fs.dir, hdfs:///flink/completed-jobs/jobmgr
+2021-12-14 00:35:30.504 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: historyserver.archive.fs.dir, hdfs:///flink/completed-jobs/his
+2021-12-14 00:35:30.505 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: rest.address, bdnode102
+2021-12-14 00:35:30.505 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: env.java.opts.jobmanager, "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=42040"
+2021-12-14 00:35:30.505 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: env.java.opts.taskmanager, "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=42050"
+2021-12-14 00:35:30.521 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.factory.FlinkEngineConnFactory 40 info - Use yarn queue default, and set parallelism = 4, jobManagerMemory = 2G G, taskManagerMemory = 1G G, numberOfTaskSlots = 2.
+2021-12-14 00:35:30.532 INFO  [Linkis-Default-Scheduler-Thread-1] com.webank.wedatasphere.linkis.scheduler.queue.parallelqueue.ParallelConsumerManager 40 info - Start to Clean up idle consumers 
+2021-12-14 00:35:30.535 INFO  [Linkis-Default-Scheduler-Thread-1] com.webank.wedatasphere.linkis.scheduler.queue.parallelqueue.ParallelConsumerManager 40 info - Finished to clean up idle consumers for RpcMessageScheduler, cost 3 ms.
+2021-12-14 00:35:30.564 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext 129 <init> - flinkConfig config: {yarn.ship-archives=[], taskmanager.memory.process.size=1 gb, jobmanager.archive.fs.dir=hdfs:///flink/completed-jobs/jobmgr, env.java.opts.jobmanager="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=42040", yarn.flink-dist-jar=/opt/flink/flink-release/lib/flink-dist_2.11-1.12.2.jar, jobmanager.execution.failover-strategy=region, jobmanager.rpc.address=localhost, execution.target=yarn-session, jobmanager.memory.process.size=2 gb, jobmanager.rpc.port=6123, yarn.provided.lib.dirs=[], parallelism.default=4, taskmanager.numberOfTaskSlots=2, rest.address=bdnode102, yarn.application.name=EngineConn-Flink, env.java.opts.taskmanager="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=42050", yarn.application.queue=default, historyserver.archive.fs.dir=hdfs:///flink/completed-jobs/his, $internal.deployment.config-dir=/opt/flink/conf, $internal.yarn.config-dir=/opt/hadoop/etc/hadoop}
+2021-12-14 00:35:30.567 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to create flinkEngineConn.
+2021-12-14 00:35:30.567 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to execute all hooks of beforeExecutionExecute.
+2021-12-14 00:35:30.583 INFO  [main] com.webank.wedatasphere.linkis.engineconn.core.execution.EngineConnExecution$ 40 info - The list of EngineConnExecution: List(com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutorManagerEngineConnExecution@a0e33ed, com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution@68a9d247, com.webank.wedatasphere.linkis.engineconn.once.executor.execution.OnceEngineConnExecution@16944bfc, com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationEngineConnExecution@4a314af)
+2021-12-14 00:35:30.584 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Ready to execute ComputationExecutorManagerEngineConnExecution.
+2021-12-14 00:35:30.585 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Ready to execute AccessibleEngineConnExecution.
+2021-12-14 00:35:30.586 INFO  [main] com.webank.wedatasphere.linkis.engineconn.core.executor.ExecutorManager$ 40 info - Try to use com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl to instance a ExecutorManager.
+2021-12-14 00:35:30.601 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl 40 info - Try to create a executor with labels List([key: codeType, value: {"codeType":"sql"}, str: sql]).
+2021-12-14 00:35:30.602 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.factory.FlinkSQLExecutorFactory 40 info - Executor runType is sql, the task runType is sql.
+2021-12-14 00:35:30.604 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl 40 info - Use FlinkSQLExecutorFactory to create executor.
+2021-12-14 00:35:30.613 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl 40 info - Finished to create FlinkSQLComputationExecutor(FlinkComputationSQL_0) with labels List([key: codeType, value: {"codeType":"sql"}, str: sql]).
+2021-12-14 00:35:30.617 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Try to start a yarn-session application for interactive query.
+2021-12-14 00:35:30.625 INFO  [main] org.apache.flink.runtime.util.config.memory.ProcessMemoryUtils 330 capToMinMax - The derived from fraction jvm overhead memory (102.400mb (107374184 bytes)) is less than its min value 192.000mb (201326592 bytes), min value will be used instead
+2021-12-14 00:35:30.626 INFO  [main] org.apache.flink.runtime.util.config.memory.ProcessMemoryUtils 330 capToMinMax - The derived from fraction network memory (57.600mb (60397978 bytes)) is less than its min value 64.000mb (67108864 bytes), min value will be used instead
+2021-12-14 00:35:30.629 WARN  [main] org.apache.flink.yarn.configuration.YarnLogConfigUtil 73 discoverLogConfigFile - The configuration directory ('/opt/flink/conf') already contains a LOG4J config file.If you want to use logback, then please delete or rename the log configuration file.
+2021-12-14 00:35:30.829 WARN  [main] org.apache.hadoop.util.NativeCodeLoader 62 <clinit> - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2021-12-14 00:35:31.156 INFO  [PollingServerListUpdater-0] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-engineconnmanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:31.167 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 582 deployInternal - Cluster specification: ClusterSpecification{masterMemoryMB=2048, taskManagerMemoryMB=1024, slotsPerTaskManager=2}
+2021-12-14 00:35:31.169 WARN  [main] org.apache.flink.core.plugin.PluginConfig 69 getPluginsDir - The plugins directory [plugins] does not exist.
+2021-12-14 00:35:31.687 WARN  [main] org.apache.flink.yarn.YarnClusterDescriptor 1659 addLibFoldersToShipFiles - Environment variable 'FLINK_LIB_DIR' not set and ship files have not been provided manually. Not shipping any library files.
+2021-12-14 00:35:32.317 WARN  [main] org.apache.flink.core.plugin.PluginConfig 69 getPluginsDir - The plugins directory [plugins] does not exist.
+2021-12-14 00:35:33.388 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1176 startAppMaster - Submitting application master application_1639443561571_0001
+2021-12-14 00:35:33.616 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1179 startAppMaster - Waiting for the cluster to be allocated
+2021-12-14 00:35:33.621 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1214 startAppMaster - Deploying cluster, current state ACCEPTED
+2021-12-14 00:35:38.198 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1207 startAppMaster - YARN application has been deployed successfully.
+2021-12-14 00:35:38.199 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1749 setClusterEntrypointInfoToConfig - Found Web Interface bdnode102.hjq.com:39424 of application 'application_1639443561571_0001'.
+2021-12-14 00:35:38.275 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Application is started, applicationId: application_1639443561571_0001, applicationURL: http://bdnode102.hjq.com:39424.
+2021-12-14 00:35:38.276 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Executor(FlinkComputationSQL_0) inited : true
+2021-12-14 00:35:38.277 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl 40 info - Finished to init FlinkSQLComputationExecutor(FlinkComputationSQL_0).
+2021-12-14 00:35:38.277 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 40 info - Created a report executor FlinkSQLComputationExecutor(FlinkComputationSQL_0).
+2021-12-14 00:35:38.338 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-linkismanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:38.340 INFO  [main] com.netflix.util.concurrent.ShutdownEnabledTimer 58 <init> - Shutdown hook installed for: NFLoadBalancer-PingTimer-linkis-cg-linkismanager
+2021-12-14 00:35:38.340 INFO  [main] com.netflix.loadbalancer.BaseLoadBalancer 197 initWithConfig - Client: linkis-cg-linkismanager instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-linkismanager,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2021-12-14 00:35:38.341 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 222 enableAndInitLearnNewServersFeature - Using serverListUpdater PollingServerListUpdater
+2021-12-14 00:35:38.343 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-linkismanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:38.344 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 150 restOfInit - DynamicServerListLoadBalancer for client linkis-cg-linkismanager initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-linkismanager,current list of Servers=[bdnode111.hjq.com:9101],Load balancer stats=Zone stats: {defaultzone=[Zone:defaultzone;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:bdnode111.hjq.com:9101;	Zone:defaultZone;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:org.springframework.cloud.netflix.ribbon.eureka.DomainExtractingServerList@3cea2750
+2021-12-14 00:35:38.375 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 40 info - In the first time, report usedResources to LinkisManager succeed.
+2021-12-14 00:35:38.377 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - engineType labels is empty, Not reported
+2021-12-14 00:35:38.377 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 40 info - In the first time, report all labels to LinkisManager succeed.
+2021-12-14 00:35:38.377 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 40 info - executorStatusChecker created， maxFreeTimeMills is 3600000
+2021-12-14 00:35:38.380 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Ready to execute OnceEngineConnExecution.
+2021-12-14 00:35:38.382 WARN  [main] com.webank.wedatasphere.linkis.engineconn.once.executor.execution.OnceEngineConnExecution 49 warn - com.webank.wedatasphere.linkis.engineconn.once.executor.execution.OnceEngineConnExecution is disabled, skip it's execution.
+2021-12-14 00:35:38.383 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Ready to execute ComputationEngineConnExecution.
+2021-12-14 00:35:38.383 WARN  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationEngineConnExecution 49 warn - com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationEngineConnExecution is disabled, skip it's execution.
+2021-12-14 00:35:38.383 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to execute executions.
+2021-12-14 00:35:38.384 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.hook.JarUdfEngineHook 40 info - start loading UDFs
+2021-12-14 00:35:38.433 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-ps-publicservice.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:38.436 INFO  [main] com.netflix.util.concurrent.ShutdownEnabledTimer 58 <init> - Shutdown hook installed for: NFLoadBalancer-PingTimer-linkis-ps-publicservice
+2021-12-14 00:35:38.437 INFO  [main] com.netflix.loadbalancer.BaseLoadBalancer 197 initWithConfig - Client: linkis-ps-publicservice instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-ps-publicservice,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2021-12-14 00:35:38.437 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 222 enableAndInitLearnNewServersFeature - Using serverListUpdater PollingServerListUpdater
+2021-12-14 00:35:38.439 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-ps-publicservice.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:38.440 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 150 restOfInit - DynamicServerListLoadBalancer for client linkis-ps-publicservice initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-ps-publicservice,current list of Servers=[bdnode111.hjq.com:9105],Load balancer stats=Zone stats: {defaultzone=[Zone:defaultzone;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:bdnode111.hjq.com:9105;	Zone:defaultZone;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:org.springframework.cloud.netflix.ribbon.eureka.DomainExtractingServerList@32d2bb94
+2021-12-14 00:35:38.560 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to execute hook of afterExecutionExecute
+2021-12-14 00:35:38.572 WARN  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.hook.ComputationEngineConnHook 49 warn - EngineConnServer start succeed!
+2021-12-14 00:35:38.574 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@1bc7745d changed status Starting => Unlock.
+2021-12-14 00:35:38.575 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Executor(FlinkComputationSQL_0) is ready.
+2021-12-14 00:35:38.582 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-Thread-0 begin.
+2021-12-14 00:35:38.620 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 00:35:39.343 INFO  [PollingServerListUpdater-0] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-linkismanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:39.419 INFO  [qtp96141602-29] com.webank.wedatasphere.linkis.server.restful.RestfulApplication 40 <init> - register com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful$$EnhancerBySpringCGLIB$$7f72948b
+2021-12-14 00:35:39.439 INFO  [PollingServerListUpdater-1] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-ps-publicservice.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:39.951 INFO  [parallelism_-6ConsumerThread] com.webank.wedatasphere.linkis.scheduler.queue.fifoqueue.FIFOUserConsumer 40 info - parallelism_-6Consumer thread started!
+2021-12-14 00:35:39.957 INFO  [parallelism_-6ConsumerThread] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_0 change state Inited => Scheduled.
+2021-12-14 00:35:39.964 INFO  [RpcMessageScheduler-ThreadPool-2] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_0 change state Scheduled => Running.
+2021-12-14 00:35:39.969 INFO  [message-executor_1] com.webank.wedatasphere.linkis.message.scheduler.DefaultMessageExecutor 35 info - message scheduler executor ===> service: com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultExecutorHeartbeatService,method: dealNodeHeartbeatRequest
+2021-12-14 00:35:39.972 INFO  [RpcMessageScheduler-ThreadPool-2] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_0 change state Running => Succeed.
+2021-12-14 00:35:40.036 INFO  [parallelism_-6ConsumerThread] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_1 change state Inited => Scheduled.
+2021-12-14 00:35:40.036 INFO  [RpcMessageScheduler-ThreadPool-3] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_1 change state Scheduled => Running.
+2021-12-14 00:35:40.037 INFO  [message-executor_2] com.webank.wedatasphere.linkis.message.scheduler.DefaultMessageExecutor 35 info - message scheduler executor ===> service: com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService,method: requestLock
+2021-12-14 00:35:40.039 INFO  [message-executor_2] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock
+2021-12-14 00:35:40.040 INFO  [message-executor_2] com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock 40 info - Add scheduled timeout task.
+2021-12-14 00:35:40.041 INFO  [message-executor_2] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@1bc7745d changed status Unlock => Idle.
+2021-12-14 00:35:40.042 INFO  [EngineConn-Asyn-Thread-Thread-1] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-Thread-1 begin.
+2021-12-14 00:35:40.049 INFO  [message-executor_2] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService 40 info - RequestLock : {"timeout":600000,"lockType":"Timed"}
+ResponseLock : {"lockStatus":true,"lock":"java.util.concurrent.Semaphore@505550e9[Permits \u003d 0]","msg":"Lock for 600000 ms"}
+2021-12-14 00:35:40.052 INFO  [RpcMessageScheduler-ThreadPool-3] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_1 change state Running => Succeed.
+2021-12-14 00:35:40.054 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Idle,msg:null
+2021-12-14 00:35:40.054 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock 40 info - Status changed to Idle, update lastUpdatedTime for lock.
+2021-12-14 00:35:40.473 INFO  [parallelism_0ConsumerThread] com.webank.wedatasphere.linkis.scheduler.queue.fifoqueue.FIFOUserConsumer 40 info - parallelism_0Consumer thread started!
+2021-12-14 00:35:40.474 INFO  [parallelism_0ConsumerThread] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_0_0 change state Inited => Scheduled.
+2021-12-14 00:35:40.474 INFO  [RpcMessageScheduler-ThreadPool-5] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_0_0 change state Scheduled => Running.
+2021-12-14 00:35:40.513 INFO  [message-executor_3] com.webank.wedatasphere.linkis.message.scheduler.DefaultMessageExecutor 35 info - message scheduler executor ===> service: com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl,method: execute
+2021-12-14 00:35:40.531 INFO  [message-executor_3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 40 info - Received a new task, task content is RequestTaskExecute(code=show tables, lock=java.util.concurrent.Semaphore@505550e9[Permits = 0], properties={resultsetIndex=0, wds.linkis.resultSet.store.path=hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211214_003519/LINKISCLI/37, #rt_rs_store_path=hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211214_003519/LINKISCLI/37, source={scriptPath=LinkisCli, requestIP=127.0.0.1}, job={resultsetIndex=0, #rt_rs_store_path=hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211214_003519/LINKISCLI/37}}, labels=[[key: userCreator, value: {"creator":"LINKISCLI","user":"bigdata"}, str: bigdata-LINKISCLI], [key: codeType, value: {"codeType":"sql"}, str: sql], [key: engineType, value: {"engineType":"flink","version":"1.12.2"}, str: flink-1.12.2], [key: bindEngine, value: {"isJobGroupHead":"true","jobGroupId":"37","isJobGroupEnd":"false"}, str: 37-true-false]])
+2021-12-14 00:35:40.533 INFO  [message-executor_3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 40 info - Task 1 was submited.
+2021-12-14 00:35:40.534 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.LogHelper$ 68 dropAllRemainLogs - Dropped 138 remained logs.
+2021-12-14 00:35:40.535 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - start to execute task 1
+2021-12-14 00:35:40.535 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@1bc7745d changed status Idle => Busy.
+2021-12-14 00:35:40.535 INFO  [RpcMessageScheduler-ThreadPool-5] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_0_0 change state Running => Succeed.
+2021-12-14 00:35:40.536 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - task 1 from status Scheduled to new status Running
+2021-12-14 00:35:40.537 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 404 onTaskStatusChanged - send task 1 status Running to entrance
+2021-12-14 00:35:40.551 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Busy,msg:null
+2021-12-14 00:35:40.580 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-entrance.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:40.582 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.util.concurrent.ShutdownEnabledTimer 58 <init> - Shutdown hook installed for: NFLoadBalancer-PingTimer-linkis-cg-entrance
+2021-12-14 00:35:40.583 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.loadbalancer.BaseLoadBalancer 197 initWithConfig - Client: linkis-cg-entrance instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-entrance,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2021-12-14 00:35:40.584 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.loadbalancer.DynamicServerListLoadBalancer 222 enableAndInitLearnNewServersFeature - Using serverListUpdater PollingServerListUpdater
+2021-12-14 00:35:40.585 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-entrance.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:40.586 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.loadbalancer.DynamicServerListLoadBalancer 150 restOfInit - DynamicServerListLoadBalancer for client linkis-cg-entrance initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-entrance,current list of Servers=[bdnode111.hjq.com:9104],Load balancer stats=Zone stats: {defaultzone=[Zone:defaultzone;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:bdnode111.hjq.com:9104;	Zone:defaultZone;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:org.springframework.cloud.netflix.ribbon.eureka.DomainExtractingServerList@3ca6f0e1
+2021-12-14 00:35:40.654 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - StorePath : hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211214_003519/LINKISCLI/37.
+2021-12-14 00:35:40.674 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.common.conf.Configuration$ 40 info - gatewayUrl is http://192.168.51.111:9001
+2021-12-14 00:35:40.686 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.hook.executor.EngineResultsetPrefixExecutorHook 40 info - Set resultset aliasNum to 0
+2021-12-14 00:35:40.687 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - hooked after code: show tables 
+2021-12-14 00:35:41.158 INFO  [Linkis-Default-Scheduler-Thread-3] org.apache.flink.table.client.config.entries.ExecutionEntry 412 useDefaultValue - Property 'execution.restart-strategy.type' not specified. Using default value: fallback
+2021-12-14 00:35:41.530 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.storage.utils.FileSystemUtils$ 40 info - doesn't need to call setOwner
+2021-12-14 00:35:41.534 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.storage.utils.FileSystemUtils$ 40 info - doesn't need to call setOwner
+2021-12-14 00:35:41.537 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.storage.utils.FileSystemUtils$ 40 info - doesn't need to call setOwner
+2021-12-14 00:35:41.546 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.storage.utils.FileSystemUtils$ 40 info - doesn't need to call setOwner
+2021-12-14 00:35:41.563 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.storage.resultset.StorageResultSetWriter 40 info - Succeed to create a new file:FsPath{path=/dsslinkisall/userRoot/bigdata/linkis/20211214_003519/LINKISCLI/37/_0.dolphin; isDirectory=false; length=0; modification_time=0; access_time=0; owner=null; group=null; permission=null}
+2021-12-14 00:35:41.564 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.EngineExecutionContext 40 info - Start to send res to entrance
+2021-12-14 00:35:41.566 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 40 info - start to deal result event 1
+2021-12-14 00:35:41.576 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 40 info - Finished  to deal result event 1
+2021-12-14 00:35:41.585 INFO  [PollingServerListUpdater-0] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-entrance.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-14 00:35:41.611 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - task 1 from status Running to new status Succeed
+2021-12-14 00:35:41.659 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.LogHelper$ 59 pushAllRemainLogs - end to push all remain logs
+2021-12-14 00:35:41.660 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 404 onTaskStatusChanged - send task 1 status Succeed to entrance
+2021-12-14 00:35:41.665 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@1bc7745d changed status Busy => Idle.
+2021-12-14 00:35:41.667 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Finished to execute task 1
+2021-12-14 00:35:41.668 WARN  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 246 com$webank$wedatasphere$linkis$engineconn$computation$executor$service$TaskExecutionServiceImpl$$executeTask - task get response is SuccessExecuteResponse()
+2021-12-14 00:35:41.677 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Idle,msg:null
+2021-12-14 00:35:41.677 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock 40 info - Status changed to Idle, update lastUpdatedTime for lock.
+2021-12-14 00:35:41.720 INFO  [parallelism_0ConsumerThread] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_0_1 change state Inited => Scheduled.
+2021-12-14 00:35:41.721 INFO  [RpcMessageScheduler-ThreadPool-6] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_0_1 change state Scheduled => Running.
+2021-12-14 00:35:41.722 INFO  [message-executor_4] com.webank.wedatasphere.linkis.message.scheduler.DefaultMessageExecutor 35 info - message scheduler executor ===> service: com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl,method: execute
+2021-12-14 00:35:41.722 INFO  [message-executor_4] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 40 info - Received a new task, task content is RequestTaskExecute(code=select name,age from tb_user limit 10, lock=java.util.concurrent.Semaphore@505550e9[Permits = 0], properties={resultsetIndex=1, wds.linkis.resultSet.store.path=hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211214_003519/LINKISCLI/37, #rt_rs_store_path=hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211214_003519/LINKISCLI/37, source={scriptPath=LinkisCli, requestIP=127.0.0.1}, job={resultsetIndex=1, #rt_rs_store_path=hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211214_003519/LINKISCLI/37}}, labels=[[key: userCreator, value: {"creator":"LINKISCLI","user":"bigdata"}, str: bigdata-LINKISCLI], [key: codeType, value: {"codeType":"sql"}, str: sql], [key: engineType, value: {"engineType":"flink","version":"1.12.2"}, str: flink-1.12.2], [key: bindEngine, value: {"isJobGroupHead":"false","jobGroupId":"37","isJobGroupEnd":"true"}, str: 37-false-true]])
+2021-12-14 00:35:41.722 INFO  [message-executor_4] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 40 info - Task 2 was submited.
+2021-12-14 00:35:41.722 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.LogHelper$ 68 dropAllRemainLogs - Dropped 12 remained logs.
+2021-12-14 00:35:41.723 INFO  [RpcMessageScheduler-ThreadPool-6] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_0_1 change state Running => Succeed.
+2021-12-14 00:35:41.725 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - start to execute task 2
+2021-12-14 00:35:41.725 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@1bc7745d changed status Idle => Busy.
+2021-12-14 00:35:41.725 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - task 2 from status Scheduled to new status Running
+2021-12-14 00:35:41.725 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 404 onTaskStatusChanged - send task 2 status Running to entrance
+2021-12-14 00:35:41.745 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - StorePath : hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211214_003519/LINKISCLI/37.
+2021-12-14 00:35:41.745 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Busy,msg:null
+2021-12-14 00:35:41.745 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconn.computation.executor.hook.executor.EngineResultsetPrefixExecutorHook 40 info - Set resultset aliasNum to 1
+2021-12-14 00:35:41.745 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - hooked after code: select name,age from tb_user limit 10 
+2021-12-14 00:35:41.860 ERROR [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 57 error - execute code failed! com.webank.wedatasphere.linkis.engineconnplugin.flink.exception.SqlExecutionException: errCode: 16022 ,desc: Invalid SQL statement. ,ip: bdnode111.hjq.com ,port: 42018 ,serviceKind: linkis-cg-engineconn
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.createTable(SelectOperation.java:201) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.executeQueryInternal(SelectOperation.java:146) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.submitJob(SelectOperation.java:74) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.AbstractJobOperation.execute(AbstractJobOperation.java:69) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor.executeLine(FlinkSQLComputationExecutor.scala:91) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10$$anonfun$apply$11.apply(ComputationExecutor.scala:179) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10$$anonfun$apply$11.apply(ComputationExecutor.scala:178) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) ~[linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10.apply(ComputationExecutor.scala:180) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10.apply(ComputationExecutor.scala:174) [linkis-computation-engineconn-1.0.2.jar:?]
+	at scala.collection.immutable.Range.foreach(Range.scala:160) [scala-library-2.11.12.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2.apply(ComputationExecutor.scala:173) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2.apply(ComputationExecutor.scala:149) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryFinally(Utils.scala:60) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.toExecuteTask(ComputationExecutor.scala:222) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$3.apply(ComputationExecutor.scala:237) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$3.apply(ComputationExecutor.scala:237) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryFinally(Utils.scala:60) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.entity.AccessibleExecutor.ensureIdle(AccessibleExecutor.scala:54) [linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.entity.AccessibleExecutor.ensureIdle(AccessibleExecutor.scala:48) [linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.ensureOp(ComputationExecutor.scala:133) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.execute(ComputationExecutor.scala:236) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl.com$webank$wedatasphere$linkis$engineconn$computation$executor$service$TaskExecutionServiceImpl$$executeTask(TaskExecutionServiceImpl.scala:239) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply$mcV$sp(TaskExecutionServiceImpl.scala:172) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryAndWarn(Utils.scala:68) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1.run(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_261]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_261]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180) [?:1.8.0_261]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293) [?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_261]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_261]
+Caused by: org.apache.flink.table.api.ValidationException: SQL validation failed. From line 1, column 22 to line 1, column 28: Object 'tb_user' not found
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.org$apache$flink$table$planner$calcite$FlinkPlannerImpl$$validate(FlinkPlannerImpl.scala:152) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.validate(FlinkPlannerImpl.scala:111) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.operations.SqlToOperationConverter.convert(SqlToOperationConverter.java:189) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.delegation.ParserImpl.parse(ParserImpl.java:77) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.api.internal.TableEnvironmentImpl.sqlQuery(TableEnvironmentImpl.java:640) ~[flink-table-api-java-1.12.2.jar:1.12.2]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.lambda$createTable$4(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.wrapClassLoader(ExecutionContext.java:175) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.createTable(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	... 35 more
+	
+Caused by: org.apache.calcite.runtime.CalciteContextException: From line 1, column 22 to line 1, column 28: Object 'tb_user' not found
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:1.8.0_261]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[?:1.8.0_261]
+	at org.apache.calcite.runtime.Resources$ExInstWithCause.ex(Resources.java:467) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:883) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:868) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.newValidationError(SqlValidatorImpl.java:5043) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.IdentifierNamespace.resolveImpl(IdentifierNamespace.java:179) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.IdentifierNamespace.validateImpl(IdentifierNamespace.java:184) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1067) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:1041) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3205) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3187) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateSelect(SqlValidatorImpl.java:3461) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SelectNamespace.validateImpl(SelectNamespace.java:60) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1067) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:1041) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlSelect.validate(SqlSelect.java:232) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateScopedExpression(SqlValidatorImpl.java:1016) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validate(SqlValidatorImpl.java:724) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.org$apache$flink$table$planner$calcite$FlinkPlannerImpl$$validate(FlinkPlannerImpl.scala:147) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.validate(FlinkPlannerImpl.scala:111) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.operations.SqlToOperationConverter.convert(SqlToOperationConverter.java:189) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.delegation.ParserImpl.parse(ParserImpl.java:77) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.api.internal.TableEnvironmentImpl.sqlQuery(TableEnvironmentImpl.java:640) ~[flink-table-api-java-1.12.2.jar:1.12.2]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.lambda$createTable$4(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.wrapClassLoader(ExecutionContext.java:175) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.createTable(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	... 35 more
+Caused by: org.apache.calcite.sql.validate.SqlValidatorException: Object 'tb_user' not found
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:1.8.0_261]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[?:1.8.0_261]
+	at org.apache.calcite.runtime.Resources$ExInstWithCause.ex(Resources.java:467) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.runtime.Resources$ExInst.ex(Resources.java:560) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:883) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:868) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.newValidationError(SqlValidatorImpl.java:5043) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.IdentifierNamespace.resolveImpl(IdentifierNamespace.java:179) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.IdentifierNamespace.validateImpl(IdentifierNamespace.java:184) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1067) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:1041) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3205) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3187) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateSelect(SqlValidatorImpl.java:3461) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SelectNamespace.validateImpl(SelectNamespace.java:60) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1067) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:1041) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlSelect.validate(SqlSelect.java:232) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateScopedExpression(SqlValidatorImpl.java:1016) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validate(SqlValidatorImpl.java:724) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.org$apache$flink$table$planner$calcite$FlinkPlannerImpl$$validate(FlinkPlannerImpl.scala:147) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.validate(FlinkPlannerImpl.scala:111) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.operations.SqlToOperationConverter.convert(SqlToOperationConverter.java:189) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.delegation.ParserImpl.parse(ParserImpl.java:77) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.api.internal.TableEnvironmentImpl.sqlQuery(TableEnvironmentImpl.java:640) ~[flink-table-api-java-1.12.2.jar:1.12.2]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.lambda$createTable$4(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.wrapClassLoader(ExecutionContext.java:175) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.createTable(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	... 35 more
+
+2021-12-14 00:35:41.866 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@1bc7745d changed status Busy => Idle.
+2021-12-14 00:35:41.866 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Finished to execute task 2
+2021-12-14 00:35:41.877 ERROR [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 57 error - SqlValidatorException: Object 'tb_user' not found com.webank.wedatasphere.linkis.engineconnplugin.flink.exception.SqlExecutionException: errCode: 16022 ,desc: Invalid SQL statement. ,ip: bdnode111.hjq.com ,port: 42018 ,serviceKind: linkis-cg-engineconn
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.createTable(SelectOperation.java:201) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.executeQueryInternal(SelectOperation.java:146) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.submitJob(SelectOperation.java:74) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.AbstractJobOperation.execute(AbstractJobOperation.java:69) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor.executeLine(FlinkSQLComputationExecutor.scala:91) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10$$anonfun$apply$11.apply(ComputationExecutor.scala:179) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10$$anonfun$apply$11.apply(ComputationExecutor.scala:178) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) ~[linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10.apply(ComputationExecutor.scala:180) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10.apply(ComputationExecutor.scala:174) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at scala.collection.immutable.Range.foreach(Range.scala:160) ~[scala-library-2.11.12.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2.apply(ComputationExecutor.scala:173) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2.apply(ComputationExecutor.scala:149) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryFinally(Utils.scala:60) ~[linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.toExecuteTask(ComputationExecutor.scala:222) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$3.apply(ComputationExecutor.scala:237) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$3.apply(ComputationExecutor.scala:237) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryFinally(Utils.scala:60) ~[linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.entity.AccessibleExecutor.ensureIdle(AccessibleExecutor.scala:54) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.entity.AccessibleExecutor.ensureIdle(AccessibleExecutor.scala:48) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.ensureOp(ComputationExecutor.scala:133) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.execute(ComputationExecutor.scala:236) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl.com$webank$wedatasphere$linkis$engineconn$computation$executor$service$TaskExecutionServiceImpl$$executeTask(TaskExecutionServiceImpl.scala:239) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply$mcV$sp(TaskExecutionServiceImpl.scala:172) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryAndWarn(Utils.scala:68) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1.run(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_261]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_261]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180) [?:1.8.0_261]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293) [?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_261]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_261]
+Caused by: org.apache.flink.table.api.ValidationException: SQL validation failed. From line 1, column 22 to line 1, column 28: Object 'tb_user' not found
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.org$apache$flink$table$planner$calcite$FlinkPlannerImpl$$validate(FlinkPlannerImpl.scala:152) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.validate(FlinkPlannerImpl.scala:111) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.operations.SqlToOperationConverter.convert(SqlToOperationConverter.java:189) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.delegation.ParserImpl.parse(ParserImpl.java:77) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.api.internal.TableEnvironmentImpl.sqlQuery(TableEnvironmentImpl.java:640) ~[flink-table-api-java-1.12.2.jar:1.12.2]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.lambda$createTable$4(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.wrapClassLoader(ExecutionContext.java:175) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.createTable(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	... 35 more
+Caused by: org.apache.calcite.runtime.CalciteContextException: From line 1, column 22 to line 1, column 28: Object 'tb_user' not found
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:1.8.0_261]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[?:1.8.0_261]
+	at org.apache.calcite.runtime.Resources$ExInstWithCause.ex(Resources.java:467) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:883) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:868) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.newValidationError(SqlValidatorImpl.java:5043) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.IdentifierNamespace.resolveImpl(IdentifierNamespace.java:179) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.IdentifierNamespace.validateImpl(IdentifierNamespace.java:184) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1067) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:1041) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3205) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3187) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateSelect(SqlValidatorImpl.java:3461) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SelectNamespace.validateImpl(SelectNamespace.java:60) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1067) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:1041) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlSelect.validate(SqlSelect.java:232) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateScopedExpression(SqlValidatorImpl.java:1016) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validate(SqlValidatorImpl.java:724) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.org$apache$flink$table$planner$calcite$FlinkPlannerImpl$$validate(FlinkPlannerImpl.scala:147) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.validate(FlinkPlannerImpl.scala:111) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.operations.SqlToOperationConverter.convert(SqlToOperationConverter.java:189) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.delegation.ParserImpl.parse(ParserImpl.java:77) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.api.internal.TableEnvironmentImpl.sqlQuery(TableEnvironmentImpl.java:640) ~[flink-table-api-java-1.12.2.jar:1.12.2]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.lambda$createTable$4(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.wrapClassLoader(ExecutionContext.java:175) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.createTable(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	... 35 more
+Caused by: org.apache.calcite.sql.validate.SqlValidatorException: Object 'tb_user' not found
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:1.8.0_261]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[?:1.8.0_261]
+	at org.apache.calcite.runtime.Resources$ExInstWithCause.ex(Resources.java:467) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.runtime.Resources$ExInst.ex(Resources.java:560) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:883) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:868) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.newValidationError(SqlValidatorImpl.java:5043) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.IdentifierNamespace.resolveImpl(IdentifierNamespace.java:179) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.IdentifierNamespace.validateImpl(IdentifierNamespace.java:184) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1067) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:1041) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3205) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3187) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateSelect(SqlValidatorImpl.java:3461) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SelectNamespace.validateImpl(SelectNamespace.java:60) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1067) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:1041) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.SqlSelect.validate(SqlSelect.java:232) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validateScopedExpression(SqlValidatorImpl.java:1016) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.calcite.sql.validate.SqlValidatorImpl.validate(SqlValidatorImpl.java:724) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.org$apache$flink$table$planner$calcite$FlinkPlannerImpl$$validate(FlinkPlannerImpl.scala:147) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.calcite.FlinkPlannerImpl.validate(FlinkPlannerImpl.scala:111) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.operations.SqlToOperationConverter.convert(SqlToOperationConverter.java:189) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.planner.delegation.ParserImpl.parse(ParserImpl.java:77) ~[flink-table-planner-blink_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.table.api.internal.TableEnvironmentImpl.sqlQuery(TableEnvironmentImpl.java:640) ~[flink-table-api-java-1.12.2.jar:1.12.2]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.lambda$createTable$4(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.wrapClassLoader(ExecutionContext.java:175) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.SelectOperation.createTable(SelectOperation.java:198) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	... 35 more
+
+2021-12-14 00:35:41.878 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Idle,msg:null
+2021-12-14 00:35:41.878 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock 40 info - Status changed to Idle, update lastUpdatedTime for lock.
+2021-12-14 00:35:41.924 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.LogHelper$ 59 pushAllRemainLogs - end to push all remain logs
+2021-12-14 00:35:41.925 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - task 2 from status Running to new status Failed
+2021-12-14 00:35:41.966 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.LogHelper$ 59 pushAllRemainLogs - end to push all remain logs
+2021-12-14 00:35:41.966 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 404 onTaskStatusChanged - send task 2 status Failed to entrance
+2021-12-14 00:35:42.000 INFO  [parallelism_-6ConsumerThread] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_2 change state Inited => Scheduled.
+2021-12-14 00:35:42.001 INFO  [RpcMessageScheduler-ThreadPool-7] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_2 change state Scheduled => Running.
+2021-12-14 00:35:42.003 INFO  [message-executor_5] com.webank.wedatasphere.linkis.message.scheduler.DefaultMessageExecutor 35 info - message scheduler executor ===> service: com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService,method: requestUnLock
+2021-12-14 00:35:42.004 INFO  [message-executor_5] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService 40 info - try to unlock for lockEntity is com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock@4ee10003,and lock is java.util.concurrent.Semaphore@505550e9[Permits = 0],acquired is true
+2021-12-14 00:35:42.004 INFO  [message-executor_5] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService 40 info - try to unlock lockEntity : lockString=java.util.concurrent.Semaphore@505550e9[Permits = 0],lockedBy=FlinkComputationSQL_0
+2021-12-14 00:35:42.006 INFO  [message-executor_5] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@1bc7745d changed status Idle => Unlock.
+2021-12-14 00:35:42.006 INFO  [RpcMessageScheduler-ThreadPool-7] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_2 change state Running => Succeed.
+2021-12-14 00:35:42.017 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 00:36:41.767 WARN  [Linkis-Default-Scheduler-Thread-9] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.DevFlinkSQLStreamingListener 49 warn - Job killed since reached the max time 1.0 m of waiting for resultSet. Notice: only the dev environment will touch off the automatic kill.
+2021-12-14 00:36:41.768 ERROR [Linkis-Default-Scheduler-Thread-9] com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.AbstractJobOperation 103 cancelJob - No job has been submitted. This is a bug.
+2021-12-14 00:38:27.835 INFO  [Linkis-Default-Scheduler-Thread-20] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 00:41:27.848 INFO  [Linkis-Default-Scheduler-Thread-20] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 00:44:27.836 INFO  [Linkis-Default-Scheduler-Thread-18] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 00:47:27.833 INFO  [Linkis-Default-Scheduler-Thread-14] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 00:50:27.831 INFO  [Linkis-Default-Scheduler-Thread-8] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 00:53:27.834 INFO  [Linkis-Default-Scheduler-Thread-19] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 00:56:27.832 INFO  [Linkis-Default-Scheduler-Thread-7] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 00:59:27.831 INFO  [Linkis-Default-Scheduler-Thread-5] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 01:02:27.835 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 01:05:27.832 INFO  [Linkis-Default-Scheduler-Thread-4] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 01:08:27.833 INFO  [Linkis-Default-Scheduler-Thread-15] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 01:11:27.836 INFO  [Linkis-Default-Scheduler-Thread-4] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 01:14:27.835 INFO  [Linkis-Default-Scheduler-Thread-6] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 01:17:27.839 INFO  [Linkis-Default-Scheduler-Thread-2] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 01:20:27.838 INFO  [Linkis-Default-Scheduler-Thread-12] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 01:23:27.834 INFO  [Linkis-Default-Scheduler-Thread-6] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-14 01:26:27.838 INFO  [Linkis-Default-Scheduler-Thread-1] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+
+
+
+
+
+linkis-engineconn-plugin-flink
+
+FlinkSQLComputationExecutor.executeLine(){
+	SelectOperation.executeQueryInternal()
+	SelectOperation.createTable(){
+		// 进入 Flink 的代码执行; TableEnvironment.sqlQuery()
+		return context.wrapClassLoader(() -> tableEnv.sqlQuery(selectQuery));{// TableEnvironment.sqlQuery()
+			
+		}
+	}
+}
+
+
+// Flink 代码; 
+
+TableEnvironmentImpl.sqlQuery(){
+	ParserImpl.parse()
+	SqlToOperationConverter.convert()
+	FlinkPlannerImpl.validate(sqlNode: SqlNode, validator: FlinkCalciteSqlValidator){
+		sqlNode.accept(new PreValidateReWriter(validator, typeFactory));
+		sqlNode match { 
+			case node: ExtendedSqlNode => node.validate()
+			case _ =>
+		}
+		
+		if (sqlNode.getKind.belongsTo(SqlKind.DDL) || sqlNode.getKind == SqlKind.INSERT ){
+			return sqlNode
+		}
+		
+		validator.validate(sqlNode);{//SqlValidatorImpl.validate()
+			SqlValidatorImpl.validateScopedExpression()
+			SqlSelect.validate()
+			SqlValidatorImpl.validateQuery()
+			SqlValidatorImpl.validateNamespace()
+			AbstractNamespace.validate()
+			IdentifierNamespace.validateImpl()
+			IdentifierNamespace.resolveImpl()
+			SqlValidatorImpl.newValidationError()
+			SqlUtil.newContextException()
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
