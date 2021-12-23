@@ -1,0 +1,694 @@
+Listening for transport dt_socket at address: 37292
+2021-12-21 17:17:18.181 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.SendAppender 63 <init> - SendAppender init success
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.3.2.RELEASE)
+
+2021-12-21 17:17:18.442 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 655 logStartupProfileInfo - The following profiles are active: engineconn
+2021-12-21 17:17:18.467 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 84 onApplicationEvent - add config from config server...
+2021-12-21 17:17:18.467 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 89 onApplicationEvent - initialize DataWorkCloud spring application...
+2021-12-21 17:17:21.026 WARN  [main] com.netflix.config.sources.URLConfigurationSource 121 <init> - No URLs will be polled as dynamic configuration sources.
+2021-12-21 17:17:21.027 INFO  [main] com.netflix.config.sources.URLConfigurationSource 122 <init> - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2021-12-21 17:17:21.041 INFO  [main] com.netflix.config.DynamicPropertyFactory 281 getInstance - DynamicPropertyFactory is initialized with configuration sources: com.netflix.config.ConcurrentCompositeConfiguration@eb8d539
+2021-12-21 17:17:21.320 INFO  [main] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService
+2021-12-21 17:17:21.325 INFO  [main] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnSyncListenerBus 40 info - com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnSyncListenerBus@6ab4517f add a new listener => class com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl
+2021-12-21 17:17:21.341 INFO  [main] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultExecutorHeartbeatService
+2021-12-21 17:17:21.345 INFO  [main] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService
+2021-12-21 17:17:21.589 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init all receiverChoosers in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.MessageReceiverChooser@58842f55, com.webank.wedatasphere.linkis.rpc.CommonReceiverChooser@70832ddb)
+2021-12-21 17:17:21.594 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init all receiverSenderBuilders in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.CommonReceiverSenderBuilder@21ec86e6)
+2021-12-21 17:17:21.599 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init RPCReceiverListenerBus with queueSize 5000 and consumeThreadSize 400.
+2021-12-21 17:17:21.601 INFO  [main] com.webank.wedatasphere.linkis.rpc.AsynRPCMessageBus 40 info - RPC-Receiver-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful$$anon$1
+2021-12-21 17:17:21.603 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init all receiverChoosers in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.MessageReceiverChooser@58842f55, com.webank.wedatasphere.linkis.rpc.CommonReceiverChooser@538ee7ab)
+2021-12-21 17:17:21.604 INFO  [main] com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful 40 info - init all receiverSenderBuilders in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.CommonReceiverSenderBuilder@3833a045)
+2021-12-21 17:17:21.650 INFO  [main] com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful 40 info - init all receiverChoosers in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.MessageReceiverChooser@58842f55, com.webank.wedatasphere.linkis.rpc.CommonReceiverChooser@7cb13e56)
+2021-12-21 17:17:21.651 INFO  [main] com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful 40 info - init all receiverSenderBuilders in spring beans, list => List(com.webank.wedatasphere.linkis.rpc.CommonReceiverSenderBuilder@6222ee67)
+2021-12-21 17:17:21.651 INFO  [main] com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful 40 info - init RPCReceiverListenerBus with queueSize 5000 and consumeThreadSize 400.
+2021-12-21 17:17:21.652 INFO  [main] com.webank.wedatasphere.linkis.rpc.AsynRPCMessageBus 40 info - RPC-Receiver-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.rpc.RPCReceiveRestful$$anon$1
+2021-12-21 17:17:22.854 WARN  [main] com.netflix.config.sources.URLConfigurationSource 121 <init> - No URLs will be polled as dynamic configuration sources.
+2021-12-21 17:17:22.855 INFO  [main] com.netflix.config.sources.URLConfigurationSource 122 <init> - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2021-12-21 17:17:23.351 WARN  [main] com.webank.wedatasphere.linkis.message.utils.MessageUtils 43 getBean - can not get bean from spring ioc:com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnConcurrentLockService
+2021-12-21 17:17:23.363 INFO  [main] com.webank.wedatasphere.linkis.scheduler.queue.parallelqueue.ParallelConsumerManager 40 info - The feature that auto clean up idle consumers for RpcMessageScheduler is enabled.
+2021-12-21 17:17:23.369 WARN  [main] com.webank.wedatasphere.linkis.message.utils.MessageUtils 43 getBean - can not get bean from spring ioc:org.springframework.transaction.PlatformTransactionManager
+2021-12-21 17:17:23.796 INFO  [main] com.webank.wedatasphere.linkis.rpc.conf.RPCSpringConfiguration$$EnhancerBySpringCGLIB$$4346c72 40 info - DataWorkCloud RPC need register RPCReceiveRestful, now add it to configuration.
+2021-12-21 17:17:23.797 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 84 onApplicationEvent - add config from config server...
+2021-12-21 17:17:23.797 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 89 onApplicationEvent - initialize DataWorkCloud spring application...
+2021-12-21 17:17:23.810 INFO  [main] com.webank.wedatasphere.linkis.DataWorkCloudApplication 61 logStarted - Started DataWorkCloudApplication in 6.82 seconds (JVM running for 9.285)
+2021-12-21 17:17:23.965 INFO  [main] com.webank.wedatasphere.linkis.rpc.AsynRPCMessageBus 40 info - RPC-Sender-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.rpc.BaseRPCSender$$anon$1
+2021-12-21 17:17:24.177 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-engineconnmanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:24.195 INFO  [main] com.netflix.util.concurrent.ShutdownEnabledTimer 58 <init> - Shutdown hook installed for: NFLoadBalancer-PingTimer-linkis-cg-engineconnmanager
+2021-12-21 17:17:24.196 INFO  [main] com.netflix.loadbalancer.BaseLoadBalancer 197 initWithConfig - Client: linkis-cg-engineconnmanager instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-engineconnmanager,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2021-12-21 17:17:24.203 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 222 enableAndInitLearnNewServersFeature - Using serverListUpdater PollingServerListUpdater
+2021-12-21 17:17:24.229 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-engineconnmanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:24.232 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 150 restOfInit - DynamicServerListLoadBalancer for client linkis-cg-engineconnmanager initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-engineconnmanager,current list of Servers=[bdnode111.hjq.com:9102],Load balancer stats=Zone stats: {defaultzone=[Zone:defaultzone;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:bdnode111.hjq.com:9102;	Zone:defaultZone;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:org.springframework.cloud.netflix.ribbon.eureka.DomainExtractingServerList@9b44d4f
+2021-12-21 17:17:24.329 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.hook.ComputationEngineConnHook 40 info - <--------------------SpringBoot App init succeed-------------------->
+2021-12-21 17:17:24.329 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to execute hook of beforeCreateEngineConn.
+2021-12-21 17:17:24.365 INFO  [Linkis-Default-Scheduler-Thread-1] com.webank.wedatasphere.linkis.scheduler.queue.parallelqueue.ParallelConsumerManager 40 info - Start to Clean up idle consumers 
+2021-12-21 17:17:24.371 INFO  [Linkis-Default-Scheduler-Thread-1] com.webank.wedatasphere.linkis.scheduler.queue.parallelqueue.ParallelConsumerManager 40 info - Finished to clean up idle consumers for RpcMessageScheduler, cost 5 ms.
+2021-12-21 17:17:24.618 INFO  [main] com.webank.wedatasphere.linkis.common.conf.Configuration$ 40 info - gatewayUrl is http://192.168.51.111:9001
+2021-12-21 17:17:24.628 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.rpc.address, localhost
+2021-12-21 17:17:24.628 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.rpc.port, 6123
+2021-12-21 17:17:24.628 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.memory.process.size, 1600m
+2021-12-21 17:17:24.629 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: taskmanager.memory.process.size, 1728m
+2021-12-21 17:17:24.629 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: taskmanager.numberOfTaskSlots, 1
+2021-12-21 17:17:24.629 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: parallelism.default, 1
+2021-12-21 17:17:24.629 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.execution.failover-strategy, region
+2021-12-21 17:17:24.629 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: jobmanager.archive.fs.dir, hdfs:///flink/completed-jobs/jobmgr
+2021-12-21 17:17:24.630 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: historyserver.archive.fs.dir, hdfs:///flink/completed-jobs/his
+2021-12-21 17:17:24.630 INFO  [main] org.apache.flink.configuration.GlobalConfiguration 213 loadYAMLResource - Loading configuration property: rest.address, bdnode102
+2021-12-21 17:17:24.649 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.factory.FlinkEngineConnFactory 40 info - Use yarn queue default, and set parallelism = 4, jobManagerMemory = 1G G, taskManagerMemory = 1G G, numberOfTaskSlots = 2.
+2021-12-21 17:17:24.706 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext 129 <init> - flinkConfig config: {yarn.ship-archives=[], taskmanager.memory.process.size=1 gb, jobmanager.archive.fs.dir=hdfs:///flink/completed-jobs/jobmgr, yarn.flink-dist-jar=/opt/flink/flink-release/lib/flink-dist_2.11-1.12.2.jar, jobmanager.execution.failover-strategy=region, jobmanager.rpc.address=localhost, execution.target=yarn-session, jobmanager.memory.process.size=1 gb, jobmanager.rpc.port=6123, yarn.provided.lib.dirs=[], parallelism.default=4, taskmanager.numberOfTaskSlots=2, rest.address=bdnode102, yarn.application.name=EngineConn-Flink, yarn.application.queue=default, historyserver.archive.fs.dir=hdfs:///flink/completed-jobs/his, $internal.deployment.config-dir=/opt/flink/conf, $internal.yarn.config-dir=/opt/hadoop/etc/hadoop}
+2021-12-21 17:17:24.708 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to create flinkEngineConn.
+2021-12-21 17:17:24.708 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to execute all hooks of beforeExecutionExecute.
+2021-12-21 17:17:24.726 INFO  [main] com.webank.wedatasphere.linkis.engineconn.core.execution.EngineConnExecution$ 40 info - The list of EngineConnExecution: List(com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutorManagerEngineConnExecution@44f01009, com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution@1d483c89, com.webank.wedatasphere.linkis.engineconn.once.executor.execution.OnceEngineConnExecution@22489e92, com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationEngineConnExecution@7609b7c5)
+2021-12-21 17:17:24.728 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Ready to execute ComputationExecutorManagerEngineConnExecution.
+2021-12-21 17:17:24.729 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Ready to execute AccessibleEngineConnExecution.
+2021-12-21 17:17:24.730 INFO  [main] com.webank.wedatasphere.linkis.engineconn.core.executor.ExecutorManager$ 40 info - Try to use com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl to instance a ExecutorManager.
+2021-12-21 17:17:24.745 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl 40 info - Try to create a executor with labels List([key: codeType, value: {"codeType":"sql"}, str: sql]).
+2021-12-21 17:17:24.746 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.factory.FlinkSQLExecutorFactory 40 info - Executor runType is sql, the task runType is sql.
+2021-12-21 17:17:24.748 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl 40 info - Use FlinkSQLExecutorFactory to create executor.
+2021-12-21 17:17:24.757 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl 40 info - Finished to create FlinkSQLComputationExecutor(FlinkComputationSQL_0) with labels List([key: codeType, value: {"codeType":"sql"}, str: sql]).
+2021-12-21 17:17:24.762 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Try to start a yarn-session application for interactive query.
+2021-12-21 17:17:24.768 INFO  [main] org.apache.flink.runtime.util.config.memory.ProcessMemoryUtils 330 capToMinMax - The derived from fraction jvm overhead memory (102.400mb (107374184 bytes)) is less than its min value 192.000mb (201326592 bytes), min value will be used instead
+2021-12-21 17:17:24.773 INFO  [main] org.apache.flink.runtime.util.config.memory.ProcessMemoryUtils 330 capToMinMax - The derived from fraction jvm overhead memory (102.400mb (107374184 bytes)) is less than its min value 192.000mb (201326592 bytes), min value will be used instead
+2021-12-21 17:17:24.774 INFO  [main] org.apache.flink.runtime.util.config.memory.ProcessMemoryUtils 330 capToMinMax - The derived from fraction network memory (57.600mb (60397978 bytes)) is less than its min value 64.000mb (67108864 bytes), min value will be used instead
+2021-12-21 17:17:24.778 WARN  [main] org.apache.flink.yarn.configuration.YarnLogConfigUtil 73 discoverLogConfigFile - The configuration directory ('/opt/flink/conf') already contains a LOG4J config file.If you want to use logback, then please delete or rename the log configuration file.
+2021-12-21 17:17:25.038 WARN  [main] org.apache.hadoop.util.NativeCodeLoader 62 <clinit> - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2021-12-21 17:17:25.264 INFO  [PollingServerListUpdater-0] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-engineconnmanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:25.649 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 582 deployInternal - Cluster specification: ClusterSpecification{masterMemoryMB=1024, taskManagerMemoryMB=1024, slotsPerTaskManager=2}
+2021-12-21 17:17:25.655 WARN  [main] org.apache.flink.core.plugin.PluginConfig 69 getPluginsDir - The plugins directory [plugins] does not exist.
+2021-12-21 17:17:28.217 WARN  [main] org.apache.flink.yarn.YarnClusterDescriptor 1659 addLibFoldersToShipFiles - Environment variable 'FLINK_LIB_DIR' not set and ship files have not been provided manually. Not shipping any library files.
+2021-12-21 17:17:29.069 WARN  [main] org.apache.flink.core.plugin.PluginConfig 69 getPluginsDir - The plugins directory [plugins] does not exist.
+2021-12-21 17:17:31.449 INFO  [main] org.apache.flink.runtime.util.config.memory.ProcessMemoryUtils 330 capToMinMax - The derived from fraction jvm overhead memory (102.400mb (107374184 bytes)) is less than its min value 192.000mb (201326592 bytes), min value will be used instead
+2021-12-21 17:17:31.468 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1176 startAppMaster - Submitting application master application_1639998011452_0002
+2021-12-21 17:17:31.507 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1179 startAppMaster - Waiting for the cluster to be allocated
+2021-12-21 17:17:31.511 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1214 startAppMaster - Deploying cluster, current state ACCEPTED
+2021-12-21 17:17:36.602 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1207 startAppMaster - YARN application has been deployed successfully.
+2021-12-21 17:17:36.604 INFO  [main] org.apache.flink.yarn.YarnClusterDescriptor 1749 setClusterEntrypointInfoToConfig - Found Web Interface bdnode102.hjq.com:33854 of application 'application_1639998011452_0002'.
+2021-12-21 17:17:36.737 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Application is started, applicationId: application_1639998011452_0002, applicationURL: http://bdnode102.hjq.com:33854.
+2021-12-21 17:17:36.737 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Executor(FlinkComputationSQL_0) inited : true
+2021-12-21 17:17:36.738 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.creation.ComputationExecutorManagerImpl 40 info - Finished to init FlinkSQLComputationExecutor(FlinkComputationSQL_0).
+2021-12-21 17:17:36.739 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 40 info - Created a report executor FlinkSQLComputationExecutor(FlinkComputationSQL_0).
+2021-12-21 17:17:36.808 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-linkismanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:36.810 INFO  [main] com.netflix.util.concurrent.ShutdownEnabledTimer 58 <init> - Shutdown hook installed for: NFLoadBalancer-PingTimer-linkis-cg-linkismanager
+2021-12-21 17:17:36.810 INFO  [main] com.netflix.loadbalancer.BaseLoadBalancer 197 initWithConfig - Client: linkis-cg-linkismanager instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-linkismanager,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2021-12-21 17:17:36.811 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 222 enableAndInitLearnNewServersFeature - Using serverListUpdater PollingServerListUpdater
+2021-12-21 17:17:36.814 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-linkismanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:36.815 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 150 restOfInit - DynamicServerListLoadBalancer for client linkis-cg-linkismanager initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-linkismanager,current list of Servers=[bdnode111.hjq.com:9101],Load balancer stats=Zone stats: {defaultzone=[Zone:defaultzone;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:bdnode111.hjq.com:9101;	Zone:defaultZone;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:org.springframework.cloud.netflix.ribbon.eureka.DomainExtractingServerList@473ffdc9
+2021-12-21 17:17:36.844 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 40 info - In the first time, report usedResources to LinkisManager succeed.
+2021-12-21 17:17:36.846 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - engineType labels is empty, Not reported
+2021-12-21 17:17:36.847 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 40 info - In the first time, report all labels to LinkisManager succeed.
+2021-12-21 17:17:36.848 INFO  [main] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 40 info - executorStatusChecker created， maxFreeTimeMills is 3600000
+2021-12-21 17:17:36.851 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Ready to execute OnceEngineConnExecution.
+2021-12-21 17:17:36.856 WARN  [main] com.webank.wedatasphere.linkis.engineconn.once.executor.execution.OnceEngineConnExecution 49 warn - com.webank.wedatasphere.linkis.engineconn.once.executor.execution.OnceEngineConnExecution is disabled, skip it's execution.
+2021-12-21 17:17:36.858 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Ready to execute ComputationEngineConnExecution.
+2021-12-21 17:17:36.859 WARN  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationEngineConnExecution 49 warn - com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationEngineConnExecution is disabled, skip it's execution.
+2021-12-21 17:17:36.859 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to execute executions.
+2021-12-21 17:17:36.861 INFO  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.hook.JarUdfEngineHook 40 info - start loading UDFs
+2021-12-21 17:17:36.932 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-ps-publicservice.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:36.936 INFO  [main] com.netflix.util.concurrent.ShutdownEnabledTimer 58 <init> - Shutdown hook installed for: NFLoadBalancer-PingTimer-linkis-ps-publicservice
+2021-12-21 17:17:36.936 INFO  [main] com.netflix.loadbalancer.BaseLoadBalancer 197 initWithConfig - Client: linkis-ps-publicservice instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-ps-publicservice,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2021-12-21 17:17:36.938 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 222 enableAndInitLearnNewServersFeature - Using serverListUpdater PollingServerListUpdater
+2021-12-21 17:17:36.939 INFO  [main] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-ps-publicservice.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:36.940 INFO  [main] com.netflix.loadbalancer.DynamicServerListLoadBalancer 150 restOfInit - DynamicServerListLoadBalancer for client linkis-ps-publicservice initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-ps-publicservice,current list of Servers=[bdnode111.hjq.com:9105],Load balancer stats=Zone stats: {defaultzone=[Zone:defaultzone;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:bdnode111.hjq.com:9105;	Zone:defaultZone;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:org.springframework.cloud.netflix.ribbon.eureka.DomainExtractingServerList@22d460fe
+2021-12-21 17:17:37.081 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - Finished to execute hook of afterExecutionExecute
+2021-12-21 17:17:37.100 WARN  [main] com.webank.wedatasphere.linkis.engineconn.computation.executor.hook.ComputationEngineConnHook 49 warn - EngineConnServer start succeed!
+2021-12-21 17:17:37.103 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 changed status Starting => Unlock.
+2021-12-21 17:17:37.104 INFO  [main] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Executor(FlinkComputationSQL_0) is ready.
+2021-12-21 17:17:37.108 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-Thread-0 begin.
+2021-12-21 17:17:37.138 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:17:37.816 INFO  [PollingServerListUpdater-0] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-linkismanager.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:37.941 INFO  [PollingServerListUpdater-1] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-ps-publicservice.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:39.163 INFO  [qtp1326723446-29] com.webank.wedatasphere.linkis.server.restful.RestfulApplication 40 <init> - register com.webank.wedatasphere.linkis.rpc.MessageRPCReceiveRestful$$EnhancerBySpringCGLIB$$184d6a1f
+2021-12-21 17:17:39.799 INFO  [parallelism_-6ConsumerThread] com.webank.wedatasphere.linkis.scheduler.queue.fifoqueue.FIFOUserConsumer 40 info - parallelism_-6Consumer thread started!
+2021-12-21 17:17:39.807 INFO  [parallelism_-6ConsumerThread] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_0 change state Inited => Scheduled.
+2021-12-21 17:17:39.820 INFO  [RpcMessageScheduler-ThreadPool-2] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_0 change state Scheduled => Running.
+2021-12-21 17:17:39.827 INFO  [message-executor_1] com.webank.wedatasphere.linkis.message.scheduler.DefaultMessageExecutor 35 info - message scheduler executor ===> service: com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultExecutorHeartbeatService,method: dealNodeHeartbeatRequest
+2021-12-21 17:17:39.830 INFO  [RpcMessageScheduler-ThreadPool-2] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_0 change state Running => Succeed.
+2021-12-21 17:17:39.994 INFO  [parallelism_-6ConsumerThread] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_1 change state Inited => Scheduled.
+2021-12-21 17:17:39.994 INFO  [RpcMessageScheduler-ThreadPool-3] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_1 change state Scheduled => Running.
+2021-12-21 17:17:39.995 INFO  [message-executor_2] com.webank.wedatasphere.linkis.message.scheduler.DefaultMessageExecutor 35 info - message scheduler executor ===> service: com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService,method: requestLock
+2021-12-21 17:17:39.996 INFO  [message-executor_2] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-ListenerBus add a new listener => class com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock
+2021-12-21 17:17:39.998 INFO  [message-executor_2] com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock 40 info - Add scheduled timeout task.
+2021-12-21 17:17:39.999 INFO  [message-executor_2] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 changed status Unlock => Idle.
+2021-12-21 17:17:40.006 INFO  [message-executor_2] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService 40 info - RequestLock : {"timeout":600000,"lockType":"Timed"}
+ResponseLock : {"lockStatus":true,"lock":"java.util.concurrent.Semaphore@78166f3f[Permits \u003d 0]","msg":"Lock for 600000 ms"}
+2021-12-21 17:17:40.011 INFO  [EngineConn-Asyn-Thread-Thread-1] com.webank.wedatasphere.linkis.engineconn.executor.listener.EngineConnAsyncListenerBus 40 info - EngineConn-Asyn-Thread-Thread-1 begin.
+2021-12-21 17:17:40.012 INFO  [RpcMessageScheduler-ThreadPool-3] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_1 change state Running => Succeed.
+2021-12-21 17:17:40.025 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Idle,msg:null
+2021-12-21 17:17:40.026 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock 40 info - Status changed to Idle, update lastUpdatedTime for lock.
+2021-12-21 17:17:41.582 INFO  [parallelism_0ConsumerThread] com.webank.wedatasphere.linkis.scheduler.queue.fifoqueue.FIFOUserConsumer 40 info - parallelism_0Consumer thread started!
+2021-12-21 17:17:41.583 INFO  [parallelism_0ConsumerThread] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_0_0 change state Inited => Scheduled.
+2021-12-21 17:17:41.584 INFO  [RpcMessageScheduler-ThreadPool-5] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_0_0 change state Scheduled => Running.
+2021-12-21 17:17:41.584 INFO  [message-executor_3] com.webank.wedatasphere.linkis.message.scheduler.DefaultMessageExecutor 35 info - message scheduler executor ===> service: com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl,method: execute
+2021-12-21 17:17:41.585 INFO  [message-executor_3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 40 info - Received a new task, task content is RequestTaskExecute(code=show tables, lock=java.util.concurrent.Semaphore@78166f3f[Permits = 0], properties={resultsetIndex=0, wds.linkis.resultSet.store.path=hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211221_171709/LINKISCLI/2, #rt_rs_store_path=hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211221_171709/LINKISCLI/2, source={scriptPath=LinkisCli, requestIP=127.0.0.1}, job={resultsetIndex=0, #rt_rs_store_path=hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211221_171709/LINKISCLI/2}}, labels=[[key: userCreator, value: {"creator":"LINKISCLI","user":"bigdata"}, str: bigdata-LINKISCLI], [key: codeType, value: {"codeType":"sql"}, str: sql], [key: engineType, value: {"engineType":"flink","version":"1.12.2"}, str: flink-1.12.2], [key: bindEngine, value: {"isJobGroupHead":"true","jobGroupId":"2","isJobGroupEnd":"false"}, str: 2-true-false]])
+2021-12-21 17:17:41.588 INFO  [message-executor_3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 40 info - Task 1 was submited.
+2021-12-21 17:17:41.590 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.LogHelper$ 68 dropAllRemainLogs - Dropped 138 remained logs.
+2021-12-21 17:17:41.590 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - start to execute task 1
+2021-12-21 17:17:41.591 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 changed status Idle => Busy.
+2021-12-21 17:17:41.591 INFO  [RpcMessageScheduler-ThreadPool-5] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_0_0 change state Running => Succeed.
+2021-12-21 17:17:41.592 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - task 1 from status Scheduled to new status Running
+2021-12-21 17:17:41.593 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 404 onTaskStatusChanged - send task 1 status Running to entrance
+2021-12-21 17:17:41.610 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Busy,msg:null
+2021-12-21 17:17:41.708 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-entrance.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:41.713 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.util.concurrent.ShutdownEnabledTimer 58 <init> - Shutdown hook installed for: NFLoadBalancer-PingTimer-linkis-cg-entrance
+2021-12-21 17:17:41.713 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.loadbalancer.BaseLoadBalancer 197 initWithConfig - Client: linkis-cg-entrance instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-entrance,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2021-12-21 17:17:41.714 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.loadbalancer.DynamicServerListLoadBalancer 222 enableAndInitLearnNewServersFeature - Using serverListUpdater PollingServerListUpdater
+2021-12-21 17:17:41.715 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-entrance.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2021-12-21 17:17:41.716 INFO  [Linkis-Default-Scheduler-Thread-3] com.netflix.loadbalancer.DynamicServerListLoadBalancer 150 restOfInit - DynamicServerListLoadBalancer for client linkis-cg-entrance initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=linkis-cg-entrance,current list of Servers=[bdnode111.hjq.com:9104],Load balancer stats=Zone stats: {defaultzone=[Zone:defaultzone;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:bdnode111.hjq.com:9104;	Zone:defaultZone;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:org.springframework.cloud.netflix.ribbon.eureka.DomainExtractingServerList@2971a6a2
+2021-12-21 17:17:41.806 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - StorePath : hdfs:///dsslinkisall/userRoot/bigdata/linkis/20211221_171709/LINKISCLI/2.
+2021-12-21 17:17:41.832 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.common.conf.Configuration$ 40 info - gatewayUrl is http://192.168.51.111:9001
+2021-12-21 17:17:41.851 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.hook.executor.EngineResultsetPrefixExecutorHook 40 info - Set resultset aliasNum to 0
+2021-12-21 17:17:41.853 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - hooked after code: show tables 
+2021-12-21 17:17:42.718 INFO  [PollingServerListUpdater-0] com.netflix.config.ChainedDynamicProperty 115 checkAndFlip - Flipping property: linkis-cg-entrance.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+
+2021-12-21 17:17:42.788 INFO  [Linkis-Default-Scheduler-Thread-3] org.apache.flink.table.client.config.entries.ExecutionEntry 412 useDefaultValue - Property 'execution.restart-strategy.type' not specified. Using default value: fallback
+2021-12-21 17:17:42.796 ERROR [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 57 error - execute code failed! java.util.NoSuchElementException: No value present
+	at java.util.Optional.get(Optional.java:135) ~[?:1.8.0_261]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.createStreamExecutionEnvironment(ExecutionContext.java:504) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.createTableEnvironment(ExecutionContext.java:400) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.initializeTableEnvironment(ExecutionContext.java:352) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.getTableEnvironment(ExecutionContext.java:199) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.ShowTablesOperation.execute(ShowTablesOperation.java:51) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor.executeLine(FlinkSQLComputationExecutor.scala:91) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10$$anonfun$apply$11.apply(ComputationExecutor.scala:179) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10$$anonfun$apply$11.apply(ComputationExecutor.scala:178) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) ~[linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10.apply(ComputationExecutor.scala:180) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10.apply(ComputationExecutor.scala:174) [linkis-computation-engineconn-1.0.2.jar:?]
+	at scala.collection.immutable.Range.foreach(Range.scala:160) [scala-library-2.11.12.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2.apply(ComputationExecutor.scala:173) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2.apply(ComputationExecutor.scala:149) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryFinally(Utils.scala:60) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.toExecuteTask(ComputationExecutor.scala:222) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$3.apply(ComputationExecutor.scala:237) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$3.apply(ComputationExecutor.scala:237) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryFinally(Utils.scala:60) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.entity.AccessibleExecutor.ensureIdle(AccessibleExecutor.scala:54) [linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.entity.AccessibleExecutor.ensureIdle(AccessibleExecutor.scala:48) [linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.ensureOp(ComputationExecutor.scala:133) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.execute(ComputationExecutor.scala:236) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl.com$webank$wedatasphere$linkis$engineconn$computation$executor$service$TaskExecutionServiceImpl$$executeTask(TaskExecutionServiceImpl.scala:239) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply$mcV$sp(TaskExecutionServiceImpl.scala:172) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryAndWarn(Utils.scala:68) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1.run(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_261]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_261]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180) [?:1.8.0_261]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293) [?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_261]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_261]
+
+
+
+2021-12-21 17:17:42.804 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 changed status Busy => Idle.
+2021-12-21 17:17:42.813 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - Finished to execute task 1
+2021-12-21 17:17:42.826 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Idle,msg:null
+2021-12-21 17:17:42.826 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock 40 info - Status changed to Idle, update lastUpdatedTime for lock.
+2021-12-21 17:17:42.838 ERROR [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 57 error - NoSuchElementException: No value present java.util.NoSuchElementException: No value present
+	at java.util.Optional.get(Optional.java:135) ~[?:1.8.0_261]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.createStreamExecutionEnvironment(ExecutionContext.java:504) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.createTableEnvironment(ExecutionContext.java:400) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.initializeTableEnvironment(ExecutionContext.java:352) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.context.ExecutionContext.getTableEnvironment(ExecutionContext.java:199) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.sql.operation.impl.ShowTablesOperation.execute(ShowTablesOperation.java:51) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor.executeLine(FlinkSQLComputationExecutor.scala:91) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10$$anonfun$apply$11.apply(ComputationExecutor.scala:179) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10$$anonfun$apply$11.apply(ComputationExecutor.scala:178) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) ~[linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10.apply(ComputationExecutor.scala:180) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2$$anonfun$apply$10.apply(ComputationExecutor.scala:174) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at scala.collection.immutable.Range.foreach(Range.scala:160) ~[scala-library-2.11.12.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2.apply(ComputationExecutor.scala:173) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$toExecuteTask$2.apply(ComputationExecutor.scala:149) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryFinally(Utils.scala:60) ~[linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.toExecuteTask(ComputationExecutor.scala:222) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$3.apply(ComputationExecutor.scala:237) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor$$anonfun$3.apply(ComputationExecutor.scala:237) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryFinally(Utils.scala:60) ~[linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.entity.AccessibleExecutor.ensureIdle(AccessibleExecutor.scala:54) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.entity.AccessibleExecutor.ensureIdle(AccessibleExecutor.scala:48) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.ensureOp(ComputationExecutor.scala:133) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.execute.ComputationExecutor.execute(ComputationExecutor.scala:236) ~[linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl.com$webank$wedatasphere$linkis$engineconn$computation$executor$service$TaskExecutionServiceImpl$$executeTask(TaskExecutionServiceImpl.scala:239) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply$mcV$sp(TaskExecutionServiceImpl.scala:172) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1$$anonfun$run$1.apply(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryAndWarn(Utils.scala:68) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl$$anon$1.run(TaskExecutionServiceImpl.scala:170) [linkis-computation-engineconn-1.0.2.jar:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_261]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_261]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180) [?:1.8.0_261]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293) [?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_261]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_261]
+
+2021-12-21 17:17:42.900 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.LogHelper$ 59 pushAllRemainLogs - end to push all remain logs
+2021-12-21 17:17:42.900 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - task 1 from status Running to new status Failed
+2021-12-21 17:17:42.949 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.acessible.executor.log.LogHelper$ 59 pushAllRemainLogs - end to push all remain logs
+2021-12-21 17:17:42.949 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.computation.executor.service.TaskExecutionServiceImpl 404 onTaskStatusChanged - send task 1 status Failed to entrance
+2021-12-21 17:17:43.019 INFO  [parallelism_-6ConsumerThread] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_2 change state Inited => Scheduled.
+2021-12-21 17:17:43.036 INFO  [RpcMessageScheduler-ThreadPool-6] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_2 change state Scheduled => Running.
+2021-12-21 17:17:43.038 INFO  [message-executor_4] com.webank.wedatasphere.linkis.message.scheduler.DefaultMessageExecutor 35 info - message scheduler executor ===> service: com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService,method: requestUnLock
+2021-12-21 17:17:43.041 INFO  [message-executor_4] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService 40 info - try to unlock for lockEntity is com.webank.wedatasphere.linkis.engineconn.acessible.executor.lock.EngineConnTimedLock@47be7f6b,and lock is java.util.concurrent.Semaphore@78166f3f[Permits = 0],acquired is true
+2021-12-21 17:17:43.043 INFO  [message-executor_4] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.EngineConnTimedLockService 40 info - try to unlock lockEntity : lockString=java.util.concurrent.Semaphore@78166f3f[Permits = 0],lockedBy=FlinkComputationSQL_0
+2021-12-21 17:17:43.045 INFO  [message-executor_4] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 changed status Idle => Unlock.
+2021-12-21 17:17:43.046 INFO  [RpcMessageScheduler-ThreadPool-6] com.webank.wedatasphere.linkis.message.builder.DefaultMessageJob 40 info - parallelism_-6_2 change state Running => Succeed.
+2021-12-21 17:17:43.063 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:20:21.370 INFO  [Linkis-Default-Scheduler-Thread-17] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:23:21.362 INFO  [Linkis-Default-Scheduler-Thread-1] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:26:21.358 INFO  [Linkis-Default-Scheduler-Thread-16] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:29:21.364 INFO  [Linkis-Default-Scheduler-Thread-17] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:32:21.363 INFO  [Linkis-Default-Scheduler-Thread-14] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:35:21.366 INFO  [Linkis-Default-Scheduler-Thread-13] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:38:21.363 INFO  [Linkis-Default-Scheduler-Thread-1] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:41:21.365 INFO  [Linkis-Default-Scheduler-Thread-8] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:44:21.364 INFO  [Linkis-Default-Scheduler-Thread-14] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:47:21.362 INFO  [Linkis-Default-Scheduler-Thread-9] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:50:21.364 INFO  [Linkis-Default-Scheduler-Thread-2] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:53:21.367 INFO  [Linkis-Default-Scheduler-Thread-18] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:56:21.358 INFO  [Linkis-Default-Scheduler-Thread-19] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 17:59:21.361 INFO  [Linkis-Default-Scheduler-Thread-19] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 18:02:21.370 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 18:05:21.360 INFO  [Linkis-Default-Scheduler-Thread-3] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 18:08:21.365 INFO  [Linkis-Default-Scheduler-Thread-6] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 18:11:21.364 INFO  [Linkis-Default-Scheduler-Thread-19] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 18:14:21.361 INFO  [Linkis-Default-Scheduler-Thread-19] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 18:17:21.359 INFO  [Linkis-Default-Scheduler-Thread-19] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 18:20:21.364 INFO  [Linkis-Default-Scheduler-Thread-6] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:Unlock,msg:null
+2021-12-21 18:20:36.854 WARN  [Linkis-Default-Scheduler-Thread-19] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 49 warn - FlinkComputationSQL_0 has not been used for 1h, now try to shutdown it.
+2021-12-21 18:20:36.856 INFO  [main] com.webank.wedatasphere.linkis.engineconn.launch.EngineConnServer$ 40 info - <<---------------------EngineConnServer Exit --------------------->>
+2021-12-21 18:20:36.859 INFO  [Thread-29] com.netflix.loadbalancer.PollingServerListUpdater 53 run - Shutting down the Executor Pool for PollingServerListUpdater
+2021-12-21 18:20:36.870 WARN  [SpringContextShutdownHook] com.netflix.discovery.DiscoveryClient 1321 notify - Saw local status change event StatusChangeEvent [timestamp=1640082036869, current=DOWN, previous=UP]
+2021-12-21 18:20:36.871 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - executorShutDownHook  start to execute.
+2021-12-21 18:20:36.873 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 40 info - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 changed status Unlock => ShuttingDown.
+2021-12-21 18:20:36.874 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - Engine : bdnode111.hjq.com:34977 with state has stopped successfully.
+2021-12-21 18:20:36.908 INFO  [EngineConn-Asyn-Thread-Thread-0] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:ShuttingDown,msg:null
+2021-12-21 18:20:36.920 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory 90 close - Begin to kill application application_1639998011452_0002
+2021-12-21 18:20:37.285 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory 97 close - End to kill application application_1639998011452_0002
+2021-12-21 18:20:37.288 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 49 warn - Executor(FlinkComputationSQL_0) exit by close.
+2021-12-21 18:20:37.289 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - executorShutDownHook  start to close executor... com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3
+2021-12-21 18:20:37.304 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:ShuttingDown,msg:null
+2021-12-21 18:20:37.305 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - Reported status shuttingDown to manager.
+2021-12-21 18:20:39.392 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - executorShutDownHook  start to execute.
+2021-12-21 18:20:39.393 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 49 warn - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 attempt to change a Executor from ShuttingDown to ShuttingDown, ignore it.
+2021-12-21 18:20:39.393 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - Engine : bdnode111.hjq.com:34977 with state has stopped successfully.
+2021-12-21 18:20:39.394 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory 90 close - Begin to kill application application_1639998011452_0002
+2021-12-21 18:20:39.399 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 78 apply - java.io.IOException: The client is stopped
+	at org.apache.hadoop.ipc.Client.getConnection(Client.java:1507) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.Client.call(Client.java:1451) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.Client.call(Client.java:1412) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:229) ~[hadoop-common-2.7.2.jar:?]
+	at com.sun.proxy.$Proxy184.forceKillApplication(Unknown Source) ~[?:?]
+	at org.apache.hadoop.yarn.api.impl.pb.client.ApplicationClientProtocolPBClientImpl.forceKillApplication(ApplicationClientProtocolPBClientImpl.java:176) ~[hadoop-yarn-common-2.7.2.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:191) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:102) ~[hadoop-common-2.7.2.jar:?]
+	at com.sun.proxy.$Proxy185.forceKillApplication(Unknown Source) ~[?:?]
+	at org.apache.hadoop.yarn.client.api.impl.YarnClientImpl.killApplication(YarnClientImpl.java:393) ~[hadoop-yarn-client-2.7.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory.close(LinkisYarnClusterClientFactory.java:92) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor.close(FlinkSQLComputationExecutor.scala:141) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply$mcV$sp(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryAndWarn(Utils.scala:68) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5.apply(DefaultAccessibleService.scala:84) [linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5.apply(DefaultAccessibleService.scala:83) [linkis-accessible-executor-1.0.2.jar:?]
+	at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33) [scala-library-2.11.12.jar:?]
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:186) [scala-library-2.11.12.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService.executorShutDownHook(DefaultAccessibleService.scala:83) [linkis-accessible-executor-1.0.2.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.doInvoke(ApplicationListenerMethodAdapter.java:305) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.processEvent(ApplicationListenerMethodAdapter.java:190) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.onApplicationEvent(ApplicationListenerMethodAdapter.java:153) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:172) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:165) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:139) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:404) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:410) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:361) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1013) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:979) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.cloud.context.named.NamedContextFactory.destroy(NamedContextFactory.java:92) [spring-cloud-context-2.2.1.RELEASE.jar:2.2.1.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:258) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:170) [spring-boot-2.3.2.RELEASE.jar:2.3.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext$1.run(AbstractApplicationContext.java:949) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+
+2021-12-21 18:20:39.400 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - executorShutDownHook  start to close executor... com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3
+2021-12-21 18:20:39.404 WARN  [SpringContextShutdownHook] com.netflix.config.sources.URLConfigurationSource 121 <init> - No URLs will be polled as dynamic configuration sources.
+2021-12-21 18:20:39.404 INFO  [SpringContextShutdownHook] com.netflix.config.sources.URLConfigurationSource 122 <init> - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2021-12-21 18:20:39.405 INFO  [SpringContextShutdownHook] com.netflix.config.DynamicPropertyFactory 281 getInstance - DynamicPropertyFactory is initialized with configuration sources: com.netflix.config.ConcurrentCompositeConfiguration@1bd8e138
+2021-12-21 18:20:39.417 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:ShuttingDown,msg:null
+2021-12-21 18:20:39.417 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - Reported status shuttingDown to manager.
+2021-12-21 18:20:39.880 WARN  [Linkis-Default-Scheduler-Thread-18] com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution.AccessibleEngineConnExecution 49 warn - Now exit with code 0
+2021-12-21 18:20:41.420 INFO  [SpringContextShutdownHook] com.netflix.util.concurrent.ShutdownEnabledTimer 67 cancel - Shutdown hook removed for: NFLoadBalancer-PingTimer-linkis-cg-entrance
+2021-12-21 18:20:41.421 INFO  [SpringContextShutdownHook] com.netflix.util.concurrent.ShutdownEnabledTimer 72 cancel - Exception caught (might be ok if at shutdown) java.lang.IllegalStateException: Shutdown in progress
+	at java.lang.ApplicationShutdownHooks.remove(ApplicationShutdownHooks.java:82) ~[?:1.8.0_261]
+	at java.lang.Runtime.removeShutdownHook(Runtime.java:239) ~[?:1.8.0_261]
+	at com.netflix.util.concurrent.ShutdownEnabledTimer.cancel(ShutdownEnabledTimer.java:70) [netflix-commons-util-0.1.1.jar:?]
+	at com.netflix.loadbalancer.BaseLoadBalancer.cancelPingTask(BaseLoadBalancer.java:632) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at com.netflix.loadbalancer.BaseLoadBalancer.shutdown(BaseLoadBalancer.java:883) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at com.netflix.loadbalancer.DynamicServerListLoadBalancer.shutdown(DynamicServerListLoadBalancer.java:285) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.invokeCustomDestroyMethod(DisposableBeanAdapter.java:339) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:273) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:979) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.cloud.context.named.NamedContextFactory.destroy(NamedContextFactory.java:92) [spring-cloud-context-2.2.1.RELEASE.jar:2.2.1.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:258) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:170) [spring-boot-2.3.2.RELEASE.jar:2.3.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext$1.run(AbstractApplicationContext.java:949) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+
+2021-12-21 18:20:41.428 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - executorShutDownHook  start to execute.
+2021-12-21 18:20:41.428 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 49 warn - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 attempt to change a Executor from ShuttingDown to ShuttingDown, ignore it.
+2021-12-21 18:20:41.429 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - Engine : bdnode111.hjq.com:34977 with state has stopped successfully.
+2021-12-21 18:20:41.430 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory 90 close - Begin to kill application application_1639998011452_0002
+2021-12-21 18:20:41.431 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 78 apply - java.io.IOException: The client is stopped
+	at org.apache.hadoop.ipc.Client.getConnection(Client.java:1507) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.Client.call(Client.java:1451) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.Client.call(Client.java:1412) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:229) ~[hadoop-common-2.7.2.jar:?]
+	at com.sun.proxy.$Proxy184.forceKillApplication(Unknown Source) ~[?:?]
+	at org.apache.hadoop.yarn.api.impl.pb.client.ApplicationClientProtocolPBClientImpl.forceKillApplication(ApplicationClientProtocolPBClientImpl.java:176) ~[hadoop-yarn-common-2.7.2.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:191) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:102) ~[hadoop-common-2.7.2.jar:?]
+	at com.sun.proxy.$Proxy185.forceKillApplication(Unknown Source) ~[?:?]
+	at org.apache.hadoop.yarn.client.api.impl.YarnClientImpl.killApplication(YarnClientImpl.java:393) ~[hadoop-yarn-client-2.7.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory.close(LinkisYarnClusterClientFactory.java:92) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor.close(FlinkSQLComputationExecutor.scala:141) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply$mcV$sp(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryAndWarn(Utils.scala:68) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5.apply(DefaultAccessibleService.scala:84) [linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5.apply(DefaultAccessibleService.scala:83) [linkis-accessible-executor-1.0.2.jar:?]
+	at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33) [scala-library-2.11.12.jar:?]
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:186) [scala-library-2.11.12.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService.executorShutDownHook(DefaultAccessibleService.scala:83) [linkis-accessible-executor-1.0.2.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.doInvoke(ApplicationListenerMethodAdapter.java:305) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.processEvent(ApplicationListenerMethodAdapter.java:190) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.onApplicationEvent(ApplicationListenerMethodAdapter.java:153) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:172) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:165) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:139) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:404) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:410) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:361) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1013) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:979) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.cloud.context.named.NamedContextFactory.destroy(NamedContextFactory.java:92) [spring-cloud-context-2.2.1.RELEASE.jar:2.2.1.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:258) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:170) [spring-boot-2.3.2.RELEASE.jar:2.3.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext$1.run(AbstractApplicationContext.java:949) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+
+2021-12-21 18:20:41.432 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - executorShutDownHook  start to close executor... com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3
+2021-12-21 18:20:41.448 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:ShuttingDown,msg:null
+2021-12-21 18:20:41.448 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - Reported status shuttingDown to manager.
+2021-12-21 18:20:43.454 INFO  [SpringContextShutdownHook] com.netflix.util.concurrent.ShutdownEnabledTimer 67 cancel - Shutdown hook removed for: NFLoadBalancer-PingTimer-linkis-ps-publicservice
+2021-12-21 18:20:43.454 INFO  [SpringContextShutdownHook] com.netflix.util.concurrent.ShutdownEnabledTimer 72 cancel - Exception caught (might be ok if at shutdown) java.lang.IllegalStateException: Shutdown in progress
+	at java.lang.ApplicationShutdownHooks.remove(ApplicationShutdownHooks.java:82) ~[?:1.8.0_261]
+	at java.lang.Runtime.removeShutdownHook(Runtime.java:239) ~[?:1.8.0_261]
+	at com.netflix.util.concurrent.ShutdownEnabledTimer.cancel(ShutdownEnabledTimer.java:70) [netflix-commons-util-0.1.1.jar:?]
+	at com.netflix.loadbalancer.BaseLoadBalancer.cancelPingTask(BaseLoadBalancer.java:632) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at com.netflix.loadbalancer.BaseLoadBalancer.shutdown(BaseLoadBalancer.java:883) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at com.netflix.loadbalancer.DynamicServerListLoadBalancer.shutdown(DynamicServerListLoadBalancer.java:285) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.invokeCustomDestroyMethod(DisposableBeanAdapter.java:339) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:273) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:979) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.cloud.context.named.NamedContextFactory.destroy(NamedContextFactory.java:92) [spring-cloud-context-2.2.1.RELEASE.jar:2.2.1.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:258) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:170) [spring-boot-2.3.2.RELEASE.jar:2.3.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext$1.run(AbstractApplicationContext.java:949) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+
+2021-12-21 18:20:43.463 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - executorShutDownHook  start to execute.
+2021-12-21 18:20:43.463 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 49 warn - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 attempt to change a Executor from ShuttingDown to ShuttingDown, ignore it.
+2021-12-21 18:20:43.464 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - Engine : bdnode111.hjq.com:34977 with state has stopped successfully.
+2021-12-21 18:20:43.465 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory 90 close - Begin to kill application application_1639998011452_0002
+2021-12-21 18:20:43.465 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 78 apply - java.io.IOException: The client is stopped
+	at org.apache.hadoop.ipc.Client.getConnection(Client.java:1507) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.Client.call(Client.java:1451) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.Client.call(Client.java:1412) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:229) ~[hadoop-common-2.7.2.jar:?]
+	at com.sun.proxy.$Proxy184.forceKillApplication(Unknown Source) ~[?:?]
+	at org.apache.hadoop.yarn.api.impl.pb.client.ApplicationClientProtocolPBClientImpl.forceKillApplication(ApplicationClientProtocolPBClientImpl.java:176) ~[hadoop-yarn-common-2.7.2.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:191) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:102) ~[hadoop-common-2.7.2.jar:?]
+	at com.sun.proxy.$Proxy185.forceKillApplication(Unknown Source) ~[?:?]
+	at org.apache.hadoop.yarn.client.api.impl.YarnClientImpl.killApplication(YarnClientImpl.java:393) ~[hadoop-yarn-client-2.7.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory.close(LinkisYarnClusterClientFactory.java:92) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor.close(FlinkSQLComputationExecutor.scala:141) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply$mcV$sp(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryAndWarn(Utils.scala:68) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5.apply(DefaultAccessibleService.scala:84) [linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5.apply(DefaultAccessibleService.scala:83) [linkis-accessible-executor-1.0.2.jar:?]
+	at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33) [scala-library-2.11.12.jar:?]
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:186) [scala-library-2.11.12.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService.executorShutDownHook(DefaultAccessibleService.scala:83) [linkis-accessible-executor-1.0.2.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.doInvoke(ApplicationListenerMethodAdapter.java:305) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.processEvent(ApplicationListenerMethodAdapter.java:190) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.onApplicationEvent(ApplicationListenerMethodAdapter.java:153) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:172) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:165) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:139) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:404) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:410) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:361) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1013) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:979) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.cloud.context.named.NamedContextFactory.destroy(NamedContextFactory.java:92) [spring-cloud-context-2.2.1.RELEASE.jar:2.2.1.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:258) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:170) [spring-boot-2.3.2.RELEASE.jar:2.3.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext$1.run(AbstractApplicationContext.java:949) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+
+2021-12-21 18:20:43.467 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - executorShutDownHook  start to close executor... com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3
+2021-12-21 18:20:43.486 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:ShuttingDown,msg:null
+2021-12-21 18:20:43.486 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - Reported status shuttingDown to manager.
+2021-12-21 18:20:45.490 INFO  [SpringContextShutdownHook] com.netflix.util.concurrent.ShutdownEnabledTimer 67 cancel - Shutdown hook removed for: NFLoadBalancer-PingTimer-linkis-cg-engineconnmanager
+2021-12-21 18:20:45.491 INFO  [SpringContextShutdownHook] com.netflix.util.concurrent.ShutdownEnabledTimer 72 cancel - Exception caught (might be ok if at shutdown) java.lang.IllegalStateException: Shutdown in progress
+	at java.lang.ApplicationShutdownHooks.remove(ApplicationShutdownHooks.java:82) ~[?:1.8.0_261]
+	at java.lang.Runtime.removeShutdownHook(Runtime.java:239) ~[?:1.8.0_261]
+	at com.netflix.util.concurrent.ShutdownEnabledTimer.cancel(ShutdownEnabledTimer.java:70) [netflix-commons-util-0.1.1.jar:?]
+	at com.netflix.loadbalancer.BaseLoadBalancer.cancelPingTask(BaseLoadBalancer.java:632) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at com.netflix.loadbalancer.BaseLoadBalancer.shutdown(BaseLoadBalancer.java:883) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at com.netflix.loadbalancer.DynamicServerListLoadBalancer.shutdown(DynamicServerListLoadBalancer.java:285) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.invokeCustomDestroyMethod(DisposableBeanAdapter.java:339) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:273) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:979) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.cloud.context.named.NamedContextFactory.destroy(NamedContextFactory.java:92) [spring-cloud-context-2.2.1.RELEASE.jar:2.2.1.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:258) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:170) [spring-boot-2.3.2.RELEASE.jar:2.3.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext$1.run(AbstractApplicationContext.java:949) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+
+2021-12-21 18:20:45.498 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - executorShutDownHook  start to execute.
+2021-12-21 18:20:45.498 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor 49 warn - com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3 attempt to change a Executor from ShuttingDown to ShuttingDown, ignore it.
+2021-12-21 18:20:45.499 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - Engine : bdnode111.hjq.com:34977 with state has stopped successfully.
+2021-12-21 18:20:45.499 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory 90 close - Begin to kill application application_1639998011452_0002
+2021-12-21 18:20:45.500 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 78 apply - java.io.IOException: The client is stopped
+	at org.apache.hadoop.ipc.Client.getConnection(Client.java:1507) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.Client.call(Client.java:1451) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.Client.call(Client.java:1412) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:229) ~[hadoop-common-2.7.2.jar:?]
+	at com.sun.proxy.$Proxy184.forceKillApplication(Unknown Source) ~[?:?]
+	at org.apache.hadoop.yarn.api.impl.pb.client.ApplicationClientProtocolPBClientImpl.forceKillApplication(ApplicationClientProtocolPBClientImpl.java:176) ~[hadoop-yarn-common-2.7.2.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:191) ~[hadoop-common-2.7.2.jar:?]
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:102) ~[hadoop-common-2.7.2.jar:?]
+	at com.sun.proxy.$Proxy185.forceKillApplication(Unknown Source) ~[?:?]
+	at org.apache.hadoop.yarn.client.api.impl.YarnClientImpl.killApplication(YarnClientImpl.java:393) ~[hadoop-yarn-client-2.7.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.client.factory.LinkisYarnClusterClientFactory.close(LinkisYarnClusterClientFactory.java:92) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor.close(FlinkSQLComputationExecutor.scala:141) ~[linkis-engineconn-plugin-flink-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply$mcV$sp(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5$$anonfun$apply$1.apply(DefaultAccessibleService.scala:84) ~[linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryCatch(Utils.scala:39) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.common.utils.Utils$.tryAndWarn(Utils.scala:68) [linkis-common-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5.apply(DefaultAccessibleService.scala:84) [linkis-accessible-executor-1.0.2.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService$$anonfun$executorShutDownHook$5.apply(DefaultAccessibleService.scala:83) [linkis-accessible-executor-1.0.2.jar:?]
+	at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33) [scala-library-2.11.12.jar:?]
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:186) [scala-library-2.11.12.jar:?]
+	at com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService.executorShutDownHook(DefaultAccessibleService.scala:83) [linkis-accessible-executor-1.0.2.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.doInvoke(ApplicationListenerMethodAdapter.java:305) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.processEvent(ApplicationListenerMethodAdapter.java:190) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.ApplicationListenerMethodAdapter.onApplicationEvent(ApplicationListenerMethodAdapter.java:153) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:172) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:165) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:139) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:404) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:410) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:361) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1013) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:979) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.cloud.context.named.NamedContextFactory.destroy(NamedContextFactory.java:92) [spring-cloud-context-2.2.1.RELEASE.jar:2.2.1.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:258) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:170) [spring-boot-2.3.2.RELEASE.jar:2.3.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext$1.run(AbstractApplicationContext.java:949) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+
+2021-12-21 18:20:45.502 WARN  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 49 warn - executorShutDownHook  start to close executor... com.webank.wedatasphere.linkis.engineconnplugin.flink.executor.FlinkSQLComputationExecutor@247f60a3
+2021-12-21 18:20:45.521 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultManagerService 40 info - success to send engine heartbeat report to bdnode111.hjq.com:9101,status:ShuttingDown,msg:null
+2021-12-21 18:20:45.521 INFO  [SpringContextShutdownHook] com.webank.wedatasphere.linkis.engineconn.acessible.executor.service.DefaultAccessibleService 40 info - Reported status shuttingDown to manager.
+2021-12-21 18:20:47.525 INFO  [SpringContextShutdownHook] com.netflix.util.concurrent.ShutdownEnabledTimer 67 cancel - Shutdown hook removed for: NFLoadBalancer-PingTimer-linkis-cg-linkismanager
+2021-12-21 18:20:47.526 INFO  [SpringContextShutdownHook] com.netflix.util.concurrent.ShutdownEnabledTimer 72 cancel - Exception caught (might be ok if at shutdown) java.lang.IllegalStateException: Shutdown in progress
+	at java.lang.ApplicationShutdownHooks.remove(ApplicationShutdownHooks.java:82) ~[?:1.8.0_261]
+	at java.lang.Runtime.removeShutdownHook(Runtime.java:239) ~[?:1.8.0_261]
+	at com.netflix.util.concurrent.ShutdownEnabledTimer.cancel(ShutdownEnabledTimer.java:70) [netflix-commons-util-0.1.1.jar:?]
+	at com.netflix.loadbalancer.BaseLoadBalancer.cancelPingTask(BaseLoadBalancer.java:632) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at com.netflix.loadbalancer.BaseLoadBalancer.shutdown(BaseLoadBalancer.java:883) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at com.netflix.loadbalancer.DynamicServerListLoadBalancer.shutdown(DynamicServerListLoadBalancer.java:285) [ribbon-loadbalancer-2.3.0.jar:2.3.0]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_261]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_261]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_261]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_261]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.invokeCustomDestroyMethod(DisposableBeanAdapter.java:339) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:273) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:979) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.cloud.context.named.NamedContextFactory.destroy(NamedContextFactory.java:92) [spring-cloud-context-2.2.1.RELEASE.jar:2.2.1.RELEASE]
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:258) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1092) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1085) [spring-beans-5.2.12.RELEASE.jar:5.2.12.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1061) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1030) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:170) [spring-boot-2.3.2.RELEASE.jar:2.3.2.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext$1.run(AbstractApplicationContext.java:949) [spring-context-5.2.8.RELEASE.jar:5.2.8.RELEASE]
+

@@ -560,7 +560,7 @@ SqlValidatorImpl.validateNamespace(){
 								}
 							}
 						} catch (CyclicDefinitionException e) {
-							if (e.depth == 1) { // 就是这里抛出 "SqlValidatorException: Object 'tb_user' not found"
+							if (e.depth == 1) { 
 								throw validator.newValidationError(id,);
 							}else{throw new CyclicDefinitionException(e.depth - 1, e.path);}
 						}
