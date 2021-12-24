@@ -497,7 +497,25 @@ DefaultEngineConnLaunchService.createEngineConnLaunchRequest(engineBuildRequest:
 	if (engineTypeOption.isDefined) {
 		getEngineLaunchBuilder(engineTypeLabel).buildEngineConn(engineBuildRequest);{//FlinkEngineConnLaunchBuilder 父类ProcessEngineConnLaunchBuilder.buildEngineConn()
 			engineConnBuildRequest match { case richer: RicherEngineConnBuildRequest => bmlResources.addAll(util.Arrays.asList(richer.getBmlResources: _*))}
-			bmlResources.addAll(getBmlResources);
+			bmlResources.addAll(getBmlResources);{//JavaProcessEngineConnLaunchBuilder.getBmlResources()
+				val engineConnResource = engineConnResourceGenerator.getEngineConnBMLResources(engineType);{//EngineConnResourceService.
+					val engineConnBMLResourceRequest = new GetEngineConnResourceRequest
+					getEngineConnBMLResources(engineConnBMLResourceRequest);{//DefaultEngineConnResourceService.
+						val engineConnType = engineConnBMLResourceRequest.getEngineConnType
+						val engineConnBmlResources = asScalaBuffer(engineConnBmlResourceDao.getAllEngineConnBmlResource(engineConnType, "v" + version));{
+							// SELECT * FROM linkis_cg_engine_conn_plugin_bml_resources WHERE engine_conn_type=#{engineConnType}
+							// 就是获取 flink-1.12.2的 conf+lib的资源情况和ID;
+							EngineConnBmlResourceDao.getAllEngineConnBmlResource();
+						}
+						
+						val confBmlResource = engineConnBmlResources.find(_.getFileName == LaunchConstants.ENGINE_CONN_CONF_DIR_NAME + ".zip").map(parseToBmlResource).get
+						val libBmlResource = engineConnBmlResources.find(_.getFileName == LaunchConstants.ENGINE_CONN_LIB_DIR_NAME + ".zip").map(parseToBmlResource).get
+						val otherBmlResources = engineConnBmlResources.filterNot(r => r.getFileName == LaunchConstants.ENGINE_CONN_CONF_DIR_NAME + ".zip" || r.getFileName == LaunchConstants.ENGINE_CONN_LIB_DIR_NAME + ".zip").map(parseToBmlResource).toArray
+						new EngineConnResource
+					}
+				}
+				Array(engineConnResource.getConfBmlResource, engineConnResource.getLibBmlResource) ++: engineConnResource.getOtherBmlResources.toList
+			}
 			engineConnBuildRequest.labels.find(_.isInstanceOf[UserCreatorLabel]).map {case label: UserCreatorLabel =>{
 				val commands:  = getCommands();{// FlinkEngineConnLaunchBuilder.
 					val properties = engineConnBuildRequest.engineConnCreationDesc.properties
@@ -534,6 +552,16 @@ DefaultEngineConnLaunchService.createEngineConnLaunchRequest(engineBuildRequest:
 	}
 }
 
+"CLASSPATH":{
+	"${HADOOP_CONF_DIR}:
+	${HIVE_CONF_DIR}:
+	${PWD}/conf:		wordDir.conf=plugin/flink/dist/conf
+	"${PWD}/lib/*":		wordDir.lib =plugin/flink/dist/lib(308)	包含308个依赖,其中flink 31个包, hadoop相关5个包; hive 0个包,linkis 31个包;
+	"${LINKIS_HOME}/lib/linkis-commons/public-module/*":	linkis的283个public依赖,其中8个linkis公共包;大部分spring,jetty,json,common包;
+	${PWD}",
+}
+
+
 
 
 // cg-engineconnmanager 模块: LinkisECMApplication 进程: "" 线程 LinuxProcess脚本引擎执行 sudo su - bigdata -c sh engineConnExec.sh 脚本
@@ -555,7 +583,34 @@ LinuxProcessEngineConnLaunchService.launchEngineConn(){
 				val runner = createEngineConnLaunchRunner
 				val launch = createEngineConnLaunch
 				//2.资源本地化，并且设置ecm的env环境信息
-				getResourceLocalizationServie.handleInitEngineConnResources(request, conn)
+				getResourceLocalizationServie.handleInitEngineConnResources(request, conn);{//BmlResourceLocalizationService.
+					request match {case request: ProcessEngineConnLaunchRequest =>{
+						val files = request.bmlResources
+						val ticketId = request.ticketId
+						// 创建 workDir,logDir,tmpDir,
+						val workDir = createDirIfNotExit(localDirsHandleService.getEngineConnWorkDir(user, ticketId));
+						val logDirs = createDirIfNotExit(localDirsHandleService.getEngineConnLogDir(user, ticketId))
+						// 下载
+						files.foreach(downloadBmlResource(request, linkDirsP, _, workDir));{//BmlResourceLocalizationService.downloadBmlResource()
+							resource.getVisibility match {case BmlResource.BmlResourceVisibility.Public =>{
+								val publicDir = localDirsHandleService.getEngineConnPublicDir ///tmp/dsslinkisall/engConn/engineConnPublickDir
+								val bmlResourceDir = schema + Paths.get(publicDir, resourceId, version).toFile.getPath //file:///tmp/dsslinkisall/engConn/engineConnPublickDir/08385d14-ac1f-4543-8d0a-1aa90d954174/v000002
+								val fsPath = new FsPath(bmlResourceDir)
+								if (!fs.exists(fsPath)) {
+									ECMUtils.downLoadBmlResourceToLocal(resource, user, fsPath.getPath)
+									FileSystemUtils.mkdirs(fs, new FsPath(unzipDir), Utils.getJvmUser)
+									ZipUtils.unzip(bmlResourceDir + File.separator + resource.getFileName, unzipDir)
+									fs.delete(new FsPath(bmlResourceDir + File.separator + resource.getFileName))
+								}
+								
+								//2.软连，并且添加到map
+								val dirAndFileList = fs.listPathWithError(fsPath)
+								linkDirs.put(path.getPath, workDir + seperator + name);
+							}}
+						}
+						engineConn.getEngineConnLaunchRunner.getEngineConnLaunch.setEngineConnManagerEnv(new EngineConnManagerEnv {});
+					}}
+				}
 				//3.添加到list
 				LinkisECMApplication.getContext.getECMSyncListenerBus.postToAll(EngineConnAddEvent(conn));{// ECMSyncListenerBus.postToAll()
 					while (iter.hasNext) {
@@ -644,6 +699,8 @@ LinuxProcessEngineConnLaunchService.launchEngineConn(){
 }
 
 
+
+
 /usr/java/jdk-release/bin/java \
 -server -Xmx1g -Xms1g -XX:+UseG1GC -XX:MaxPermSize=250m -XX:PermSize=128m \
 -Xloggc:/tmp/dsslinkisall/engConn/bigdata/workDir/a689125c-dc7e-4f0f-8343-6fa6e93c4f48/logs/gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps \
@@ -674,8 +731,10 @@ flink-sql-defaults.yaml  linkis-engineconn.properties  log4j2-engineconn.xml
 // fromTh:  
 // nextTh: 
 // 处理逻辑: 
-// logDir: $ENGINECONN_ROOT_PATH(wds.linkis.engineconn.root.dir)/bigdata/workDir/a689125c-dc7e-4f0f-8343-6fa6e93c4f48/logs
+// # 构建AM启动命令amContext: createEngineConn() createEngineConnSession(): 
+// #. executeEngineConn() ->execute()->createLabelExecutor()->labelExecutor.init(): 调Yarn Api: YarnClusterDescriptor.deploySessionCluster() 启动TM: YarnSessionClusterEntrypoint;
 
+// logDir: $ENGINECONN_ROOT_PATH(wds.linkis.engineconn.root.dir)/bigdata/workDir/a689125c-dc7e-4f0f-8343-6fa6e93c4f48/logs
 
 
 EngineConnServer.main(){
@@ -765,17 +824,92 @@ EngineConnServer.main(){
 	//3. 注册的executions 执行
 	executeEngineConn(engineConn);{
 		EngineConnExecution.getEngineConnExecutions.foreach{
-			case execution: AbstractEngineConnExecution =>{
-				
-			}
+			case execution: AbstractEngineConnExecution =>{}
+			// flink的进入这里: AccessibleEngineConnExecution
 			case execution =>{execution.execute(getEngineCreationContext, engineConn)};{//ComputationExecutorManagerEngineConnExecution.
-				
+				AccessibleEngineConnExecution.execute(){
+					init(engineCreationContext)
+					val executor = findReportExecutor(engineCreationContext, engineConn);{= ExecutorManager.getInstance.getReportExecutor(){//ExecutorManager.getReportExecutor()
+						LabelExecutorManagerImpl.getReportExecutor(){createExecutor(engineConn.getEngineCreationContext, labels){//LabelExecutorManagerImpl.
+							if (null == labels || labels.isEmpty){
+								defaultFactory.createExecutor(engineCreationContext, engineConn)
+							}else{// flink的LabelExecutor对应 YarnSessionClusterEndpoint 进程? 没有就新建;
+								createLabelExecutor(engineCreationContext, labels);{//LabelExecutorManagerImpl.createLabelExecutor
+									val labelKey = getLabelKey(labels) // ="sql"
+									val executor = tryCreateExecutor(engineCreationContext, labels);{//LabelExecutorManagerImpl.
+										// defaultFactory.createExecutor()
+										val labelExecutor = if (null == labels || labels.isEmpty){
+											defaultFactory.createExecutor(engineCreationContext, engineConn)
+										}else{
+											factories.find {case labelExecutorFactory: LabelExecutorFactory => labelExecutorFactory.canCreate(labels)}
+												.map(case labelExecutorFactory: LabelExecutorFactory =>{labelExecutorFactory.createExecutor(engineCreationContext, engineConn, labels)})
+												.getOrElse(defaultFactory.createExecutor(engineCreationContext, engineConn));
+										}
+										labelExecutor.init();{//不同引擎,这里init不一样;
+											// flink-yarn-session 这里是链接yarn-RM,并提交 SubmitApplication
+											FlinkSQLComputationExecutor.init(){
+												ClusterDescriptorAdapterFactory.create(flinkEngineConnContext.getExecutionContext) match {
+													case adapter: YarnSessionClusterDescriptorAdapter => clusterDescriptor = adapter
+												}
+												clusterDescriptor.deployCluster();{//YarnSessionClusterDescriptorAdapter.
+													// 这里调用flink Yarn Api: YarnClusterDescriptor.deploySessionCluster()
+													val clusterClientProvider = clusterDescriptor.deploySessionCluster(clusterSpecification);{//YarnClusterDescriptor.deploySessionCluster()
+														return deployInternal();
+													}
+												}
+											}
+											
+										}
+										info(s"Finished to init ${labelExecutor.getClass.getSimpleName}(${labelExecutor.getId}).")
+										labelExecutor
+									}
+								}
+							}
+						}}
+					}}
+					beforeReportToLinkisManager(executor, engineCreationContext, engineConn)
+					reportUsedResource(executor, engineCreationContext)
+					reportLabel(executor)
+					executorStatusChecker
+					afterReportToLinkisManager(executor, engineCreationContext, engineConn)
+				}
 			}
 		}
 	}
 	info("Finished to execute executions.")
 	
 }
+
+
+
+
+submitApplication:238, YarnClientImpl (org.apache.hadoop.yarn.client.api.impl)
+startAppMaster:1177, YarnClusterDescriptor (org.apache.flink.yarn)
+deployInternal:592, YarnClusterDescriptor (org.apache.flink.yarn)
+deploySessionCluster:418, YarnClusterDescriptor (org.apache.flink.yarn)
+deployCluster:30, YarnSessionClusterDescriptorAdapter (com.webank.wedatasphere.linkis.engineconnplugin.flink.client.deployment)
+init:60, FlinkSQLComputationExecutor (com.webank.wedatasphere.linkis.engineconnplugin.flink.executor)
+tryCreateExecutor:100, LabelExecutorManagerImpl (com.webank.wedatasphere.linkis.engineconn.core.executor)
+createLabelExecutor:136, LabelExecutorManagerImpl (com.webank.wedatasphere.linkis.engineconn.core.executor)
+createExecutor:121, LabelExecutorManagerImpl (com.webank.wedatasphere.linkis.engineconn.core.executor)
+getReportExecutor:178, LabelExecutorManagerImpl (com.webank.wedatasphere.linkis.engineconn.core.executor)
+findReportExecutor:44, AccessibleEngineConnExecution (com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution)
+execute:56, AccessibleEngineConnExecution (com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution)
+apply:111, EngineConnServer$$anonfun$com$webank$wedatasphere$linkis$engineconn$launch$EngineConnServer$$executeEngineConn$1 (com.webank.wedatasphere.linkis.engineconn.launch)
+apply:104, EngineConnServer$$anonfun$com$webank$wedatasphere$linkis$engineconn$launch$EngineConnServer$$executeEngineConn$1 (com.webank.wedatasphere.linkis.engineconn.launch)
+foreach:33, IndexedSeqOptimized$class (scala.collection)
+foreach:186, ArrayOps$ofRef (scala.collection.mutable)
+com$webank$wedatasphere$linkis$engineconn$launch$EngineConnServer$$executeEngineConn:104, EngineConnServer$ (com.webank.wedatasphere.linkis.engineconn.launch)
+apply$mcV$sp:53, EngineConnServer$$anonfun$main$1 (com.webank.wedatasphere.linkis.engineconn.launch)
+apply:53, EngineConnServer$$anonfun$main$1 (com.webank.wedatasphere.linkis.engineconn.launch)
+apply:53, EngineConnServer$$anonfun$main$1 (com.webank.wedatasphere.linkis.engineconn.launch)
+tryCatch:39, Utils$ (com.webank.wedatasphere.linkis.common.utils)
+tryThrow:56, Utils$ (com.webank.wedatasphere.linkis.common.utils)
+main:53, EngineConnServer$ (com.webank.wedatasphere.linkis.engineconn.launch)
+main:-1, EngineConnServer (com.webank.wedatasphere.linkis.engineconn.launch)
+
+
+
 
 
 

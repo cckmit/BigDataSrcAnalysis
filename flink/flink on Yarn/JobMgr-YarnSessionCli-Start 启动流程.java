@@ -12,7 +12,8 @@ FlinkYarnSessionCli.run()
 		* appContext = yarnApplication.getApplicationSubmissionContext(); 创建应用执行上下文 appCtx;
 		* amContainer =setupApplicationMasterContainer(); 中创建 %java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects% 格式的命令;
 		* yarnClient.submitApplication(appContext); 将 appCtx发给RM/NM 进行远程Container/Java进程启动; 
-	
+// 核心 fink yarn client提交核心api: YarnClusterDescriptor.deploySessionCluster()
+
 FlinkYarnSessionCli.main(){
 	final String configurationDirectory = CliFrontend.getConfigurationDirectoryFromEnv();
 	final FlinkYarnSessionCli cli = new FlinkYarnSessionCli(flinkConfiguration,configurationDirectory,"");
@@ -54,7 +55,7 @@ FlinkYarnSessionCli.main(){
 		}else{
 			final ClusterSpecification clusterSpecification = yarnClusterClientFactory.getClusterSpecification(effectiveConfiguration);
 			// 主要耗时2: 发布应用; 
-			clusterClientProvider = yarnClusterDescriptor.deploySessionCluster(clusterSpecification);{
+			clusterClientProvider = yarnClusterDescriptor.deploySessionCluster(clusterSpecification);{//YarnClusterDescriptor.deploySessionCluster()
 				return deployInternal(clusterSpecification, getYarnSessionClusterEntrypoint());{
 					isReadyForDeployment(clusterSpecification);
 					checkYarnQueues(yarnClient);
@@ -205,7 +206,6 @@ FlinkYarnSessionCli.main(){
 
 
 
-
 // 2. yarn.ResourceManager进程: "IPC Server handle"线程, 接受的 SubmitApplication 请求,并解析其中的 amContainer;
 
 ResourceManager.SchedulerEventDispatcher.EventProcessor.run(){
@@ -281,6 +281,31 @@ Server.Handler.run()
 			}
 		}
 	}
+
+
+// 都来自 YarnClusterDescriptor.deploySessionCluster()
+// 对于yarn-session启动的, 发送SubmitApplicationRequest事件的是 FlinkYarnSessionCli进程; 触发方法:YarnClientImpl.submitApplication()
+// 对于linkis-cli提交的flink作业, 发送SubmitApplicationRequest的是 EngineConnServer/FlinkClient进程;
+
+ClientRMService.submitApplication(SubmitApplicationRequest request):SubmitApplicationResponse {
+	// 从请求中获取 submissionContext;
+	ApplicationSubmissionContext submissionContext = request.getApplicationSubmissionContext();{
+		this.applicationSubmissionContext = convertFromProtoFormat(p.getApplicationSubmissionContext());{
+			return new ApplicationSubmissionContextPBImpl(p);
+		}
+		return this.applicationSubmissionContext;
+	}
+	ApplicationId applicationId = submissionContext.getApplicationId();
+	rmAppManager.submitApplication(submissionContext,System.currentTimeMillis(), user);{//RMAppManager.submitApplication()
+		ApplicationId applicationId = submissionContext.getApplicationId();
+		RMAppImpl application =createAndPopulateNewRMApp(submissionContext, submitTime, user, false);
+		ApplicationId appId = submissionContext.getApplicationId();
+		this.rmContext.getDispatcher().getEventHandler().handle(new RMAppEvent(applicationId, RMAppEventType.START));
+	}
+}
+
+
+
 
 // AsyncDispatcher event handle 线程, 基于 Accceped Event事件, 创建 RMAppAttempt对象,并把 submissionContext 内容传入; 
 AsyncDispatcher.dispatch(Event event){
