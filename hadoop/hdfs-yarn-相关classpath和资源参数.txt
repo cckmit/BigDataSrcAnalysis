@@ -1,0 +1,3 @@
+yarn.per-job-cluster.include-user-jar
+
+yarn.provided.lib.dirs

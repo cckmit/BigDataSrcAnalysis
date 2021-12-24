@@ -881,33 +881,28 @@ EngineConnServer.main(){
 }
 
 
+/**	1.2.1 flinkCli-yarn-SubmitAM: deploySessionCluster()-> startAppMaster()-> yarnClient.submitApplication(appContext) 
 
+YarnClusterDescriptor.startAppMaster(): 构建并启动 am: ApplicationMaster
+	//1. 构建AM命令: YarnClusterDescriptor.setupApplicationMasterContainer(): 按照%java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects% 构建AM命令;
+	//2. 拼接CLASSPATH: YarnClusterDescriptor.startAppMaster()拼接$CLASSPATH,依次采用: $FLINK_CLASSPATH() + yarn.application.classpath ,其构成如下
+			* userClassPath(jobGraph.getUserJars(), pipeline.jars, usrlib) 
+			* 	systemClassPaths = yarn.ship-files配置 + $FLINK_LIB_DIR变量下jars + logConfigFile;
+			*	localResourceDescFlinkJar.getResourceKey() + jobGraphFilename + "flink-conf.yaml"
+			yarn.application.classpath 默认采用: $HADOOP_CONF_DIR和 share下的common,hdfs,yar3个模块的目录;
+		//amCommand: $JAVA_HOME/bin/java -Xmx469762048 -Xms469762048 -XX:MaxMetaspaceSize=268435456 "-agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=192.168.51.1:42040" -Dlog.file="<LOG_DIR>/jobmanager.log" -Dlog4j.configuration=file:log4j.properties -Dlog4j.configurationFile=file:log4j.properties org.apache.flink.yarn.entrypoint.YarnSessionClusterEntrypoint -D jobmanager.memory.off-heap.size=134217728b -D jobmanager.memory.jvm-overhead.min=201326592b -D jobmanager.memory.jvm-metaspace.size=268435456b -D jobmanager.memory.heap.size=469762048b -D jobmanager.memory.jvm-overhead.max=201326592b 1> <LOG_DIR>/jobmanager.out 2> <LOG_DIR>/jobmanager.err
+		// $FLINK_CLASSPATH: :flink-dist_2.11-1.12.2.jar:flink-conf.yaml:
+		// 
+	//3. 调用yarn api: YarnClientImpl.submitApplication() 与Yarn RM通信并提交启动 ApplicationMaster: YarnSessionClusterEntrypoint;
+	
+*/
 
-submitApplication:238, YarnClientImpl (org.apache.hadoop.yarn.client.api.impl)
-startAppMaster:1177, YarnClusterDescriptor (org.apache.flink.yarn)
-deployInternal:592, YarnClusterDescriptor (org.apache.flink.yarn)
-deploySessionCluster:418, YarnClusterDescriptor (org.apache.flink.yarn)
-deployCluster:30, YarnSessionClusterDescriptorAdapter (com.webank.wedatasphere.linkis.engineconnplugin.flink.client.deployment)
-init:60, FlinkSQLComputationExecutor (com.webank.wedatasphere.linkis.engineconnplugin.flink.executor)
-tryCreateExecutor:100, LabelExecutorManagerImpl (com.webank.wedatasphere.linkis.engineconn.core.executor)
-createLabelExecutor:136, LabelExecutorManagerImpl (com.webank.wedatasphere.linkis.engineconn.core.executor)
-createExecutor:121, LabelExecutorManagerImpl (com.webank.wedatasphere.linkis.engineconn.core.executor)
-getReportExecutor:178, LabelExecutorManagerImpl (com.webank.wedatasphere.linkis.engineconn.core.executor)
-findReportExecutor:44, AccessibleEngineConnExecution (com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution)
-execute:56, AccessibleEngineConnExecution (com.webank.wedatasphere.linkis.engineconn.acessible.executor.execution)
-apply:111, EngineConnServer$$anonfun$com$webank$wedatasphere$linkis$engineconn$launch$EngineConnServer$$executeEngineConn$1 (com.webank.wedatasphere.linkis.engineconn.launch)
-apply:104, EngineConnServer$$anonfun$com$webank$wedatasphere$linkis$engineconn$launch$EngineConnServer$$executeEngineConn$1 (com.webank.wedatasphere.linkis.engineconn.launch)
-foreach:33, IndexedSeqOptimized$class (scala.collection)
-foreach:186, ArrayOps$ofRef (scala.collection.mutable)
-com$webank$wedatasphere$linkis$engineconn$launch$EngineConnServer$$executeEngineConn:104, EngineConnServer$ (com.webank.wedatasphere.linkis.engineconn.launch)
-apply$mcV$sp:53, EngineConnServer$$anonfun$main$1 (com.webank.wedatasphere.linkis.engineconn.launch)
-apply:53, EngineConnServer$$anonfun$main$1 (com.webank.wedatasphere.linkis.engineconn.launch)
-apply:53, EngineConnServer$$anonfun$main$1 (com.webank.wedatasphere.linkis.engineconn.launch)
-tryCatch:39, Utils$ (com.webank.wedatasphere.linkis.common.utils)
-tryThrow:56, Utils$ (com.webank.wedatasphere.linkis.common.utils)
-main:53, EngineConnServer$ (com.webank.wedatasphere.linkis.engineconn.launch)
-main:-1, EngineConnServer (com.webank.wedatasphere.linkis.engineconn.launch)
-
+YarnClusterDescriptor.deploySessionCluster(){
+	YarnClusterDescriptor.startAppMaster(){
+		setupApplicationMasterContainer();
+		YarnClientImpl.submitApplication();
+	}
+}
 
 
 

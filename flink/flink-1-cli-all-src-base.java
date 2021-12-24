@@ -126,6 +126,7 @@ FlinkYarnSessionCli.run()
 		* amContainer =setupApplicationMasterContainer(); 中创建 %java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects% 格式的命令;
 		* yarnClient.submitApplication(appContext); 将 appCtx发给RM/NM 进行远程Container/Java进程启动; 
 	
+
 FlinkYarnSessionCli.main(){
 	final String configurationDirectory = CliFrontend.getConfigurationDirectoryFromEnv();
 	final FlinkYarnSessionCli cli = new FlinkYarnSessionCli(flinkConfiguration,configurationDirectory,"");
@@ -167,153 +168,354 @@ FlinkYarnSessionCli.main(){
 		}else{
 			final ClusterSpecification clusterSpecification = yarnClusterClientFactory.getClusterSpecification(effectiveConfiguration);
 			// 主要耗时2: 发布应用; 
-			clusterClientProvider = yarnClusterDescriptor.deploySessionCluster(clusterSpecification);{
-				return deployInternal(clusterSpecification, getYarnSessionClusterEntrypoint());{
-					isReadyForDeployment(clusterSpecification);
-					checkYarnQueues(yarnClient);
-					final YarnClientApplication yarnApplication = yarnClient.createApplication();
-					final GetNewApplicationResponse appResponse = yarnApplication.getNewApplicationResponse();
-					freeClusterMem = getCurrentFreeClusterResources(yarnClient);
-					final int yarnMinAllocationMB = yarnConfiguration.getInt(YarnConfiguration.RM_SCHEDULER_MINIMUM_ALLOCATION_MB,.DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB);
-					ApplicationReport report =startAppMaster();{//YarnClusterDescriptor.startAppMaster()
-						final FileSystem fs = FileSystem.get(yarnConfiguration);
-						ApplicationSubmissionContext appContext = yarnApplication.getApplicationSubmissionContext();
-						final List<Path> providedLibDirs =Utils.getQualifiedRemoteSharedPaths(configuration, yarnConfiguration);
-						final YarnApplicationFileUploader fileUploader =YarnApplicationFileUploader.from();
-						
-						userJarFiles.addAll(jobGraph.getUserJars().stream()
-                            .map(f -> f.toUri()).map(Path::new)
-                            .collect(Collectors.toSet()));
-						userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet()));
-						// 设置AM(ApplicationMaster)的资源: amContainer 主要包括 env,javaCammand, localResource本地jar包资源;
-						processSpec =JobManagerProcessUtils.processSpecFromConfigWithNewOptionToInterpretLegacyHeap(flinkConfiguration, JobManagerOptions.TOTAL_PROCESS_MEMORY);{
-							CommonProcessMemorySpec processMemory = PROCESS_MEMORY_UTILS.memoryProcessSpecFromConfig(config);{
-								if (options.getRequiredFineGrainedOptions().stream().allMatch(config::contains)) {
-									
-								}else if (config.contains(options.getTotalFlinkMemoryOption())) {//jobmanager.memory.flink.size
-									return deriveProcessSpecWithTotalFlinkMemory(config);
-								}else if (config.contains(options.getTotalProcessMemoryOption())) {// jobmanager.memory.process.size
-									return deriveProcessSpecWithTotalProcessMemory(config);{
-										MemorySize totalProcessMemorySize =getMemorySizeFromConfig(config, options.getTotalProcessMemoryOption());
-										// Metaspace默认 256Mb, jobmanager.memory.jvm-metaspace.size
-										JvmMetaspaceAndOverhead jvmMetaspaceAndOverhead =deriveJvmMetaspaceAndOverheadWithTotalProcessMemory(config, totalProcessMemorySize);
-										// 约等于 total - metaspace - overhead = 1024 - 256 -196 = 576Mb
-										MemorySize totalFlinkMemorySize = totalProcessMemorySize.subtract(jvmMetaspaceAndOverhead.getTotalJvmMetaspaceAndOverheadSize());
-										// 又把 576 进一步分层heap /offHeap, 堆内 448, 堆外 128Mb; 
-										FM flinkInternalMemory =flinkMemoryUtils.deriveFromTotalFlinkMemory(config, totalFlinkMemorySize);
-										return new CommonProcessMemorySpec<>(flinkInternalMemory, jvmMetaspaceAndOverhead);
-									}
-								}
-								return failBecauseRequiredOptionsNotConfigured();
-							}
-							return new JobManagerProcessSpec(processMemory.getFlinkMemory(), processMemory.getJvmMetaspaceAndOverhead());
-						}
-                        flinkConfiguration, JobManagerOptions.TOTAL_PROCESS_MEMORY);
-						final ContainerLaunchContext amContainer =setupApplicationMasterContainer(yarnClusterEntrypoint, hasKrb5, processSpec);{
-							String javaOpts = flinkConfiguration.getString(CoreOptions.FLINK_JVM_OPTIONS);
-							javaOpts += " " + flinkConfiguration.getString(CoreOptions.FLINK_JM_JVM_OPTIONS);
-							startCommandValues.put("java", "$JAVA_HOME/bin/java");
-							startCommandValues.put("jvmmem", jvmHeapMem);{
-								jvmArgStr.append("-Xmx").append(processSpec.getJvmHeapMemorySize().getBytes());
-								jvmArgStr.append(" -Xms").append(processSpec.getJvmHeapMemorySize().getBytes());
-								if (enableDirectMemoryLimit) {//jobmanager.memory.enable-jvm-direct-memory-limit
-									jvmArgStr.append(" -XX:MaxDirectMemorySize=").append(processSpec.getJvmDirectMemorySize().getBytes());
-								}
-								jvmArgStr.append(" -XX:MaxMetaspaceSize=").append(processSpec.getJvmMetaspaceSize().getBytes());
-							}
-							startCommandValues.put("jvmopts", javaOpts);
-							startCommandValues.put("class", yarnClusterEntrypoint);
-							startCommandValues.put("args", dynamicParameterListStr);
-							
-						}
-						amContainer.setLocalResources(fileUploader.getRegisteredLocalResources());
-						// 设置env: _FLINK_CLASSPATH 环境变量
-						userJarFiles.addAll(jobGraph.getUserJars().stream().map(f -> f.toUri())); //添加 jobGraph.getUserJars() 中的jars
-						userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet())); // 添加 pipeline.jars中的jars;
-						final List<String> userClassPaths =fileUploader.registerMultipleLocalResources(
-							userJarFiles, // =  jobGraph.getUserJars() + pipeline.jars 
-							userJarInclusion == YarnConfigOptions.UserJarInclusion.DISABLED ? ConfigConstants.DEFAULT_FLINK_USR_LIB_DIR : Path.CUR_DIR, LocalResourceType.FILE); // 添加usrlib/目录下
-						
-						//FLINK_CLASSPATH 1: include-user-jar=first时,把 jobGraph.getUserJars() &pipeline.jars &usrlib 目录下jars 加到前面;
-						if (userJarInclusion == YarnConfigOptions.UserJarInclusion.FIRST) classPathBuilder.append(userClassPath).append(File.pathSeparator);//yarn.per-job-cluster.include-user-jar
-						// FLINK_CLASSPATH 2: systemClassPaths= shipFiles(yarn.ship-files配置) + logConfigFile +systemShipFiles(Sys.FLINK_LIB_DIR变量) , 包括 localResources中上传的13个flink的lib下jar包;
-						addLibFoldersToShipFiles(systemShipFiles);{
-							String libDir = System.getenv().get(ENV_FLINK_LIB_DIR);//从系统变量读取FLINK_LIB_DIR 的值;
-							effectiveShipFiles.add(new File(libDir));
-						}
-						for (String classPath : systemClassPaths) classPathBuilder.append(classPath).append(File.pathSeparator);
-						// FLINK_CLASSPATH 3: 
-						classPathBuilder.append(localResourceDescFlinkJar.getResourceKey()).append(File.pathSeparator);
-						classPathBuilder.append(jobGraphFilename).append(File.pathSeparator);
-						classPathBuilder.append("flink-conf.yaml").append(File.pathSeparator);
-						//FLINK_CLASSPATH 6: include-user-jar=last时, 把userClassPath 的jars加到CP后面; 
-						if (userJarInclusion == YarnConfigOptions.UserJarInclusion.LAST) classPathBuilder.append(userClassPath).append(File.pathSeparator);
-						
-						appMasterEnv.put(YarnConfigKeys.ENV_FLINK_CLASSPATH, classPathBuilder.toString());
-						appMasterEnv.put(YarnConfigKeys.FLINK_YARN_FILES,fileUploader.getApplicationDir().toUri().toString());
-						// 设置 CLASSPATH的参数
-						Utils.setupYarnClassPath(yarnConfiguration, appMasterEnv);{
-							// 1. 先把 _FLINK_CLASSPATH中 lib中13个flink相关jar包加到CP
-							addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), appMasterEnv.get(ENV_FLINK_CLASSPATH));
-							// 2. yarn.application.classpath + 
-							String[] applicationClassPathEntries =conf.getStrings(YarnConfiguration.YARN_APPLICATION_CLASSPATH,YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH);{
-								String valueString = get(name);// 获取yarn.application.classpath 变量
-								if (valueString == null) {// 采用Yarn默认CP: YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH, 包括7个;
-									return defaultValue;// 默认YarnCP包括4类: CONF_DIR和 share下的common,hdfs,yar3个模块的目录;
-								} else {
-									return StringUtils.getStrings(valueString);
-								}
-							}
-							for (String c : applicationClassPathEntries) {
-								addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), c.trim());
-							}
-						}
-						amContainer.setEnvironment(appMasterEnv);
-						appContext.setAMContainerSpec(amContainer);
-						
-						// 设置CPU/Memory资源大小; 
-						capability.setMemory(clusterSpecification.getMasterMemoryMB());
-						capability.setVirtualCores(flinkConfiguration.getInteger(YarnConfigOptions.APP_MASTER_VCORES));
-						appContext.setResource(capability);
-						
-						setApplicationTags(appContext);
-						yarnClient.submitApplication(appContext);{//YarnClientImpl.submitApplication()
-							SubmitApplicationRequest request =Records.newRecord(SubmitApplicationRequest.class);
-							request.setApplicationSubmissionContext(appContext);
-							rmClient.submitApplication(request);{
-								// yarn 的resourceManager的 resourcemanager.ClientRMService 进行处理
-								
-							}
-							while (true) {// 非waitingStates 就跳出返回 applicationId
-								if (!waitingStates.contains(state)) {
-									LOG.info("Submitted application " + applicationId);
-									break;
-								}
-							}
-							return applicationId;
-						}
-						LOG.info("Waiting for the cluster to be allocated");
-						while (true) {
-							report = yarnClient.getApplicationReport(appId);
-							YarnApplicationState appState = report.getYarnApplicationState();
-							switch (appState) {
-								case FAILED: case KILLED:
-									throw new YarnDeploymentException();
-								case RUNNING:case FINISHED:
-									break loop;
-								default:
-							}
-							Thread.sleep(250);
-						}
-						
-					}
-					return () -> {return new RestClusterClient<>(flinkConfiguration, report.getApplicationId());};
-					
-				}
+			clusterClientProvider = yarnClusterDescriptor.deploySessionCluster(clusterSpecification);{//YarnClusterDescriptor.deploySessionCluster()
+				return deployInternal(clusterSpecification, getYarnSessionClusterEntrypoint());// 源码详解 yarn: resourcenanger-src 
 			}
 		}
 	}
 }
+
+
+
+
+/**	1.2.1 flinkCli-yarn-SubmitAM: deploySessionCluster()-> startAppMaster()-> yarnClient.submitApplication(appContext) 
+
+YarnClusterDescriptor.startAppMaster(): 构建并启动 am: ApplicationMaster
+	//1. 构建AM命令: YarnClusterDescriptor.setupApplicationMasterContainer(): 按照%java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects% 构建AM命令;
+	//2. 拼接CLASSPATH: YarnClusterDescriptor.startAppMaster()拼接$CLASSPATH,依次采用: $FLINK_CLASSPATH() + yarn.application.classpath ,其构成如下
+			userClassPath(jobGraph.getUserJars(), pipeline.jars, usrlib) 
+			* 	systemClassPaths = yarn.ship-files配置 + $FLINK_LIB_DIR变量下jars + logConfigFile;
+			*	localResourceDescFlinkJar.getResourceKey() + jobGraphFilename + "flink-conf.yaml"
+			yarn.application.classpath 默认采用: $HADOOP_CONF_DIR和 share下的common,hdfs,yar3个模块的目录;
+	//3. 调用yarn api: YarnClientImpl.submitApplication() 与Yarn RM通信并提交启动 ApplicationMaster: YarnSessionClusterEntrypoint;
+*/
+
+YarnClusterDescriptor.deploySessionCluster(ClusterSpecification clusterSpecification);{//YarnClusterDescriptor.deploySessionCluster()
+	return deployInternal(clusterSpecification, getYarnSessionClusterEntrypoint());{
+		isReadyForDeployment(clusterSpecification);
+		checkYarnQueues(yarnClient);
+		final YarnClientApplication yarnApplication = yarnClient.createApplication();
+		final GetNewApplicationResponse appResponse = yarnApplication.getNewApplicationResponse();
+		freeClusterMem = getCurrentFreeClusterResources(yarnClient);
+		final int yarnMinAllocationMB = yarnConfiguration.getInt(YarnConfiguration.RM_SCHEDULER_MINIMUM_ALLOCATION_MB,.DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB);
+		ApplicationReport report =startAppMaster();{//YarnClusterDescriptor.startAppMaster()
+			final FileSystem fs = FileSystem.get(yarnConfiguration);
+			ApplicationSubmissionContext appContext = yarnApplication.getApplicationSubmissionContext();
+			final List<Path> providedLibDirs =Utils.getQualifiedRemoteSharedPaths(configuration, yarnConfiguration);
+			final YarnApplicationFileUploader fileUploader =YarnApplicationFileUploader.from();
+			
+			userJarFiles.addAll(jobGraph.getUserJars().stream().map(f -> f.toUri()).map(Path::new).collect(Collectors.toSet()));
+			userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet()));
+			// 设置AM(ApplicationMaster)的资源: amContainer 主要包括 env,javaCammand, localResource本地jar包资源;
+			processSpec =JobManagerProcessUtils.processSpecFromConfigWithNewOptionToInterpretLegacyHeap();{
+				CommonProcessMemorySpec processMemory = PROCESS_MEMORY_UTILS.memoryProcessSpecFromConfig(config);{
+					if (options.getRequiredFineGrainedOptions().stream().allMatch(config::contains)) {
+						
+					}else if (config.contains(options.getTotalFlinkMemoryOption())) {//jobmanager.memory.flink.size
+						return deriveProcessSpecWithTotalFlinkMemory(config);
+					}else if (config.contains(options.getTotalProcessMemoryOption())) {// jobmanager.memory.process.size
+						return deriveProcessSpecWithTotalProcessMemory(config);{
+							MemorySize totalProcessMemorySize =getMemorySizeFromConfig(config, options.getTotalProcessMemoryOption());
+							// Metaspace默认 256Mb, jobmanager.memory.jvm-metaspace.size
+							JvmMetaspaceAndOverhead jvmMetaspaceAndOverhead =deriveJvmMetaspaceAndOverheadWithTotalProcessMemory(config, totalProcessMemorySize);
+							// 约等于 total - metaspace - overhead = 1024 - 256 -196 = 576Mb
+							MemorySize totalFlinkMemorySize = totalProcessMemorySize.subtract(jvmMetaspaceAndOverhead.getTotalJvmMetaspaceAndOverheadSize());
+							// 又把 576 进一步分层heap /offHeap, 堆内 448, 堆外 128Mb; 
+							FM flinkInternalMemory =flinkMemoryUtils.deriveFromTotalFlinkMemory(config, totalFlinkMemorySize);
+							return new CommonProcessMemorySpec<>(flinkInternalMemory, jvmMetaspaceAndOverhead);
+						}
+					}
+					return failBecauseRequiredOptionsNotConfigured();
+				}
+				return new JobManagerProcessSpec(processMemory.getFlinkMemory(), processMemory.getJvmMetaspaceAndOverhead());
+			}
+			flinkConfiguration, JobManagerOptions.TOTAL_PROCESS_MEMORY);
+			ApplicationSubmissionContext appContext = yarnApplication.getApplicationSubmissionContext();
+			
+			// 拼接 %java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects% 命令;
+			JobManagerProcessSpec processSpec =JobManagerProcessUtils.processSpecFromConfigWithNewOptionToInterpretLegacyHeap(flinkConfiguration, JobManagerOptions.TOTAL_PROCESS_MEMORY);
+			final ContainerLaunchContext amContainer =setupApplicationMasterContainer(yarnClusterEntrypoint, hasKrb5, processSpec);{//YarnClusterDescriptor.
+				String javaOpts = flinkConfiguration.getString(CoreOptions.FLINK_JVM_OPTIONS);
+				javaOpts += " " + flinkConfiguration.getString(CoreOptions.FLINK_JM_JVM_OPTIONS);
+				startCommandValues.put("java", "$JAVA_HOME/bin/java");
+				startCommandValues.put("jvmmem", jvmHeapMem);{
+					jvmArgStr.append("-Xmx").append(processSpec.getJvmHeapMemorySize().getBytes());
+					jvmArgStr.append(" -Xms").append(processSpec.getJvmHeapMemorySize().getBytes());
+					if (enableDirectMemoryLimit) {//jobmanager.memory.enable-jvm-direct-memory-limit
+						jvmArgStr.append(" -XX:MaxDirectMemorySize=").append(processSpec.getJvmDirectMemorySize().getBytes());
+					}
+					jvmArgStr.append(" -XX:MaxMetaspaceSize=").append(processSpec.getJvmMetaspaceSize().getBytes());
+				}
+				startCommandValues.put("jvmopts", javaOpts);
+				startCommandValues.put("class", yarnClusterEntrypoint);
+				startCommandValues.put("args", dynamicParameterListStr);
+				//使用yarn.container-start-command-template,或者采用默认 %java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects%
+				 String commandTemplate =flinkConfiguration.getString(ConfigConstants.YARN_CONTAINER_START_COMMAND_TEMPLATE,ConfigConstants.DEFAULT_YARN_CONTAINER_START_COMMAND_TEMPLATE);
+				String amCommand =BootstrapTools.getStartCommand(commandTemplate, startCommandValues);
+			}
+			amContainer.setLocalResources(fileUploader.getRegisteredLocalResources());
+			// 设置env: _FLINK_CLASSPATH 环境变量
+			userJarFiles.addAll(jobGraph.getUserJars().stream().map(f -> f.toUri())); //添加 jobGraph.getUserJars() 中的jars
+			userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet())); // 添加 pipeline.jars中的jars;
+			final List<String> userClassPaths =fileUploader.registerMultipleLocalResources(
+				userJarFiles, // =  jobGraph.getUserJars() + pipeline.jars 
+				userJarInclusion == YarnConfigOptions.UserJarInclusion.DISABLED ? ConfigConstants.DEFAULT_FLINK_USR_LIB_DIR : Path.CUR_DIR, LocalResourceType.FILE); // 添加usrlib/目录下
+			
+			//FLINK_CLASSPATH 1: include-user-jar=first时,把 jobGraph.getUserJars() &pipeline.jars &usrlib 目录下jars 加到前面;
+			if (userJarInclusion == YarnConfigOptions.UserJarInclusion.FIRST) classPathBuilder.append(userClassPath).append(File.pathSeparator);//yarn.per-job-cluster.include-user-jar
+			// FLINK_CLASSPATH 2: systemClassPaths= shipFiles(yarn.ship-files配置) + logConfigFile +systemShipFiles(Sys.FLINK_LIB_DIR变量) , 包括 localResources中上传的13个flink的lib下jar包;
+			addLibFoldersToShipFiles(systemShipFiles);{
+				String libDir = System.getenv().get(ENV_FLINK_LIB_DIR);//从系统变量读取FLINK_LIB_DIR 的值;
+				effectiveShipFiles.add(new File(libDir));
+			}
+			for (String classPath : systemClassPaths) classPathBuilder.append(classPath).append(File.pathSeparator);
+			// FLINK_CLASSPATH 3: 
+			classPathBuilder.append(localResourceDescFlinkJar.getResourceKey()).append(File.pathSeparator);
+			classPathBuilder.append(jobGraphFilename).append(File.pathSeparator);
+			classPathBuilder.append("flink-conf.yaml").append(File.pathSeparator);
+			//FLINK_CLASSPATH 6: include-user-jar=last时, 把userClassPath 的jars加到CP后面; 
+			if (userJarInclusion == YarnConfigOptions.UserJarInclusion.LAST) classPathBuilder.append(userClassPath).append(File.pathSeparator);
+			
+			appMasterEnv.put(YarnConfigKeys.ENV_FLINK_CLASSPATH, classPathBuilder.toString());
+			appMasterEnv.put(YarnConfigKeys.FLINK_YARN_FILES,fileUploader.getApplicationDir().toUri().toString());
+			// 设置 CLASSPATH的参数
+			Utils.setupYarnClassPath(yarnConfiguration, appMasterEnv);{
+				// 1. 先把 _FLINK_CLASSPATH中 lib中13个flink相关jar包加到CP
+				addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), appMasterEnv.get(ENV_FLINK_CLASSPATH));
+				// 2. yarn.application.classpath + 
+				String[] applicationClassPathEntries =conf.getStrings(YarnConfiguration.YARN_APPLICATION_CLASSPATH,YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH);{
+					String valueString = get(name);// 获取yarn.application.classpath 变量
+					if (valueString == null) {// 采用Yarn默认CP: YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH, 包括7个;
+						return defaultValue;// 默认YarnCP包括4类: CONF_DIR和 share下的common,hdfs,yar3个模块的目录;
+					} else {
+						return StringUtils.getStrings(valueString);
+					}
+				}
+				for (String c : applicationClassPathEntries) {
+					addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), c.trim());
+				}
+			}
+			amContainer.setEnvironment(appMasterEnv);
+			appContext.setAMContainerSpec(amContainer);
+			
+			// 设置CPU/Memory资源大小; 
+			capability.setMemory(clusterSpecification.getMasterMemoryMB());
+			capability.setVirtualCores(flinkConfiguration.getInteger(YarnConfigOptions.APP_MASTER_VCORES));
+			appContext.setResource(capability);
+			
+			setApplicationTags(appContext);
+			yarnClient.submitApplication(appContext);{//YarnClientImpl.submitApplication()
+				SubmitApplicationRequest request =Records.newRecord(SubmitApplicationRequest.class);
+				request.setApplicationSubmissionContext(appContext);
+				rmClient.submitApplication(request);{
+					// yarn 的resourceManager的 resourcemanager.ClientRMService 进行处理
+					
+				}
+				while (true) {// 非waitingStates 就跳出返回 applicationId
+					if (!waitingStates.contains(state)) {
+						LOG.info("Submitted application " + applicationId);
+						break;
+					}
+				}
+				return applicationId;
+			}
+			
+			LOG.info("Waiting for the cluster to be allocated");
+			while (true) {
+				report = yarnClient.getApplicationReport(appId);
+				YarnApplicationState appState = report.getYarnApplicationState();
+				switch (appState) {
+					case FAILED: case KILLED:
+						throw new YarnDeploymentException();
+					case RUNNING:case FINISHED:
+						break loop;
+					default:
+				}
+				Thread.sleep(250);
+			}
+			
+		}
+		return () -> {return new RestClusterClient<>(flinkConfiguration, report.getApplicationId());};
+		
+	}
+}
+
+// FlinkYarn AM的CLASSPATH加载源码
+/*
+$CLASSPATH
+	$FLINK_CLASSPATH
+		userClassPath = jobGraph.getUserJars() + pipeline.jars变量值 +  usrlib 目录
+			- jobGraph.getUserJars()
+			- pipeline.jars
+			- usrlib
+		systemClassPaths = yarn.ship-files配置 + $FLINK_LIB_DIR变量下jars + logConfigFile
+			- yarn.ship-files
+			- $FLINK_LIB_DIR
+			- logConfigFile
+			
+		localResourceDescFlinkJar.getResourceKey()
+		jobGraphFilename
+		"flink-conf.yaml"
+		
+	yarn.application.classpath
+		$HADOOP_CONF_DIR
+		common: $HADOOP_COMMON_HOME/share/*/common/*
+		hdfs: $HADOOP_HDFS_HOME/share/*/hdfs/*
+		yarn: $HADOOP_YARN_HOME/share/*/yarn/*
+
+// 
+yarn.per-job-cluster.include-user-jar
+yarn.provided.lib.dirs
+$internal.yarn.log-config-file
+
+
+*/
+
+YarnClusterDescriptor.startAppMaster(){//YarnClusterDescriptor.startAppMaster()
+	final FileSystem fs = FileSystem.get(yarnConfiguration);
+	ApplicationSubmissionContext appContext = yarnApplication.getApplicationSubmissionContext();
+	final List<Path> providedLibDirs =Utils.getQualifiedRemoteSharedPaths(configuration, yarnConfiguration);
+	final YarnApplicationFileUploader fileUploader =YarnApplicationFileUploader.from();
+	
+	userJarFiles.addAll(jobGraph.getUserJars().stream().map(f -> f.toUri()).map(Path::new).collect(Collectors.toSet()));
+	userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet()));
+	
+	flinkConfiguration, JobManagerOptions.TOTAL_PROCESS_MEMORY);
+	ApplicationSubmissionContext appContext = yarnApplication.getApplicationSubmissionContext();
+	
+	// 拼接 %java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects% 命令;
+	JobManagerProcessSpec processSpec =JobManagerProcessUtils.processSpecFromConfigWithNewOptionToInterpretLegacyHeap(flinkConfiguration, JobManagerOptions.TOTAL_PROCESS_MEMORY);
+	final ContainerLaunchContext amContainer =setupApplicationMasterContainer(yarnClusterEntrypoint, hasKrb5, processSpec);{//YarnClusterDescriptor.
+		String javaOpts = flinkConfiguration.getString(CoreOptions.FLINK_JVM_OPTIONS);
+		javaOpts += " " + flinkConfiguration.getString(CoreOptions.FLINK_JM_JVM_OPTIONS);
+		startCommandValues.put("java", "$JAVA_HOME/bin/java");
+		startCommandValues.put("jvmmem", jvmHeapMem);{
+			jvmArgStr.append("-Xmx").append(processSpec.getJvmHeapMemorySize().getBytes());
+			jvmArgStr.append(" -Xms").append(processSpec.getJvmHeapMemorySize().getBytes());
+			if (enableDirectMemoryLimit) {//jobmanager.memory.enable-jvm-direct-memory-limit
+				jvmArgStr.append(" -XX:MaxDirectMemorySize=").append(processSpec.getJvmDirectMemorySize().getBytes());
+			}
+			jvmArgStr.append(" -XX:MaxMetaspaceSize=").append(processSpec.getJvmMetaspaceSize().getBytes());
+		}
+		startCommandValues.put("jvmopts", javaOpts);
+		startCommandValues.put("class", yarnClusterEntrypoint);
+		startCommandValues.put("args", dynamicParameterListStr);
+		//使用yarn.container-start-command-template,或者采用默认 %java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects%
+		 String commandTemplate =flinkConfiguration.getString(ConfigConstants.YARN_CONTAINER_START_COMMAND_TEMPLATE,ConfigConstants.DEFAULT_YARN_CONTAINER_START_COMMAND_TEMPLATE);
+		String amCommand =BootstrapTools.getStartCommand(commandTemplate, startCommandValues);
+	}
+	amContainer.setLocalResources(fileUploader.getRegisteredLocalResources());
+	
+	Set<File> systemShipFiles = new HashSet<>(shipFiles.size());
+	for (File file : shipFiles) {
+         systemShipFiles.add(file.getAbsoluteFile());
+    }
+	// $internal.yarn.log-config-file ,如果存在则加到 systemShipFiles中;
+    if (null != configuration.getString(YarnConfigOptionsInternal.APPLICATION_LOG_CONFIG_FILE)) {
+		systemShipFiles.add(new File(logConfigFilePath));
+    }
+	// 如果 
+	if (providedLibDirs == null || providedLibDirs.isEmpty()) {
+        addLibFoldersToShipFiles(systemShipFiles);
+    }
+	
+	// Register all files in provided lib dirs as local resources with public visibility and upload the remaining dependencies as local resources with APPLICATION visibility.
+    Collection<Path> shipFiles = systemShipFiles.stream().map(e -> new Path(e.toURI())).collect(Collectors.toSet());{
+		
+	}
+	final List<String> systemClassPaths = fileUploader.registerProvidedLocalResources(final Collection<Path> shipFiles);{
+		for (Path shipFile : shipFiles) {
+			
+		}
+	}
+	final List<String> uploadedDependencies =fileUploader.registerMultipleLocalResources(systemShipFiles.stream().map(e -> new Path(e.toURI())).collect(Collectors.toSet()));
+	systemClassPaths.addAll(uploadedDependencies);
+	
+	// 设置env: _FLINK_CLASSPATH 环境变量
+	userJarFiles.addAll(jobGraph.getUserJars().stream().map(f -> f.toUri())); //添加 jobGraph.getUserJars() 中的jars
+	userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet())); // 添加 pipeline.jars中的jars;
+	final List<String> userClassPaths =fileUploader.registerMultipleLocalResources(
+		userJarFiles, // =  jobGraph.getUserJars() + pipeline.jars 
+		userJarInclusion == YarnConfigOptions.UserJarInclusion.DISABLED ? ConfigConstants.DEFAULT_FLINK_USR_LIB_DIR : Path.CUR_DIR, LocalResourceType.FILE); // 添加usrlib/目录下
+	
+	if (userJarInclusion == YarnConfigOptions.UserJarInclusion.ORDER) {//?
+		systemClassPaths.addAll(userClassPaths);
+	}
+	
+	//FLINK_CLASSPATH 1: include-user-jar=first时,把 jobGraph.getUserJars() &pipeline.jars &usrlib 目录下jars 加到前面;
+	if (userJarInclusion == YarnConfigOptions.UserJarInclusion.FIRST) classPathBuilder.append(userClassPath).append(File.pathSeparator);//yarn.per-job-cluster.include-user-jar
+	// FLINK_CLASSPATH 2: systemClassPaths= shipFiles(yarn.ship-files配置) + logConfigFile +systemShipFiles(Sys.FLINK_LIB_DIR变量) , 包括 localResources中上传的13个flink的lib下jar包;
+	addLibFoldersToShipFiles(systemShipFiles);{
+		String libDir = System.getenv().get(ENV_FLINK_LIB_DIR);//从系统变量读取FLINK_LIB_DIR 的值;
+		effectiveShipFiles.add(new File(libDir));
+	}
+	for (String classPath : systemClassPaths) classPathBuilder.append(classPath).append(File.pathSeparator);
+	// FLINK_CLASSPATH 3: 
+	classPathBuilder.append(localResourceDescFlinkJar.getResourceKey()).append(File.pathSeparator);
+	classPathBuilder.append(jobGraphFilename).append(File.pathSeparator);
+	classPathBuilder.append("flink-conf.yaml").append(File.pathSeparator);
+	//FLINK_CLASSPATH 6: include-user-jar=last时, 把userClassPath 的jars加到CP后面; 
+	if (userJarInclusion == YarnConfigOptions.UserJarInclusion.LAST) classPathBuilder.append(userClassPath).append(File.pathSeparator);
+	
+	appMasterEnv.put(YarnConfigKeys.ENV_FLINK_CLASSPATH, classPathBuilder.toString());
+	appMasterEnv.put(YarnConfigKeys.FLINK_YARN_FILES,fileUploader.getApplicationDir().toUri().toString());
+	// 设置 CLASSPATH的参数
+	Utils.setupYarnClassPath(yarnConfiguration, appMasterEnv);{
+		// 1. 先把 _FLINK_CLASSPATH中 lib中13个flink相关jar包加到CP
+		addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), appMasterEnv.get(ENV_FLINK_CLASSPATH));
+		// 2. yarn.application.classpath + 
+		String[] applicationClassPathEntries =conf.getStrings(YarnConfiguration.YARN_APPLICATION_CLASSPATH,YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH);{
+			String valueString = get(name);// 获取yarn.application.classpath 变量
+			if (valueString == null) {// 采用Yarn默认CP: YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH, 包括7个;
+				return defaultValue;// 默认YarnCP包括4类: CONF_DIR和 share下的common,hdfs,yar3个模块的目录;
+			} else {
+				return StringUtils.getStrings(valueString);
+			}
+		}
+		for (String c : applicationClassPathEntries) {
+			addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), c.trim());
+		}
+	}
+	amContainer.setEnvironment(appMasterEnv);
+	
+}
+
+
+
+/** 1.2.2 yarnCli: submitApplication 与Yarn RM通信,提交启动AM; 
+	//1. 发送Rpc请求: ProtobufRpcEngine.invoke()
+	//2. 通信等待非 waitingStates就结束阻塞,返回 applicationId
+*/
+
+YarnClientImpl.submitApplication(ApplicationSubmissionContext appContext){//YarnClientImpl.submitApplication()
+	SubmitApplicationRequest request =Records.newRecord(SubmitApplicationRequest.class);
+	request.setApplicationSubmissionContext(appContext);
+	
+	rmClient.submitApplication(request);{// ApplicationClientProtocolPBClientImpl.submitApplication()
+		// yarn 的resourceManager的 resourcemanager.ClientRMService 进行处理
+		SubmitApplicationRequestProto requestProto= ((SubmitApplicationRequestPBImpl) request).getProto();
+		SubmitApplicationResponseProto proto= proxy.submitApplication(null,requestProto){
+			// 实际执行: 
+			ProtobufRpcEngine.invoke(Object proxy, Method method, Object[] args){}{
+				// method= ApplicationClientProtocol.BlokingInterface.submitApplication()
+				RequestHeaderProto rpcRequestHeader = constructRpcRequestHeader(method);
+				RpcRequestWrapper rpcRequest= new RpcRequestWrapper(rpcRequestHeader, theRequest), remoteId,fallbackToSimpleAuth);
+				RpcResponseWrapper val=(RpcResponseWrapper) client.call(RPC.RpcKind.RPC_PROTOCOL_BUFFER,rpcRequest);
+				Message returnMessage = prototype.newBuilderForType().mergeFrom(val.theResponseRead).build();
+				return returnMessage;
+			}
+		}
+		return new SubmitApplicationResponsePBImpl(proxy.submitApplication(null,requestProto));
+	}
+	while (true) {// 非waitingStates 就跳出返回 applicationId
+		if (!waitingStates.contains(state)) {
+			LOG.info("Submitted application " + applicationId);
+			break;
+		}
+	}
+	return applicationId;
+}
+
 
 
 // 1.3 K8s Cli
