@@ -353,6 +353,10 @@ $CLASSPATH
 			- $FLINK_LIB_DIR
 			- logConfigFile
 			
+			systemShipFiles: 
+				- logConfigFilePath, 配置$internal.yarn.log-config-file, 对应内容: /opt/flink/conf/log4j.properties
+				- providedLibDirs: 
+			
 		localResourceDescFlinkJar.getResourceKey()
 		jobGraphFilename
 		"flink-conf.yaml"
@@ -371,114 +375,311 @@ $internal.yarn.log-config-file
 
 */
 
-YarnClusterDescriptor.startAppMaster(){//YarnClusterDescriptor.startAppMaster()
-	final FileSystem fs = FileSystem.get(yarnConfiguration);
-	ApplicationSubmissionContext appContext = yarnApplication.getApplicationSubmissionContext();
-	final List<Path> providedLibDirs =Utils.getQualifiedRemoteSharedPaths(configuration, yarnConfiguration);
-	final YarnApplicationFileUploader fileUploader =YarnApplicationFileUploader.from();
-	
-	userJarFiles.addAll(jobGraph.getUserJars().stream().map(f -> f.toUri()).map(Path::new).collect(Collectors.toSet()));
-	userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet()));
-	
-	flinkConfiguration, JobManagerOptions.TOTAL_PROCESS_MEMORY);
-	ApplicationSubmissionContext appContext = yarnApplication.getApplicationSubmissionContext();
-	
-	// 拼接 %java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects% 命令;
-	JobManagerProcessSpec processSpec =JobManagerProcessUtils.processSpecFromConfigWithNewOptionToInterpretLegacyHeap(flinkConfiguration, JobManagerOptions.TOTAL_PROCESS_MEMORY);
-	final ContainerLaunchContext amContainer =setupApplicationMasterContainer(yarnClusterEntrypoint, hasKrb5, processSpec);{//YarnClusterDescriptor.
-		String javaOpts = flinkConfiguration.getString(CoreOptions.FLINK_JVM_OPTIONS);
-		javaOpts += " " + flinkConfiguration.getString(CoreOptions.FLINK_JM_JVM_OPTIONS);
-		startCommandValues.put("java", "$JAVA_HOME/bin/java");
-		startCommandValues.put("jvmmem", jvmHeapMem);{
-			jvmArgStr.append("-Xmx").append(processSpec.getJvmHeapMemorySize().getBytes());
-			jvmArgStr.append(" -Xms").append(processSpec.getJvmHeapMemorySize().getBytes());
-			if (enableDirectMemoryLimit) {//jobmanager.memory.enable-jvm-direct-memory-limit
-				jvmArgStr.append(" -XX:MaxDirectMemorySize=").append(processSpec.getJvmDirectMemorySize().getBytes());
+// flink yarn CLASSPATH 定义
+{
+	/* 1. 定义 dist,ship,archives资源路径: 
+		flinkJarPath:	从 yarn.flink-dist-jar配置,或者将 this.codesource本包作为 dist包路径; 	未配置默认: /opt/flink/flink-1.12.2/lib/flink-dist_2.11-1.12.2.jar
+		shipFiles:		从 yarn.ship-files读取			未配默认为空;
+		shipArchives:	从 yarn.ship-archives 读取 		未配默认为空;
+	*/
+	AbstractJobClusterExecutor.execute().createClusterDescriptor().getClusterDescriptor(){
+		final YarnClient yarnClient = YarnClient.createYarnClient();
+		yarnClient.init(yarnConfiguration); yarnClient.start();
+		
+		new YarnClusterDescriptor();{
+			this.userJarInclusion = getUserJarInclusionMode(flinkConfiguration);
+			//1 从 yarn.flink-dist-jar配置,或者将 this.codesource本包作为 dist包路径,并赋值 YarnClusterDescriptor.flinkJarPath 变量;
+			getLocalFlinkDistPath(flinkConfiguration).ifPresent(this::setLocalJarPath);{
+				String localJarPath = configuration.getString(YarnConfigOptions.FLINK_DIST_JAR); // yarn.flink-dist-jar
+				if (localJarPath != null) {
+					return Optional.of(new Path(localJarPath));
+				}
+				final String decodedPath = getDecodedJarPath();{//从 Class.pd.codesource.location.path //this的类就是 flink-dist.jar导进的;
+					final String encodedJarPath =getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+					return URLDecoder.decode(encodedJarPath, Charset.defaultCharset().name());
+				}
+				return decodedPath.endsWith(".jar")? Optional.of(new Path(new File(decodedPath).toURI())): Optional.empty();
 			}
-			jvmArgStr.append(" -XX:MaxMetaspaceSize=").append(processSpec.getJvmMetaspaceSize().getBytes());
+			//2 从 yarn.ship-files读取 资源文件路径,并赋值 YarnClusterDescriptor.shipFiles 变量;
+			decodeFilesToShipToCluster(flinkConfiguration, YarnConfigOptions.SHIP_FILES){// YarnClusterDescriptor.decodeFilesToShipToCluster
+				final List<File> files =ConfigUtils.decodeListFromConfig(configuration, configOption, File::new);// yarn.ship-files 定义 ship:jar包船?
+				return files.isEmpty() ? Optional.empty() : Optional.of(files);
+			}.ifPresent(this::addShipFiles);
+			//3 从 yarn.ship-archives 读取 资源文件路径,并赋值 YarnClusterDescriptor.shipArchives 变量;
+			decodeFilesToShipToCluster(flinkConfiguration, YarnConfigOptions.SHIP_ARCHIVES).ifPresent(this::addShipArchives);
+			this.yarnQueue = flinkConfiguration.getString(YarnConfigOptions.APPLICATION_QUEUE);
 		}
-		startCommandValues.put("jvmopts", javaOpts);
-		startCommandValues.put("class", yarnClusterEntrypoint);
-		startCommandValues.put("args", dynamicParameterListStr);
-		//使用yarn.container-start-command-template,或者采用默认 %java% %jvmmem% %jvmopts% %logging% %class% %args% %redirects%
-		 String commandTemplate =flinkConfiguration.getString(ConfigConstants.YARN_CONTAINER_START_COMMAND_TEMPLATE,ConfigConstants.DEFAULT_YARN_CONTAINER_START_COMMAND_TEMPLATE);
-		String amCommand =BootstrapTools.getStartCommand(commandTemplate, startCommandValues);
 	}
-	amContainer.setLocalResources(fileUploader.getRegisteredLocalResources());
-	
-	Set<File> systemShipFiles = new HashSet<>(shipFiles.size());
-	for (File file : shipFiles) {
-         systemShipFiles.add(file.getAbsoluteFile());
-    }
-	// $internal.yarn.log-config-file ,如果存在则加到 systemShipFiles中;
-    if (null != configuration.getString(YarnConfigOptionsInternal.APPLICATION_LOG_CONFIG_FILE)) {
-		systemShipFiles.add(new File(logConfigFilePath));
-    }
-	// 如果 
-	if (providedLibDirs == null || providedLibDirs.isEmpty()) {
-        addLibFoldersToShipFiles(systemShipFiles);
-    }
-	
-	// Register all files in provided lib dirs as local resources with public visibility and upload the remaining dependencies as local resources with APPLICATION visibility.
-    Collection<Path> shipFiles = systemShipFiles.stream().map(e -> new Path(e.toURI())).collect(Collectors.toSet());{
+
+	/* 2. 定义$FLINK_CLASSPATH, CLASSPATH
+		List<Path> providedLibDirs:		从 yarn.provided.lib.dirs 中读取配置	未配置则未空;
+		
+	$FLINK_CLASSPATH
+
+			
+		systemClassPaths = yarn.ship-files配置 + $FLINK_LIB_DIR变量下jars + logConfigFile
+			- fileUploader.providedSharedLibs 中的 非dist非plugin 部分;
+				* List<Path> providedLibDirs: yarn.provided.lib.dirs属性中有效dir部分
+				
+			- uploadedDependencies: 仅添加systemShipFiles中 非PUBLIc&& 非dist 的部分;
+				- systemShipFiles
+					- logConfigFilePath
+					- $FLINK_LIB_DIR, 当 providedLibDirs(yarn.provided.lib.dirs) 为空时, 才添加 $FLINK_LIB_DIR
+			
+			- userClassPaths:  仅当yarn.per-job-cluster.include-user-jar=order时, 添加 userJarFiles
+				- userJarFiles:	
+		
+		userClassPath: 		取[非PUBLIc &&非dist]的userJarFiles;
+			- userJarFiles:	
+				- jobGraph.getUserJars()
+				- pipeline.jars
+				- usrlib
+		
+		flinkJarPath: (yarn.flink-dist-jar 或 this.codesource.localpath
+			yarn.flink-dist-jar
+				若不存在,则使用 this.codesource.localpath(即flink-dist本包)
+		
+		localResourceDescFlinkJar.getResourceKey()
+		jobGraphFilename
+		"flink-conf.yaml"
+		
+	yarn.application.classpath
+		$HADOOP_CONF_DIR
+		common: $HADOOP_COMMON_HOME/share/*/common/*
+		hdfs: $HADOOP_HDFS_HOME/share/*/hdfs/*
+		yarn: $HADOOP_YARN_HOME/share/*/yarn/*
+		
+	*/
+
+	YarnClusterDescriptor.startAppMaster(){//YarnClusterDescriptor.startAppMaster()
+		final FileSystem fs = FileSystem.get(yarnConfiguration);
+		ApplicationSubmissionContext appContext = yarnApplication.getApplicationSubmissionContext();
+		// 从 yarn.provided.lib.dirs 中读取配置;若存在则加到 systemClassPaths->CLASSPATH; 若不存在,则会启用加载$FLINK_LIB_DIR到systemClassPaths(->CP);
+		final List<Path> providedLibDirs =Utils.getQualifiedRemoteSharedPaths(configuration, yarnConfiguration);{
+			return getRemoteSharedPaths(){//Utils.
+				// yarn.provided.lib.dirs
+				final List<Path> providedLibDirs =ConfigUtils.decodeListFromConfig(configuration, YarnConfigOptions.PROVIDED_LIB_DIRS, strToPathMapper);
+				return providedLibDirs;
+			}
+		}
+		//重点是过滤 providedLibDirs(yarn.provided.lib.dirs) 中 为dir目录的,并赋值给 fileUploader.providedSharedLibs
+		final YarnApplicationFileUploader fileUploader =YarnApplicationFileUploader.from(fs,providedLibDirs);{new YarnApplicationFileUploader(){
+			this.applicationDir = getApplicationDir(applicationId);
+			this.providedSharedLibs = getAllFilesInProvidedLibDirs(providedLibDirs);{
+				Map<String, FileStatus> allFiles = new HashMap<>();
+				providedLibDirs.forEach(path -> {
+					if (!fileSystem.exists(path) || !fileSystem.isDirectory(path)) {
+						LOG.warn("Provided lib dir {} does not exist or is not a directory. Ignoring.",path);
+					}else{
+						final RemoteIterator<LocatedFileStatus> iterable =fileSystem.listFiles(path, true).forEach(()-> allFiles.put(name, locatedFileStatus););
+					}
+				});
+				return Collections.unmodifiableMap(allFiles);
+			}
+		}}
+		
+		// 若shipFiles有(yarn.ship-files 或空), 添加到 systemShipFiles中,并最终 -> uploadedDependencies -> systemClassPaths -> $FLINK_CLASSPATH -> CLASSPATH
+		Set<File> systemShipFiles = new HashSet<>(shipFiles.size());
+		for (File file : shipFiles) {
+			 systemShipFiles.add(file.getAbsoluteFile());
+		}
+		// $internal.yarn.log-config-file ,如果存在则加到 systemShipFiles中; 一般这里是: /opt/flink/conf/log4j.properties; 最终 -> uploadedDependencies -> systemClassPaths -> $FLINK_CLASSPATH -> CLASSPATH
+		final String logConfigFilePath =configuration.getString(YarnConfigOptionsInternal.APPLICATION_LOG_CONFIG_FILE);
+		if (null !=logConfigFilePath) {
+			systemShipFiles.add(new File(logConfigFilePath));
+		}
+		// 若 yarn.provided.lib.dirs不存在, 则加载 FLINK_LIB_DIR 到 systemShipFiles -> systemClassPaths -> CLASSPATH;
+		if (providedLibDirs == null || providedLibDirs.isEmpty()) {
+			addLibFoldersToShipFiles(systemShipFiles);{//YarnClusterDescriptor.addLibFoldersToShipFiles()
+				String libDir = System.getenv().get(ENV_FLINK_LIB_DIR);// 即 $FLINK_LIB_DIR 环境变量;
+				if (libDir != null) {
+					File directoryFile = new File(libDir);
+					if (directoryFile.isDirectory()) {
+						effectiveShipFiles.add(directoryFile);//effectiveShipFiles 即传入的 systemShipFiles;
+					}
+				};
+			}
+		}
+		
+		final Set<Path> userJarFiles = new HashSet<>();
+		// 将JobGraph.userJars添加到 userJarFiles中; 	应该就是 -jar指定的App包,如examples/batch/WordCount.jar;  并最终 userJarFiles-> userClassPaths -> $FLINK_CLASSPATH -> CLASSPATH
+		if (jobGraph != null) {
+			List<Path> jobUserJars = jobGraph.getUserJars().stream().map(f -> f.toUri()).map(Path::new).collect(Collectors.toSet());
+			userJarFiles.addAll(jobUserJars);
+		}
+		//从 pipeline.jars中读取值并赋值给 jarUrls;  默认就是-jar 路径: examples/batch/WordCount.jar
+		final List<URI> jarUrls =ConfigUtils.decodeListFromConfig(configuration, PipelineOptions.JARS, URI::create);// 从pipeline.jars读取值;
+		//只有当 YarnApplication 模式时,才会加到 userClassPaths ->$FLINK_CLASSPATH中;  一般 yarnClusterEntrypoint是 YarnJob or YarnSession, 所以不加入 CP;
+		if (jarUrls != null && YarnApplicationClusterEntryPoint.class.getName().equals(yarnClusterEntrypoint)) {
+			userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet()));
+		}
+		
+		// Register all files in provided lib dirs as local resources with public visibility and upload the remaining dependencies as local resources with APPLICATION visibility.
+		// 把fileUploader.providedSharedLibs( yarn.provided.lib.dirs属性中有效dir部分) 中的 非dist非plugin的, 
+		final List<String> systemClassPaths = fileUploader.registerProvidedLocalResources();{// YarnApplicationFileUploader.registerProvidedLocalResources()
+			final ArrayList<String> classPaths = new ArrayList<>();
+			providedSharedLibs.forEach((fileName, fileStatus)->{
+				final Path filePath = fileStatus.getPath();
+				if (!isFlinkDistJar(filePath.getName()) && !isPlugin(filePath)) {// 把非dist非plugin的依赖文件,添加到 classPaths中;
+					classPaths.add(fileName);
+				}else if (isFlinkDistJar(filePath.getName())) { // 如果是flink-dist文件,直接赋值给 flinkDist;
+					flinkDist = descriptor;
+				}
+			});
+		}
+		// 将systemShipFiles中(logConfigFile + $FLINK_LIB_DIR(不存在yarn.provided.lib.dirs时) )内容赋给 shipFiles;
+		Collection<Path> shipFiles = systemShipFiles.stream().map(e -> new Path(e.toURI())).collect(Collectors.toSet());
+		// 将shipFiles中(1或2项)所有(递归遍历)内容,过滤出 [PUBLIC] && 非dist] 的所有 archives & resources, 一起返回赋给uploadedDependencies;
+		final List<String> uploadedDependencies =fileUploader.registerMultipleLocalResources(shipFiles,Path.CUR_DIR,LocalResourceType.FILE);{
+			final List<Path> localPaths = new ArrayList<>();
+			for (Path shipFile : shipFiles) {
+				if (Utils.isRemotePath(shipFile.toString())) {
+					
+				}else{
+					final File file = new File(shipFile.toUri().getPath());
+					if (file.isDirectory()) {// 
+						Files.walkFileTree();//把目前下所有配置都加载?
+					}
+				}
+				localPaths.add(shipFile);
+				relativePaths.add(new Path(localResourcesDirectory, shipFile.getName()));
+			}
+			for (int i = 0; i < localPaths.size(); i++) {
+				if (!isFlinkDistJar(relativePath.getName())) {
+					if (!resourceDescriptor.alreadyRegisteredAsLocalResource(){// 只有PUBLIC公开级别的资源 才添加; log4j.properties因为是APP级别被过滤掉;
+						return this.visibility.equals(LocalResourceVisibility.PUBLIC)
+					}) {
+						if (key.endsWith("jar")) { //是jar的算到 archives,
+							archives.add(relativePath.toString());
+						}else{ //所有非jar的file 都算到 resource中; 
+							resources.add(relativePath.getParent().toString());
+						}
+					}
+				}
+			}
+			
+			final ArrayList<String> classPaths = new ArrayList<>();
+			resources.stream().sorted().forEach(classPaths::add);
+			archives.stream().sorted().forEach(classPaths::add);
+			return classPaths;
+		}
+		systemClassPaths.addAll(uploadedDependencies);
+		
+		if (providedLibDirs == null || providedLibDirs.isEmpty()) {
+			addPluginsFoldersToShipFiles(shipOnlyFiles);
+			fileUploader.registerMultipleLocalResources();
+		}
+		if (!shipArchives.isEmpty()) {//若yarn.ship-archives不为空,
+			shipArchivesFile = shipArchives.stream().map(e -> new Path(e.toURI())).collect(Collectors.toSet());
+			fileUploader.registerMultipleLocalResources(shipArchivesFile);
+		}
+		
+		// 设置env: _FLINK_CLASSPATH 环境变量
+		userJarFiles.addAll(jobGraph.getUserJars().stream().map(f -> f.toUri())); //添加 jobGraph.getUserJars() 中的jars
+		userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet())); // 添加 pipeline.jars中的jars;
+		// localResourcesDir= "."
+		String localResourcesDir= userJarInclusion == YarnConfigOptions.UserJarInclusion.DISABLED ? ConfigConstants.DEFAULT_FLINK_USR_LIB_DIR : Path.CUR_DIR, LocalResourceType.FILE;
+		final List<String> userClassPaths =fileUploader.registerMultipleLocalResources(userJarFiles, localResourcesDir);{// 过滤其中[非PUBLIC] && 非dist] 
+			for (int i = 0; i < localPaths.size(); i++) {
+				final Path relativePath = localPaths.get(i).get(i);
+				if (!isFlinkDistJar(relativePath.getName())) {
+					// 只要不是PUBLIC 级别的, 就添加; 这里的 userJar(如:examples/batch/WordCount.jar) 被成功添加;
+					if (!resourceDescriptor.alreadyRegisteredAsLocalResource(){// 只要非PUBLIC公开级别的, 就添加; 
+						return this.visibility.equals(LocalResourceVisibility.PUBLIC)
+					}) {
+						if (key.endsWith("jar")) { //是jar的算到 archives,
+							archives.add(relativePath.toString());
+						}else{ //所有非jar的file 都算到 resource中; 
+							resources.add(relativePath.getParent().toString());
+						}
+					}
+				}
+			}
+		}
+		// 当yarn.per-job-cluster.include-user-jar=order时, 添加userClassPaths到 systemClassPath
+		if (userJarInclusion == YarnConfigOptions.UserJarInclusion.ORDER) {//yarn.per-job-cluster.include-user-jar=order时 
+			systemClassPaths.addAll(userClassPaths);
+		}
+		
+		//FLINK_CLASSPATH 1: include-user-jar=first时,把 jobGraph.getUserJars() &pipeline.jars &usrlib 目录下jars 加到前面;
+		if (userJarInclusion == YarnConfigOptions.UserJarInclusion.FIRST){////yarn.per-job-cluster.include-user-jar=first时, userClassPath放前面;
+			classPathBuilder.append(userClassPath).append(File.pathSeparator);
+		} 
+		Collections.sort(systemClassPaths);
+		Collections.sort(userClassPaths);
+		StringBuilder classPathBuilder = new StringBuilder();
+		
+		for (String classPath : systemClassPaths) {// 添加system级别的CP
+            classPathBuilder.append(classPath).append(File.pathSeparator);
+        }
+		// 封装 flinkJarPath(yarn.flink-dist-jar 或 this.codesource.localpath本包,即flink-dist包); 并添加到 classPath中;
+		final YarnLocalResourceDescriptor localResourceDescFlinkJar =fileUploader.uploadFlinkDist(flinkJarPath);
+		classPathBuilder.append(localResourceDescFlinkJar.getResourceKey()).append(File.pathSeparator);
+		
+		// 把jobGraph序列号成文件,并把 "job.graph" 添加到classpath;
+		if (jobGraph != null) {
+			File tmpJobGraphFile = File.createTempFile(appId.toString(), null);
+			// 把jobGraph对象写出到临时文件: /tmp/application_1639998011452_00604014191052203287620.tmp
+			try (FileOutputStream output = new FileOutputStream(tmpJobGraphFile);
+				 ObjectOutputStream obOutput = new ObjectOutputStream(output)) {
+                    obOutput.writeObject(jobGraph);
+            }
+			final String jobGraphFilename = "job.graph";
+			configuration.setString(JOB_GRAPH_FILE_PATH, jobGraphFilename);
+			fileUploader.registerSingleLocalResource();
+			classPathBuilder.append(jobGraphFilename).append(File.pathSeparator);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		// FLINK_CLASSPATH 2: systemClassPaths= shipFiles(yarn.ship-files配置) + logConfigFile +systemShipFiles(Sys.FLINK_LIB_DIR变量) , 包括 localResources中上传的13个flink的lib下jar包;
+		addLibFoldersToShipFiles(systemShipFiles);{
+			String libDir = System.getenv().get(ENV_FLINK_LIB_DIR);//从系统变量读取FLINK_LIB_DIR 的值;
+			effectiveShipFiles.add(new File(libDir));
+		}
+		for (String classPath : systemClassPaths) classPathBuilder.append(classPath).append(File.pathSeparator);
+		// FLINK_CLASSPATH 3: 
+		classPathBuilder.append(localResourceDescFlinkJar.getResourceKey()).append(File.pathSeparator);
+		classPathBuilder.append(jobGraphFilename).append(File.pathSeparator);
+		classPathBuilder.append("flink-conf.yaml").append(File.pathSeparator);
+		//FLINK_CLASSPATH 6: include-user-jar=last时, 把userClassPath 的jars加到CP后面; 
+		if (userJarInclusion == YarnConfigOptions.UserJarInclusion.LAST) classPathBuilder.append(userClassPath).append(File.pathSeparator);
+		
+		appMasterEnv.put(YarnConfigKeys.ENV_FLINK_CLASSPATH, classPathBuilder.toString());
+		appMasterEnv.put(YarnConfigKeys.FLINK_YARN_FILES,fileUploader.getApplicationDir().toUri().toString());
+		// 设置 CLASSPATH的参数
+		Utils.setupYarnClassPath(yarnConfiguration, appMasterEnv);{
+			// 1. 先把 _FLINK_CLASSPATH中 lib中13个flink相关jar包加到CP
+			addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), appMasterEnv.get(ENV_FLINK_CLASSPATH));
+			// 2. yarn.application.classpath + 
+			String[] applicationClassPathEntries =conf.getStrings(YarnConfiguration.YARN_APPLICATION_CLASSPATH,YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH);{
+				String valueString = get(name);// 获取yarn.application.classpath 变量
+				if (valueString == null) {// 采用Yarn默认CP: YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH, 包括7个;
+					return defaultValue;// 默认YarnCP包括4类: CONF_DIR和 share下的common,hdfs,yar3个模块的目录;
+				} else {
+					return StringUtils.getStrings(valueString);
+				}
+			}
+			for (String c : applicationClassPathEntries) {
+				addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), c.trim());
+			}
+		}
+		amContainer.setEnvironment(appMasterEnv);
 		
 	}
-	final List<String> systemClassPaths = fileUploader.registerProvidedLocalResources(final Collection<Path> shipFiles);{
-		for (Path shipFile : shipFiles) {
-			
-		}
-	}
-	final List<String> uploadedDependencies =fileUploader.registerMultipleLocalResources(systemShipFiles.stream().map(e -> new Path(e.toURI())).collect(Collectors.toSet()));
-	systemClassPaths.addAll(uploadedDependencies);
-	
-	// 设置env: _FLINK_CLASSPATH 环境变量
-	userJarFiles.addAll(jobGraph.getUserJars().stream().map(f -> f.toUri())); //添加 jobGraph.getUserJars() 中的jars
-	userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet())); // 添加 pipeline.jars中的jars;
-	final List<String> userClassPaths =fileUploader.registerMultipleLocalResources(
-		userJarFiles, // =  jobGraph.getUserJars() + pipeline.jars 
-		userJarInclusion == YarnConfigOptions.UserJarInclusion.DISABLED ? ConfigConstants.DEFAULT_FLINK_USR_LIB_DIR : Path.CUR_DIR, LocalResourceType.FILE); // 添加usrlib/目录下
-	
-	if (userJarInclusion == YarnConfigOptions.UserJarInclusion.ORDER) {//?
-		systemClassPaths.addAll(userClassPaths);
-	}
-	
-	//FLINK_CLASSPATH 1: include-user-jar=first时,把 jobGraph.getUserJars() &pipeline.jars &usrlib 目录下jars 加到前面;
-	if (userJarInclusion == YarnConfigOptions.UserJarInclusion.FIRST) classPathBuilder.append(userClassPath).append(File.pathSeparator);//yarn.per-job-cluster.include-user-jar
-	// FLINK_CLASSPATH 2: systemClassPaths= shipFiles(yarn.ship-files配置) + logConfigFile +systemShipFiles(Sys.FLINK_LIB_DIR变量) , 包括 localResources中上传的13个flink的lib下jar包;
-	addLibFoldersToShipFiles(systemShipFiles);{
-		String libDir = System.getenv().get(ENV_FLINK_LIB_DIR);//从系统变量读取FLINK_LIB_DIR 的值;
-		effectiveShipFiles.add(new File(libDir));
-	}
-	for (String classPath : systemClassPaths) classPathBuilder.append(classPath).append(File.pathSeparator);
-	// FLINK_CLASSPATH 3: 
-	classPathBuilder.append(localResourceDescFlinkJar.getResourceKey()).append(File.pathSeparator);
-	classPathBuilder.append(jobGraphFilename).append(File.pathSeparator);
-	classPathBuilder.append("flink-conf.yaml").append(File.pathSeparator);
-	//FLINK_CLASSPATH 6: include-user-jar=last时, 把userClassPath 的jars加到CP后面; 
-	if (userJarInclusion == YarnConfigOptions.UserJarInclusion.LAST) classPathBuilder.append(userClassPath).append(File.pathSeparator);
-	
-	appMasterEnv.put(YarnConfigKeys.ENV_FLINK_CLASSPATH, classPathBuilder.toString());
-	appMasterEnv.put(YarnConfigKeys.FLINK_YARN_FILES,fileUploader.getApplicationDir().toUri().toString());
-	// 设置 CLASSPATH的参数
-	Utils.setupYarnClassPath(yarnConfiguration, appMasterEnv);{
-		// 1. 先把 _FLINK_CLASSPATH中 lib中13个flink相关jar包加到CP
-		addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), appMasterEnv.get(ENV_FLINK_CLASSPATH));
-		// 2. yarn.application.classpath + 
-		String[] applicationClassPathEntries =conf.getStrings(YarnConfiguration.YARN_APPLICATION_CLASSPATH,YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH);{
-			String valueString = get(name);// 获取yarn.application.classpath 变量
-			if (valueString == null) {// 采用Yarn默认CP: YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH, 包括7个;
-				return defaultValue;// 默认YarnCP包括4类: CONF_DIR和 share下的common,hdfs,yar3个模块的目录;
-			} else {
-				return StringUtils.getStrings(valueString);
-			}
-		}
-		for (String c : applicationClassPathEntries) {
-			addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), c.trim());
-		}
-	}
-	amContainer.setEnvironment(appMasterEnv);
+
+
+
 	
 }
+
+
 
 
 
