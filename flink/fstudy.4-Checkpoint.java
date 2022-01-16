@@ -143,6 +143,12 @@ timer.scheduleAtFixedRate(new ScheduledTrigger(),initDelay, baseInterval, TimeUn
 }
 
 
+// 2.1 TaskExecutor 接收到 ckp触发信号, 执行所有 算子的ckp 
+
+
+
+
+
 // 到Task Executor 进程中了
 // 到另一个进程,或miniCluster中的TM线程里:-> TaskExecutor.triggerCheckpoint()
 TaskExecutor.triggerCheckpoint(){
@@ -214,19 +220,270 @@ TaskExecutor.triggerCheckpoint(){
     }
 }
 
+Task.run().doRun(){
+	StreamTask.invoke()
+	StreamTask.runMailboxLoop()
+	StreamTask.processInput()
+	StreamTaskNetworkInput.emitNext(){
+		while (true) {
+			if (currentRecordDeserializer != null) {
+				DeserializationResult result = currentRecordDeserializer.getNextRecord(deserializationDelegate);
+				if (result.isBufferConsumed()) {
+					currentRecordDeserializer = null;
+				}
+				if (result.isFullRecord()) {
+					processElement(deserializationDelegate.getInstance(), output);
+					return InputStatus.MORE_AVAILABLE;
+				}
+			}
+			
+			Optional<BufferOrEvent> bufferOrEvent = checkpointedInputGate.pollNext();{//CheckpointedInputGate
+				Optional<BufferOrEvent> next = inputGate.pollNext();
+				if (!next.isPresent()) { // 什么状态 会是 空buffer ? io还没好? ckp还没到触发时间 ? 
+					return handleEmptyBuffer();
+				}
+				
+				// 
+				BufferOrEvent bufferOrEvent = next.get();
+				if (bufferOrEvent.isEvent()) { // 什么情况下, 
+					return handleEvent(bufferOrEvent);{// CheckpointedInputGate.handleEvent
+						Class<? extends AbstractEvent> eventClass = bufferOrEvent.getEvent().getClass();
+						if (eventClass == CheckpointBarrier.class) {
+							barrierHandler.processBarrier(checkpointBarrier, bufferOrEvent.getChannelInfo());{
+								// while reading the first barrier , It can handle/track just single checkpoint at a time.
+								SingleCheckpointBarrierHandler.processBarrier(barrier,channelInfo){
+									if (currentCheckpointId > barrierId || (currentCheckpointId == barrierId && !isCheckpointPending())) {
+										return;
+									}
+									if (currentCheckpointId < barrierId) {
+										currentCheckpointId = barrier.getId();
+										if (controller.preProcessFirstBarrier(channelInfo, barrier)) {
+											notifyCheckpoint(barrier);{//CheckpointBarrierHandler.notifyCheckpoint
+												CheckpointMetaData checkpointMetaData =new CheckpointMetaData(checkpointBarrier.getId(), checkpointBarrier.getTimestamp());
+												toNotifyOnCheckpoint.triggerCheckpointOnBarrier(checkpointMetaData, checkpointBarrier.getCheckpointOptions(), checkpointMetrics);{//StreamTask.
+													boolean isCheckpointOk = performCheckpoint(checkpointMetaData, checkpointOptions, checkpointMetrics);{//StreamTask.performCheckpoint()
+														if (isRunning) {
+															actionExecutor.runThrowing(()->{
+																subtaskCheckpointCoordinator.checkpointState();{//SubtaskCheckpointCoordinatorImpl.checkpointState()
+																	
+																}
+															});
+															return true;
+														}else{
+															
+															return false;
+														}
+													}
+													if (isCheckpointOk) {
+														if (isSynchronousSavepointId(checkpointMetaData.getCheckpointId())) {
+															runSynchronousSavepointMailboxLoop();
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+								// Once it has observed all checkpoint barriers for a checkpoint ID, notifies its listener of a completed checkpoint.
+								CheckpointBarrierTracker.processBarrier(CheckpointBarrier receivedBarrier, InputChannelInfo channelInfo);
+								
+							}
+						}else if (eventClass == CancelCheckpointMarker.class) {
+							barrierHandler.processCancellationBarrier((CancelCheckpointMarker) bufferOrEvent.getEvent());
+						}else if (eventClass == EndOfPartitionEvent.class) {
+							barrierHandler.processEndOfPartition();
+						} else if (eventClass == EventAnnouncement.class) {
+							barrierHandler.processBarrierAnnouncement();
+						} else if (bufferOrEvent.getEvent().getClass() == EndOfChannelStateEvent.class) {
+							upstreamRecoveryTracker.handleEndOfRecovery(bufferOrEvent.getChannelInfo());
+						}
+						
+					}
+				}else if (bufferOrEvent.isBuffer()) {
+					barrierHandler.addProcessedBytes(bufferOrEvent.getBuffer().getSize());
+				}
+				return next;
+			}
+			
+		}
+	}
+}
 
 
-StreamTask.triggerCheckpoint() -> performCheckpoint() 
-    operatorChain.prepareSnapshotPreBarrier(checkpointId);
-    operatorChain.broadcastCheckpointBarrier();
-    checkpointState(checkpointMetaData);
-        // 各算子同步执行Checkpoint;
-        * for (StreamOperator<?> op : allOperators) 
-            op[AbstractStreamOperator].snapshotState();
-        // 异步执行Checkpoint
-        owner.asyncOperationsThreadPool.execute(new AsyncCheckpointRunnable());
- 
+	StreamTask.triggerCheckpoint() -> performCheckpoint() 
+		operatorChain.prepareSnapshotPreBarrier(checkpointId);
+		operatorChain.broadcastCheckpointBarrier();
+		checkpointState(checkpointMetaData);
+			// 各算子同步执行Checkpoint;
+			* for (StreamOperator<?> op : allOperators) 
+				op[AbstractStreamOperator].snapshotState();
+			// 异步执行Checkpoint
+			owner.asyncOperationsThreadPool.execute(new AsyncCheckpointRunnable());
+	 
 
+	// Task级别的 checkpoint, 核心就是: 遍历operatorChain 执行每个Operator.snapshotState()
+	SubtaskCheckpointCoordinatorImpl.checkpointState(metadata,operatorChain){
+		if (lastCheckpointId >= metadata.getCheckpointId()) {
+			channelStateWriter.abort(metadata.getCheckpointId(), new CancellationException(), true);
+			return;
+		}
+		// Step (1): Prepare the checkpoint, allow operators to do some pre-barrier work.
+		operatorChain.prepareSnapshotPreBarrier(metadata.getCheckpointId());
+		// Step (2): Send the checkpoint barrier downstream
+		operatorChain.broadcastEvent(new CheckpointBarrier());
+		// Step (3): Prepare to spill the in-flight buffers for input and output
+		if (options.isUnalignedCheckpoint()) {
+			channelStateWriter.finishOutput(metadata.getCheckpointId());
+		}
+		// Step (4): Take the state snapshot. This should be largely asynchronous, to not impact
+		boolean snapshotSyncOk = takeSnapshotSync(snapshotFutures, metadata, metrics, options, operatorChain, isRunning);{//SubtaskCheckpointCoordinatorImpl.takeSnapshotSync
+			CheckpointStreamFactory storage =checkpointStorage.resolveCheckpointStorageLocation(checkpointId, checkpointOptions.getTargetLocation());
+			for (StreamOperatorWrapper<?, ?> operatorWrapper : operatorChain.getAllOperators(true)) {
+				if (!operatorWrapper.isClosed()) {
+					OperatorSnapshotFutures snapshotFuture = buildOperatorSnapshotFutures();{// SubtaskCheckpointCoordinatorImpl.buildOperatorSnapshotFutures()
+						OperatorSnapshotFutures snapshotInProgress =checkpointStreamOperator();{
+							return op.snapshotState(checkpointId,timestamp,checkpointOptions,factory);{// StreamOperator.snapshotState() 子类 AbstractStreamOperator.snapshotState
+								return stateHandler.snapshotState();{//StreamOperatorStateHandler.snapshotState()
+									KeyGroupRange keyGroupRange = null != keyedStateBackend? keyedStateBackend.getKeyGroupRange(): KeyGroupRange.EMPTY_KEY_GROUP_RANGE;
+									StateSnapshotContextSynchronousImpl snapshotContext = new StateSnapshotContextSynchronousImpl();
+									snapshotState();{// StreamOperatorStateHandler.snapshotState()
+										try {
+											streamOperator.snapshotState(snapshotContext);
+										}catch (Exception snapshotException) {
+											snapshotInProgress.cancel();
+											snapshotContext.closeExceptionally();
+											throw new CheckpointException(snapshotFailMessage);
+										}
+									}
+									return snapshotInProgress;
+								}
+							}
+						}
+						return snapshotInProgress;
+					}
+					operatorSnapshotsInProgress.put(operatorID,snapshotFuture);
+				}
+			}
+		}
+		if (snapshotSyncOk) {
+			finishAndReportAsync(snapshotFutures, metadata, metrics, isRunning);
+		}else{
+			cleanup(snapshotFutures, metadata, metrics, new Exception("Checkpoint declined"));
+		}
+	}
+
+
+
+CheckpointedStreamOperator.snapshotState(StateSnapshotContext context){
+	
+	// 自定义的 udf的 实现类
+	AbstractUdfStreamOperator.snapshotState(context){// extends AbstractStreamOperator [implements StreamOperator,CheckpointedStreamOperator]
+		super.snapshotState(context);
+		StreamingFunctionUtils.snapshotFunctionState(context, getOperatorStateBackend(), userFunction);{
+			while (true) {
+				boolean snapshotOk = trySnapshotFunctionState(context, backend, userFunction);{//StreamingFunctionUtils.trySnapshotFunctionState()
+					if (userFunction instanceof CheckpointedFunction) {
+						((CheckpointedFunction) userFunction).snapshotState(context);{
+							// 不同的实现类? 
+							
+							//Hudi 的 Clean算子: Sink function that cleans the old commits.
+							hudi.sink.CleanFunction.snapshotState(){
+								if (conf.getBoolean(FlinkOptions.CLEAN_ASYNC_ENABLED) && !isCleaning) {
+									this.writeClient.startAsyncCleaning();{//HoodieFlinkWriteClient.startAsyncCleaning
+										this.asyncCleanerService = AsyncCleanerService.startAsyncCleaningIfEnabled(this);{
+											if (writeClient.getConfig().isAutoClean() && writeClient.getConfig().isAsyncClean()) {
+												asyncCleanerService = new AsyncCleanerService(writeClient, instantTime);
+												asyncCleanerService.start(null);{//AsyncCleanerService.start
+													Pair<CompletableFuture, ExecutorService> res = startService();{//AsyncCleanerService.startService()
+														return Pair.of(CompletableFuture.supplyAsync(() -> {// 异步执行 writeClient.clean() 清理工作
+															writeClient.clean(cleanInstantTime);{//AbstractHoodieWriteClient.clean
+																return clean(cleanInstantTime, true);{//AbstractHoodieWriteClient.clean()
+																	LOG.info("Cleaner started");
+																	HoodieCleanMetadata metadata = createTable(config, hadoopConf).clean(context, cleanInstantTime);
+																	if (timerContext != null && metadata != null) {
+																		long durationMs = metrics.getDurationInMs(timerContext.stop());
+																		metrics.updateCleanMetrics(durationMs, metadata.getTotalFilesDeleted());
+																	}
+																	return metadata;
+																}
+															}
+															return true;
+														}), executor);
+													}
+													future = res.getKey();// 这里生成 future,下面 furtion.get()
+													executor = res.getValue();
+													// 就是新启线程 futrue.get()并 shutdown
+													monitorThreads(onShutdownCallback);{ThreadExecutor.submit(() -> {
+														try {
+															future.get();
+														}finally { // 都进行 shutdown 关闭什么服务? 
+															shutdown = true;
+															shutdown(false);
+														}
+													});}
+												}
+											}
+											return asyncCleanerService;
+										}
+									}
+									this.isCleaning = true;
+								}
+							}
+							
+						}
+						return true;
+					}
+					if (userFunction instanceof ListCheckpointed) {
+						ListState<Serializable> listState = backend.getListState(listStateDescriptor);
+						listState.clear();
+					}
+					return true;
+				}
+				if (snapshotOk) {
+					break;
+				}
+			}
+		}
+	}
+}
+
+
+// 2.2 不同算子的 snapshotState 状态快照 实现方法 
+ListCheckpointed.snapshotState();
+CheckpointedFunction.snapshotState(FunctionSnapshotContext context){
+	 //用户自实现Operator的 保存快照接口方法;
+    ExampleIntegerSource.snapshotState();
+	
+	
+	AbstractUdfStreamOperator.snapshotState();{
+		
+	}
+	
+	
+}
+
+
+
+	
+Caused by: org.apache.flink.util.SerializedThrowable:
+ Task java.util.concurrent.FutureTask@7042bcc9 rejected from java.util.concurrent.ThreadPoolExecutor@6acee30f
+ [Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0]
+	at java.util.concurrent.ThreadPoolExecutor$AbortPolicy.rejectedExecution(ThreadPoolExecutor.java:2063) ~[?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor.reject(ThreadPoolExecutor.java:830) ~[?:1.8.0_261]
+	at java.util.concurrent.ThreadPoolExecutor.execute(ThreadPoolExecutor.java:1379) ~[?:1.8.0_261]
+	at java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:112) ~[?:1.8.0_261]
+	at java.util.concurrent.Executors$DelegatedExecutorService.submit(Executors.java:678) ~[?:1.8.0_261]
+	at org.apache.hudi.async.HoodieAsyncService.monitorThreads(HoodieAsyncService.java:154) ~[hudi-flink-bundle_2.11-0.9.0.jar:0.9.0]
+	at org.apache.hudi.async.HoodieAsyncService.start(HoodieAsyncService.java:133) ~[hudi-flink-bundle_2.11-0.9.0.jar:0.9.0]
+	at org.apache.hudi.client.AsyncCleanerService.startAsyncCleaningIfEnabled(AsyncCleanerService.java:62) ~[hudi-flink-bundle_2.11-0.9.0.jar:0.9.0]
+	at org.apache.hudi.client.HoodieFlinkWriteClient.startAsyncCleaning(HoodieFlinkWriteClient.java:272) ~[hudi-flink-bundle_2.11-0.9.0.jar:0.9.0]
+	at org.apache.hudi.sink.CleanFunction.snapshotState(CleanFunction.java:84) ~[hudi-flink-bundle_2.11-0.9.0.jar:0.9.0]
+	at org.apache.flink.streaming.util.functions.StreamingFunctionUtils.trySnapshotFunctionState(StreamingFunctionUtils.java:118) ~[flink-dist_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.streaming.util.functions.StreamingFunctionUtils.snapshotFunctionState(StreamingFunctionUtils.java:99) ~[flink-dist_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.streaming.api.operators.AbstractUdfStreamOperator.snapshotState(AbstractUdfStreamOperator.java:89) ~[flink-dist_2.11-1.12.2.jar:1.12.2]
+	at org.apache.flink.streaming.api.operators.StreamOperatorStateHandler.snapshotState(StreamOperatorStateHandler.java:205) ~[flink-dist_2.11-1.12.2.jar:1.12.2]
+	... 23 more
+2022-01-13 17:02:51,753 INFO  org.apache.hudi.common.table.HoodieTableMetaClient           [] - Finished Loading Table of type MERGE_ON_READ(version=1, baseFileFormat=PARQUET) from hdfs://bdnode102:9000/hudi/lakehouse2_dwd_order_hudi
 
 
 

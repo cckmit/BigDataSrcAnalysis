@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.flink.table.catalog.CatalogTable</OriginalElement>
+  <nodes>
+    <node x="0.0" y="320.0">org.apache.flink.table.catalog.CatalogTableImpl</node>
+    <node x="675.9999999999999" y="334.0">org.apache.flink.table.catalog.ConnectorCatalogTable</node>
+    <node x="1465.5119047619046" y="190.0">org.apache.flink.table.planner.catalog.JavaCatalogTableTest.CustomCatalogTable</node>
+    <node x="1161.25" y="88.0">org.apache.flink.table.catalog.CatalogTable</node>
+    <node x="1048.5119047619046" y="190.0">org.apache.flink.table.factories.FactoryUtilTest.CatalogTableMock</node>
+    <node x="1143.75" y="0.0">org.apache.flink.table.catalog.CatalogBaseTable</node>
+    <node x="344.5119047619046" y="176.0">org.apache.flink.table.catalog.AbstractCatalogTable</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.flink.table.catalog.CatalogTableImpl" target="org.apache.flink.table.catalog.AbstractCatalogTable">
+      <point x="0.0" y="-47.0" />
+      <point x="328.0" y="295.0" />
+      <point x="515.5119047619046" y="295.0" />
+      <point x="-171.0" y="47.0" />
+    </edge>
+    <edge source="org.apache.flink.table.catalog.AbstractCatalogTable" target="org.apache.flink.table.catalog.CatalogTable">
+      <point x="1.1368683772161603E-13" y="-47.0" />
+      <point x="686.5119047619047" y="151.0" />
+      <point x="1187.9166666666665" y="151.0" />
+      <point x="-53.33333333333326" y="19.0" />
+    </edge>
+    <edge source="org.apache.flink.table.factories.FactoryUtilTest.CatalogTableMock" target="org.apache.flink.table.catalog.CatalogTable">
+      <point x="0.0" y="-33.0" />
+      <point x="1247.0119047619046" y="151.0" />
+      <point x="1241.25" y="151.0" />
+      <point x="0.0" y="19.0" />
+    </edge>
+    <edge source="org.apache.flink.table.catalog.CatalogTable" target="org.apache.flink.table.catalog.CatalogBaseTable">
+      <point x="0.0" y="-19.0" />
+      <point x="0.0" y="19.0" />
+    </edge>
+    <edge source="org.apache.flink.table.planner.catalog.JavaCatalogTableTest.CustomCatalogTable" target="org.apache.flink.table.catalog.CatalogTable">
+      <point x="0.0" y="-33.0" />
+      <point x="1623.5119047619046" y="151.0" />
+      <point x="1294.583333333333" y="151.0" />
+      <point x="53.33333333333326" y="19.0" />
+    </edge>
+    <edge source="org.apache.flink.table.catalog.ConnectorCatalogTable" target="org.apache.flink.table.catalog.AbstractCatalogTable">
+      <point x="0.0" y="-33.0" />
+      <point x="1033.5" y="295.0" />
+      <point x="857.5119047619046" y="295.0" />
+      <point x="171.0" y="47.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="726.0" y="290.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

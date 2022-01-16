@@ -340,43 +340,65 @@ YarnClusterDescriptor.deploySessionCluster(ClusterSpecification clusterSpecifica
 	}
 }
 
-// FlinkYarn AM的CLASSPATH加载源码
-/*
-$CLASSPATH
-	$FLINK_CLASSPATH
-		userClassPath = jobGraph.getUserJars() + pipeline.jars变量值 +  usrlib 目录
-			- jobGraph.getUserJars()
-			- pipeline.jars
-			- usrlib
-		systemClassPaths = yarn.ship-files配置 + $FLINK_LIB_DIR变量下jars + logConfigFile
-			- yarn.ship-files
-			- $FLINK_LIB_DIR
-			- logConfigFile
-			
-			systemShipFiles: 
-				- logConfigFilePath, 配置$internal.yarn.log-config-file, 对应内容: /opt/flink/conf/log4j.properties
-				- providedLibDirs: 
-			
-		localResourceDescFlinkJar.getResourceKey()
-		jobGraphFilename
-		"flink-conf.yaml"
-		
-	yarn.application.classpath
-		$HADOOP_CONF_DIR
-		common: $HADOOP_COMMON_HOME/share/*/common/*
-		hdfs: $HADOOP_HDFS_HOME/share/*/hdfs/*
-		yarn: $HADOOP_YARN_HOME/share/*/yarn/*
-
-// 
-yarn.per-job-cluster.include-user-jar
-yarn.provided.lib.dirs
-$internal.yarn.log-config-file
-
-
-*/
 
 // flink yarn CLASSPATH 定义
 {
+	
+		
+	/* 定义 
+		jobGraph.userJars:		pipeline.jars:			来自 args[0] or -j or --jarfile 参数指定
+		jobGraph.classpaths:	pipeline.classpaths:	来自 -C or --classpath 参数指定
+	*/
+	CliFrontend.run(){
+		final List<URL> jobJars = getJobJarAndDependencies(programOptions);{
+			// entryPointClass 就是 -c/--class参数指定值; 
+			String entryPointClass = programOptions.getEntryPointClassName(); //未指定未空;
+			// jarFilePath 即App Jar包, 默认 args[0] 或 -j 或 --jarfile 指定;
+			String jarFilePath = programOptions.getJarFilePath();
+			File jarFile = jarFilePath != null ? getJarFile(jarFilePath) : null;
+			return PackagedProgram.getJobJarAndDependencies(jarFile, entryPointClass);{
+				URL jarFileUrl = loadJarFile(jarFile);
+			}
+		}
+		Configuration effectiveConfiguration =getEffectiveConfiguration(activeCommandLine, commandLine, programOptions, jobJars);{
+			ExecutionConfigAccessor executionParameters = ExecutionConfigAccessor.fromProgramOptions(checkNotNull(programOptions), checkNotNull(jobJars));{
+					final Configuration configuration = new Configuration();
+					// 向config中写入 execution.attached,pipeline.classpaths等4个变量;
+					options.applyToConfiguration(configuration);{
+						// 来自 --classpath or -C 参数的指定;
+						ConfigUtils.encodeCollectionToConfig(configuration, PipelineOptions.CLASSPATHS, getClasspaths(), URL::toString);
+					}
+					ConfigUtils.encodeCollectionToConfig(configuration, PipelineOptions.JARS, jobJars, Object::toString);
+					return new ExecutionConfigAccessor(configuration);
+				}
+		}
+	}
+	
+	AbstractJobClusterExecutor.execute(){
+		final JobGraph jobGraph = PipelineExecutorUtils.getJobGraph(pipeline, configuration);{
+			ExecutionConfigAccessor executionConfigAccessor =ExecutionConfigAccessor.fromConfiguration(configuration);{
+				return new ExecutionConfigAccessor(checkNotNull(configuration));
+			}
+			JobGraph jobGraph =FlinkPipelineTranslationUtil.getJobGraph(pipeline, configuration, executionConfigAccessor.getParallelism());
+			// 从config中读取 pipeline.jars 作为变量;
+			List<URL> jarFilesToAttach = executionConfigAccessor.getJars();{
+				return ConfigUtils.decodeListFromConfig(configuration, PipelineOptions.JARS, URL::new);//取pipeline.jars变量;
+			}
+			jobGraph.addJars(jarFilesToAttach);{
+				for (URL jar : jarFilesToAttach) {
+					addJar(new Path(jar.toURI()));{//往 jobGraph.userJars:List<Path> 中添加 pipeline.jars变量的有效URI
+						if (!userJars.contains(jar)) {
+							userJars.add(jar);
+						}
+					}
+				}
+			}
+			//读取pipeline.classpaths 的变量值,并赋值 jobGraph.classpaths: List<URL> 
+			jobGraph.setClasspaths(executionConfigAccessor.getClasspaths());
+		}
+		clusterDescriptor =clusterClientFactory.createClusterDescriptor(configuration);
+	}
+	
 	/* 1. 定义 dist,ship,archives资源路径: 
 		flinkJarPath:	从 yarn.flink-dist-jar配置,或者将 this.codesource本包作为 dist包路径; 	未配置默认: /opt/flink/flink-1.12.2/lib/flink-dist_2.11-1.12.2.jar
 		shipFiles:		从 yarn.ship-files读取			未配默认为空;
@@ -410,30 +432,32 @@ $internal.yarn.log-config-file
 			this.yarnQueue = flinkConfiguration.getString(YarnConfigOptions.APPLICATION_QUEUE);
 		}
 	}
+	
+	
+	
 
 	/* 2. 定义$FLINK_CLASSPATH, CLASSPATH
 		List<Path> providedLibDirs:		从 yarn.provided.lib.dirs 中读取配置	未配置则未空;
 		
-	$FLINK_CLASSPATH
-
-			
+	$FLINK_CLASSPATH 
 		systemClassPaths = yarn.ship-files配置 + $FLINK_LIB_DIR变量下jars + logConfigFile
 			- fileUploader.providedSharedLibs 中的 非dist非plugin 部分;
 				* List<Path> providedLibDirs: yarn.provided.lib.dirs属性中有效dir部分
-				
 			- uploadedDependencies: 仅添加systemShipFiles中 非PUBLIc&& 非dist 的部分;
 				- systemShipFiles
 					- logConfigFilePath
 					- $FLINK_LIB_DIR, 当 providedLibDirs(yarn.provided.lib.dirs) 为空时, 才添加 $FLINK_LIB_DIR
-			
 			- userClassPaths:  仅当yarn.per-job-cluster.include-user-jar=order时, 添加 userJarFiles
 				- userJarFiles:	
-		
+					* JobGraph.userJars 	pipeline.jars(args[0]/-j/--jarfile指定) ,如examples/batch/WordCount.jar
+					* jarUrls:				pipeline.jars:		存在且当 YarnApplication模式时, 才被加到 userJarFiles 中, 一般是 PerJob/YarnSession 所以不加入 CP;
+
+
 		userClassPath: 		取[非PUBLIc &&非dist]的userJarFiles;
-			- userJarFiles:	
-				- jobGraph.getUserJars()
-				- pipeline.jars
-				- usrlib
+			- userJarFiles:	 
+				- JobGraph.userJars 	pipeline.jars(args[0]/-j/--jarfile指定) ,如examples/batch/WordCount.jar
+				- pipeline.jars:		存在且当 YarnApplication模式时, 才被加到 userJarFiles 中, 一般是 PerJob/YarnSession 所以不加入 CP;
+				
 		
 		flinkJarPath: (yarn.flink-dist-jar 或 this.codesource.localpath
 			yarn.flink-dist-jar
@@ -497,7 +521,9 @@ $internal.yarn.log-config-file
 					if (directoryFile.isDirectory()) {
 						effectiveShipFiles.add(directoryFile);//effectiveShipFiles 即传入的 systemShipFiles;
 					}
-				};
+				}else if(shipFiles.isEmpty()){// 如果 null == libDir($FLINK_LIB_DIR为空),而 shipFiles(yarn.ship-files)也为空,则warn告警;
+					LOG.warn("Environment variable 'FLINK_LIB_DIR' not set and ship files have not been provided manually. Not shipping any library files");
+				}
 			}
 		}
 		
@@ -531,6 +557,7 @@ $internal.yarn.log-config-file
 		Collection<Path> shipFiles = systemShipFiles.stream().map(e -> new Path(e.toURI())).collect(Collectors.toSet());
 		// 将shipFiles中(1或2项)所有(递归遍历)内容,过滤出 [PUBLIC] && 非dist] 的所有 archives & resources, 一起返回赋给uploadedDependencies;
 		final List<String> uploadedDependencies =fileUploader.registerMultipleLocalResources(shipFiles,Path.CUR_DIR,LocalResourceType.FILE);{
+			// 解析shipFiles中,所有目录的所有的文件,都加载到 localPath中;
 			final List<Path> localPaths = new ArrayList<>();
 			for (Path shipFile : shipFiles) {
 				if (Utils.isRemotePath(shipFile.toString())) {
@@ -544,9 +571,12 @@ $internal.yarn.log-config-file
 				localPaths.add(shipFile);
 				relativePaths.add(new Path(localResourcesDirectory, shipFile.getName()));
 			}
+			// 只有 非dist( !isFlinkDistJar ) 且 非Publich ( !alreadyRegisteredAsLocalResource() ) 的filePath才会被添加;
 			for (int i = 0; i < localPaths.size(); i++) {
 				if (!isFlinkDistJar(relativePath.getName())) {
-					if (!resourceDescriptor.alreadyRegisteredAsLocalResource(){// 只有PUBLIC公开级别的资源 才添加; log4j.properties因为是APP级别被过滤掉;
+					// 往YarnApplicationFileUploader 中 remotePath,envShipResourceList,localResources等变量 添加;
+					YarnLocalResourceDescriptor resourceDescriptor =registerSingleLocalResource(key,loalpath,true,true);
+					if (!resourceDescriptor.alreadyRegisteredAsLocalResource(){// 只有非PUBLIC公开级别的资源 才添加; log4j.properties因为是APP级别被过滤掉;
 						return this.visibility.equals(LocalResourceVisibility.PUBLIC)
 					}) {
 						if (key.endsWith("jar")) { //是jar的算到 archives,
@@ -557,7 +587,6 @@ $internal.yarn.log-config-file
 					}
 				}
 			}
-			
 			final ArrayList<String> classPaths = new ArrayList<>();
 			resources.stream().sorted().forEach(classPaths::add);
 			archives.stream().sorted().forEach(classPaths::add);
@@ -566,17 +595,27 @@ $internal.yarn.log-config-file
 		systemClassPaths.addAll(uploadedDependencies);
 		
 		if (providedLibDirs == null || providedLibDirs.isEmpty()) {
-			addPluginsFoldersToShipFiles(shipOnlyFiles);
-			fileUploader.registerMultipleLocalResources();
+			// 取$FLINK_PLUGINS_DIR环境值,或采用默认"plugins" 作为 为插件目录并添加到shipOnlyFiles中;
+			Set<File> shipOnlyFiles = new HashSet<>();
+			addPluginsFoldersToShipFiles(shipOnlyFiles);{//YarnApplicationFileUploader.addPluginsFoldersToShipFiles()
+				Optional<File> pluginsDir = PluginConfig.getPluginsDir();{
+					String pluginsDir =System.getenv().getOrDefault(ConfigConstants.ENV_FLINK_PLUGINS_DIR,//FLINK_PLUGINS_DIR
+						ConfigConstants.DEFAULT_FLINK_PLUGINS_DIRS);// "plugins"
+					File pluginsDirFile = new File(pluginsDir);
+					if (!pluginsDirFile.isDirectory()) {
+						return Optional.empty();
+					}
+					return Optional.of(pluginsDirFile);
+				}
+				pluginsDir.ifPresent(effectiveShipFiles::add);// 如果plugins配置存在,则 add (到shipOnlyFiles),并返回;
+			}
+			fileUploader.registerMultipleLocalResources(); // 
 		}
 		if (!shipArchives.isEmpty()) {//若yarn.ship-archives不为空,
 			shipArchivesFile = shipArchives.stream().map(e -> new Path(e.toURI())).collect(Collectors.toSet());
 			fileUploader.registerMultipleLocalResources(shipArchivesFile);
 		}
 		
-		// 设置env: _FLINK_CLASSPATH 环境变量
-		userJarFiles.addAll(jobGraph.getUserJars().stream().map(f -> f.toUri())); //添加 jobGraph.getUserJars() 中的jars
-		userJarFiles.addAll(jarUrls.stream().map(Path::new).collect(Collectors.toSet())); // 添加 pipeline.jars中的jars;
 		// localResourcesDir= "."
 		String localResourcesDir= userJarInclusion == YarnConfigOptions.UserJarInclusion.DISABLED ? ConfigConstants.DEFAULT_FLINK_USR_LIB_DIR : Path.CUR_DIR, LocalResourceType.FILE;
 		final List<String> userClassPaths =fileUploader.registerMultipleLocalResources(userJarFiles, localResourcesDir);{// 过滤其中[非PUBLIC] && 非dist] 
@@ -629,10 +668,18 @@ $internal.yarn.log-config-file
 			fileUploader.registerSingleLocalResource();
 			classPathBuilder.append(jobGraphFilename).append(File.pathSeparator);
 		}
+		// 把"flink-conf.yaml" 添加到classPath中;
+		File tmpConfigurationFile = File.createTempFile(appId + "-flink-conf.yaml", null);
+		BootstrapTools.writeConfiguration(configuration, tmpConfigurationFile);
+		String flinkConfigKey = "flink-conf.yaml";
+		fileUploader.registerSingleLocalResource(flinkConfigKey);
+		classPathBuilder.append("flink-conf.yaml").append(File.pathSeparator);
 		
-		
-		
-		
+		if (userJarInclusion == YarnConfigOptions.UserJarInclusion.LAST) {
+            for (String userClassPath : userClassPaths) {
+                classPathBuilder.append(userClassPath).append(File.pathSeparator);
+            }
+        }
 		
 		
 		
@@ -977,11 +1024,6 @@ StreamExecutionEnvironment.executeAsync(StreamGraph streamGraph);{
 
 
 
-
-
-
-
-
 /** 3	FlinkSqlCli 
 *
 */
@@ -990,8 +1032,8 @@ StreamExecutionEnvironment.executeAsync(StreamGraph streamGraph);{
 
 // SqlClient进程中 TableEnvInit初始化和 CatalogManager构建;
 // client.start().openSession().build(): ExecutionContext.initializeTableEnvironment()初始化Table环境资源, initializeCatalogs()根据配置生成Catalogs和curdb;
-// client.start().open().parseCommand(line).sqlParser.parse(stmt): PlannerContext.createCatalogReader() 将CatalogManager中curCatalog/DB作为defaultSchemas 封装进FlinkCatalogReader;
-// client.start().open().callCommand().callSelect(cmdCall):executor.executeQuery():tableEnv.sqlQuery(selectQuery) 提交Table查询命令: TableEnvironmentImpl.sqlQuery()
+// A. client.start().open().parseCommand(line).sqlParser.parse(stmt): PlannerContext.createCatalogReader() 将CatalogManager中curCatalog/DB作为defaultSchemas 封装进FlinkCatalogReader;
+// B. client.start().open().callCommand().callSelect(cmdCall):executor.executeQuery():tableEnv.sqlQuery(selectQuery) 提交Table查询命令: TableEnvironmentImpl.sqlQuery()
 
 SqlClient.main(){
 	final SqlClient client = new SqlClient(true, options);
@@ -1039,7 +1081,14 @@ SqlClient.main(){
 								// Step.1 Create catalogs and register them.
 								environment.getCatalogs().forEach((name, entry) -> {
 												Catalog catalog=createCatalog(name, entry.asMap(), classLoader);
-												tableEnv.registerCatalog(name, catalog);
+												tableEnv.registerCatalog(name, catalog);{//TableEnvironmentImpl.registerCatalog
+													catalogManager.registerCatalog(catalogName, catalog);{//CatalogManager.registerCatalog
+														catalog.open();{// 不同的catalog,不同的实现;
+															HiveCatalog.open();
+														}
+														catalogs.put(catalogName, catalog);
+													}
+												}
 											});
 								// Step.2 create table sources & sinks, and register them.
 								environment.getTables().forEach((name, entry) -> {
@@ -1073,7 +1122,7 @@ SqlClient.main(){
 					terminal.writer().append("\n");
 					// 读取一行数据; 
 					String line = lineReader.readLine(prompt, null, (MaskingCallback) null, null);
-					// 解析用户查询语句生成 Calcite对象,并基于默认 curCatalog,curDB生成 FlinkCatalogReader;
+					// 1. 解析用户查询语句生成 Calcite对象,并基于默认 curCatalog,curDB生成 FlinkCatalogReader;
 					final Optional<SqlCommandCall> cmdCall = parseCommand(line);{//CliClient.
 						parsedLine = SqlCommandParser.parse(executor.getSqlParser(sessionId), line);{
 							Optional<SqlCommandCall> callOpt = parseByRegexMatching(stmt);
@@ -1116,6 +1165,7 @@ SqlClient.main(){
 							}
 						}
 					}
+					// 2. 提交执行sql Calcite命令; 
 					cmdCall.ifPresent(this::callCommand);{
 						switch (cmdCall.command) {
 							case SET:
@@ -1156,422 +1206,6 @@ SqlClient.main(){
 			}
 		}
 	}
-}
-
-
-
-
-TableEnvironmentImpl.sqlQuery(){
-	ParserImpl.parse()
-	SqlToOperationConverter.convert()
-	FlinkPlannerImpl.validate(sqlNode: SqlNode, validator: FlinkCalciteSqlValidator){
-		sqlNode.accept(new PreValidateReWriter(validator, typeFactory));
-		sqlNode match { 
-			case node: ExtendedSqlNode => node.validate()
-			case _ =>
-		}
-		
-		if (sqlNode.getKind.belongsTo(SqlKind.DDL) || sqlNode.getKind == SqlKind.INSERT ){
-			return sqlNode
-		}
-		
-		validator.validate(sqlNode);{//SqlValidatorImpl.validate()
-			SqlValidatorImpl.validateScopedExpression()
-			SqlSelect.validate()
-			SqlValidatorImpl.validateQuery()
-			SqlValidatorImpl.validateNamespace()
-			AbstractNamespace.validate()
-			IdentifierNamespace.validateImpl()
-			IdentifierNamespace.resolveImpl()
-			SqlValidatorImpl.newValidationError()
-			SqlUtil.newContextException()
-			
-			
-		}
-		
-	}
-	
-}
-
-
-flink.table.api.internal.TableImpl.executeInsert(String tablePath, boolean overwrite){
-	UnresolvedIdentifier unresolvedIdentifier =tableEnvironment.getParser().parseIdentifier(tablePath);
-	ObjectIdentifier objectIdentifier =tableEnvironment.getCatalogManager().qualifyIdentifier(unresolvedIdentifier);
-	ModifyOperation operation =new CatalogSinkModifyOperation();
-	return tableEnvironment.executeInternal(Collections.singletonList(operation));{//TableEnvironmentImpl.executeInternal
-		List<Transformation<?>> transformations = translate(operations);
-		Pipeline pipeline = execEnv.createPipeline(transformations, tableConfig, jobName);
-		JobClient jobClient = execEnv.executeAsync(pipeline);{//ExecutorBase.executeAsync()
-			return executionEnvironment.executeAsync((StreamGraph) pipeline);{//StreamExecutionEnvironment.executeAsync()
-				// 详细源码参考如下: 
-				PipelineExecutorFactory executorFactory =executorServiceLoader.getExecutorFactory(configuration);
-				jobClientFuture =executorFactory
-					.getExecutor(configuration)
-                    .execute(streamGraph, configuration, userClassloader);
-				return jobClient;
-			}
-		}
-	}
-}
-
-
-//flink-table-planner-blink_2.11-1.12.2.jar 依赖的 calcite-core-1.26.0-jar 
-// calcite-core-1.26.0 源码
-
-SqlValidatorImpl.validateNamespace(){
-	namespace.validate();{//AbstractNamespace[IdentifierNamespace].validate()
-		switch (status) {
-			case UNVALIDATED:
-				status = SqlValidatorImpl.Status.IN_PROGRESS;
-				RelDataType type = validateImpl();{//IdentifierNamespace.validateImpl()
-					resolvedNamespace = Objects.requireNonNull(resolveImpl(id));{//IdentifierNamespace.resolveImpl()
-						final SqlNameMatcher nameMatcher = validator.catalogReader.nameMatcher();
-						ResolvedImpl resolved =new SqlValidatorScope.ResolvedImpl();
-						try {
-							parentScope.resolveTable(names, nameMatcher,SqlValidatorScope.Path.EMPTY, resolved);{// DelegatingScope.
-								this.parent.resolveTable(names, nameMatcher, path, resolved);{// EmptyScope.resolveTable()
-									final List<Resolve> resolves = ((ResolvedImpl) resolved).resolves;
-									Iterator var7 = this.validator.catalogReader.getSchemaPaths().iterator();
-									// 关键是这里, 运行构建的 FlinkCalciteCatalogReader.schemaPaths 包含了 myhive.default等 配置的数据库; 
-									List<List<String>> schemaPathList = validator.catalogReader.getSchemaPaths();{// 
-										validator: FlinkCalciteSqlValidator ; 
-										catalogReader: FlinkCalciteCatalogReader [extends CalciteCatalogReader]; {
-											List<List<String>> schemaPaths;
-											SqlNameMatcher nameMatcher;
-										}
-									}
-									for (List<String> schemaPath : schemaPathList) {
-										resolve_(validator.catalogReader.getRootSchema(), names, schemaPath,nameMatcher, path, resolved);{
-											
-										}
-									}
-								}
-							}
-						} catch (CyclicDefinitionException e) {
-							if (e.depth == 1) { 
-								throw validator.newValidationError(id,);
-							}else{throw new CyclicDefinitionException(e.depth - 1, e.path);}
-						}
-					}
-					if (resolved.count() == 1) {
-						resolve = previousResolve = resolved.only();
-						if (resolve.remainingNames.isEmpty()) {
-							return resolve.namespace;
-						}
-					}
-					// 进到这里, 寿命 上面的resolved != 1, 可能是0,或者>=2; 
-					if (nameMatcher.isCaseSensitive()) {// FlinkSqlNameMatcher.isCaseSensitive()
-						return this.baseMatcher.isCaseSensitive();{//FlinkSqlNameMatcher.BaseMatcher.isCaseSensitive()
-							this.caseSensitive = caseSensitive;// caseSensitive=true;
-						}
-						SqlNameMatcher liberalMatcher = SqlNameMatchers.liberal();
-						this.parentScope.resolveTable(names, liberalMatcher, Path.EMPTY, resolved);
-						
-					}
-					
-					// Failed to match.  If we're matching case-sensitively, try a more lenient match. If we find something we can offer a helpful hint.
-					// 就是这里抛出 Object 'tb_user' not found; 
-					throw validator.newValidationError(id,RESOURCE.objectNotFound(id.getComponent(0).toString()));
-				}
-				setType(type);
-				status = SqlValidatorImpl.Status.VALID;
-				break;
-			case IN_PROGRESS:
-			  throw Util.newInternal("todo: Cycle detected during type-checking");
-			case VALID:
-			  break;
-			default:
-			  throw Util.unexpected(status);
-		}
-	}
-	if (namespace.getNode() != null) {
-		setValidatedNodeType(namespace.getNode(), namespace.getType());
-    }
-}
-
-
-
-// select * from tb_user; 报 Object 'tb_user' not found
-/*
-	SqlValidatorImpl.validate() -> SqlValidatorImpl.validateNamespace()
-	IdentifierNamespace.resolveImpl() 中, 当 parentScope.resolveTable() 无法解析该id:'tb_user' 并放入 resolved中,最终会
-	代码走到最地下的 throw validator.newValidationError(id,RESOURCE.objectNotFound(id.getComponent(0).toString()));
-	- 原因应该就是: 所有的 resolveTable需要 'catlog.database.table'格式, 但因为无法解析前面的 myhive.default,导致报错; 
-	
-*/
-
-
-
-/** Flink SQL & Table 初始化
-*
-*/
-
-
-
-//关于 查询相关TableFactory的功能:
-
-StreamTableEnvironment.create(env)
-    => StreamTableEnvironment.lookupExecutor()
-        => TableFactoryService.findAll(factoryClass, propertyMap);
-
-
-// 1. 在StreamTable环境初始化时, 会查找所有的 TableFactory;
-TableFactoryService.findAll(factoryClass, propertyMap);
-    findAllInternal(factoryClass, propertyMap, Optional.empty());{
-        List<TableFactory> tableFactories = discoverFactories(classLoader);
-		return filter(tableFactories, factoryClass, properties);{
-            List<T> contextFactories = filterByContext();
-        }
-    }
-
-    TableFactoryService.findSingleInternal(){
-        
-    }
-//# 核心: 查询并过滤合适TableFactory的核心代码:
-    //注意,findAllInternal() 和 findSingleInternal() 都包括以下代码;
-find(){
-    
-    List<TableFactory> tableFactories = discoverFactories(classLoader);
-    
-	List<T> filtered = filter(tableFactories, factoryClass, properties);{//TableFactoryService.
-        //  过滤出 TableFactory的实现类: 如 HBase/CVS/ES/FS/Kafka等 Source/TableTableFactory;
-        List<T> classFactories = filterByFactoryClass(factoryClass,properties,foundFactories);
-        
-        // 根据contect-type? 过滤出单个目标属性: CVS, Kafka 等;
-        List<T> contextFactories = filterByContext(factoryClass,properties,classFactories);{//TableFactoryService.
-            List<T> matchingFactories = new ArrayList<>();
-            
-            // 遍历所有 TableFactory的类: 是从哪里加载来的?
-            // 这里由KafkaTableSourceSinkFactory, Kafka010Table..; Kafka09Table.., CsvBatchTable, CsvAppendTableSinkFactory;
-            
-            for (T factory : classFactories) {
-                Map<String, String> requestedContext = normalizeContext(factory);{
-                    factory.requiredContext();// 由不同factory实现类 返回其必填的 属性;
-                    /* KafkaTable 必填的是: connector.type, connector.version, connector.property-version;
-                    *
-                    */
-                }
-                
-                // 移除 xx.property-version 的属性;
-                Map<String, String> plainContext = new HashMap<>(requestedContext);
-                plainContext.remove(CONNECTOR_PROPERTY_VERSION);
-                plainContext.remove(FORMAT_PROPERTY_VERSION);
-                plainContext.remove(CATALOG_PROPERTY_VERSION);
-
-                /* 遍历每个 tableFactory的 必填属性,若 with传进的属性没有该 key(如 connector.type),或key对应的value不对,就添加到 miss & mismatch 表中;
-                *    例如: 对弈 KafkaTableFactory其必填的connector.type-> kafka, 如果这个sql with中定义的c.type= filesystem,则就不匹配,则加到 mismatch(错配表);
-                *   
-                */
-                // check if required context is met
-                Map<String, Tuple2<String, String>> mismatchedProperties = new HashMap<>();
-                Map<String, String> missingProperties = new HashMap<>();
-                for (Map.Entry<String, String> e : plainContext.entrySet()) {
-                    if (properties.containsKey(e.getKey())) {
-                        String fromProperties = properties.get(e.getKey());
-                        if (!Objects.equals(fromProperties, e.getValue())) {
-                            mismatchedProperties.put(e.getKey(), new Tuple2<>(e.getValue(), fromProperties));
-                        }
-                    } else {
-                        missingProperties.put(e.getKey(), e.getValue());
-                    }
-                }
-                // matchedSize: 该factory必填属性中, 扣除缺失(无key或value不对)后,正在成功的上的属性数量; 如必须匹配4个,结果with只有2个(key,value)完全匹配;
-                int matchedSize = plainContext.size() - mismatchedProperties.size() - missingProperties.size();
-                if (matchedSize == plainContext.size()) {
-                    matchingFactories.add(factory);
-                } else {
-                    if (bestMatched == null || matchedSize > bestMatched.matchedSize) {
-                        bestMatched = new ContextBestMatched<>(
-                                factory, matchedSize, mismatchedProperties, missingProperties);
-                    }
-                }
-            }
-
-            if (matchingFactories.isEmpty()) {
-                String bestMatchedMessage = null;
-                if (bestMatched != null && bestMatched.matchedSize > 0) {
-                    StringBuilder builder = new StringBuilder();
-                    builder.append(bestMatched.factory.getClass().getName());
-
-                    if (bestMatched.missingProperties.size() > 0) {
-                        builder.append("\nMissing properties:");
-                        bestMatched.missingProperties.forEach((k, v) ->
-                                builder.append("\n").append(k).append("=").append(v));
-                    }
-
-                    if (bestMatched.mismatchedProperties.size() > 0) {
-                        builder.append("\nMismatched properties:");
-                        bestMatched.mismatchedProperties
-                            .entrySet()
-                            .stream()
-                            .filter(e -> e.getValue().f1 != null)
-                            .forEach(e -> builder.append(
-                                String.format(
-                                    "\n'%s' expects '%s', but is '%s'",
-                                    e.getKey(),
-                                    e.getValue().f0,
-                                    e.getValue().f1)));
-                    }
-
-                    bestMatchedMessage = builder.toString();
-                }
-                //noinspection unchecked
-                throw new NoMatchingTableFactoryException(
-                    "Required context properties mismatch.",
-                    bestMatchedMessage,
-                    factoryClass,
-                    (List<TableFactory>) classFactories,
-                    properties);
-            }
-
-            return matchingFactories;
-        }
-        
-        // 判断该TableFactory子类 是否支持相关参数
-        return filterBySupportedProperties();
-    }
-        
-}
-
-tableSource = TableFactoryUtil.findAndCreateTableSource(table);{
-    return findAndCreateTableSource(table.toProperties());{
-        return TableFactoryService
-				.find(TableSourceFactory.class, properties){//TableFactoryService.find()
-                    return findSingleInternal(factoryClass, propertyMap, Optional.empty());{
-                        List<TableFactory> tableFactories = discoverFactories(classLoader);
-                        
-                        List<T> filtered = filter(tableFactories, factoryClass, properties);{
-                            //  1. 过滤出 TableFactory的实现类: 如 HBase/CVS/ES/FS/Kafka等 Source/TableTableFactory;
-                            List<T> classFactories = filterByFactoryClass(factoryClass,properties,foundFactories);{
-                                
-                            }
-                            
-                            // 2. 根据contect-type? 过滤出单个目标属性: CVS, Kafka 等;
-                            List<T> contextFactories = filterByContext(factoryClass,properties,classFactories);{//TableFactoryService.
-                                List<T> matchingFactories = new ArrayList<>();
-                                // 遍历所有 TableFactory的类: 是从哪里加载来的?这里由KafkaTableSourceSinkFactory, Kafka010Table..; Kafka09Table.., CsvBatchTable, CsvAppendTableSinkFactory;
-                                for (T factory : classFactories) {
-                                    // 1. factory的必填属性; 即TableFactory.requiredContext() 返回值.keySet();
-                                    Map<String, String> requestedContext = normalizeContext(factory);
-                                    // 所谓plainContext就是 必填属性中去掉 xx.property-version的属性; 正常就只 c.type,c.version这2个属性;
-                                    Map<String, String> plainContext = new HashMap<>(requestedContext);
-                                    plainContext.remove(CONNECTOR_PROPERTY_VERSION);//移除必填中的 connector.property-version
-                                    
-                                    //2. 遍历每个 tableFactory的 必填属性,若 with传进的属性没有该 key(如 connector.type),或key对应的value不对,就添加到 miss & mismatch 表中;
-                                    Map<String, Tuple2<String, String>> mismatchedProperties = new HashMap<>();
-                                    Map<String, String> missingProperties = new HashMap<>();
-                                    for (Map.Entry<String, String> e : plainContext.entrySet()) {
-                                        if (properties.containsKey(e.getKey())) {// factory.requestField 存在 useDef.pros中,
-                                            String fromProperties = properties.get(e.getKey());
-                                            // 2.1 比较factory对匹配的属性的值(如type是否都等于kafka, version是否等于0.10),是否相等
-                                            if (!Objects.equals(fromProperties, e.getValue())) {
-                                                // 将必填字段中 属性名称能匹配但属性值不相等的加到 mismatched, 用于后面报错提示?
-                                                mismatchedProperties.put(e.getKey(), new Tuple2<>(e.getValue(), fromProperties));
-                                            }
-                                        } else {// 属于factory必填属性,但useDef.props中无此属性的; 加到missing中,该factory肯定不合格;
-                                            missingProperties.put(e.getKey(), e.getValue());
-                                        }
-                                    }
-                                    // 3. plainContext:必填属性中 key+value完全相等的 情况: matchedSize; 只要有必填中有任一缺失或value不对,都不算matchingFactory;
-                                    int matchedSize = plainContext.size() - mismatchedProperties.size() - missingProperties.size();
-                                    if (matchedSize == plainContext.size()) {
-                                        matchingFactories.add(factory); // 必填属性中 key+value完全相等的factory, 才加到 matchingFactories集合;
-                                    } else {
-                                        if (bestMatched == null || matchedSize > bestMatched.matchedSize) {
-                                            bestMatched = new ContextBestMatched<>(factory, matchedSize, mismatchedProperties, missingProperties);
-                                        }
-                                    }
-                                }
-                                if (matchingFactories.isEmpty()) { //一个匹配上的 tableFactory也没有,就抛 NoMatchingTableFactoryException 异常;
-                                    String bestMatchedMessage = null;
-                                    //noinspection unchecked
-                                    throw new NoMatchingTableFactoryException("Required context properties mismatch.",
-                                        bestMatchedMessage,factoryClass, (List<TableFactory>) classFactories, properties);
-                                }
-                                return matchingFactories;
-                            }
-                            
-                            // 3. 将userDef.supportFields 和contextFacotry定义的Support字段一一匹配, 已校验用户的配置是否都支持; 
-                            return filterBySupportedProperties(factoryClass, properties,classFactories,contextFactories);{//TableFactoryService.filterBySupportedProperties()
-                                //3.1 将用户Table.properties(schema+ 用户编写)中schema.n.file中的数字替换成#,并生成 plainGivenKeys: Set<key>
-                                final List<String> plainGivenKeys = new LinkedList<>();
-                                properties.keySet().forEach(k -> {
-                                    String key = k.replaceAll(".\\d+", ".#");
-                                });
-                                // 3.2 将(用户配置的)属性都能(在TableFactory.supported属性中)匹配的 factory ,加到 supportedFactories中输出; 
-                                List<T> supportedFactories = new LinkedList<>();
-                                for (T factory: contextFactories) {
-                                    // 从contextFactory中解析 required必填字段; 
-                                    Set<String> requiredContextKeys = normalizeContext(factory).keySet();
-                                    // 从contextFactory中解析 supported 选填字段; tuple2.f0为所有选填字段; 
-                                    Tuple2<List<String>, List<String>> tuple2 = normalizeSupportedProperties(factory);
-                                    // givenFilteredKeys: 打平的用户定义(给)的(非必填) 选填属性; 用于过滤table.supported字段?
-                                    List<String> givenFilteredKeys = filterSupportedPropertiesFactorySpecific(factory, givenContextFreeKeys);
-                                    boolean allTrue = true;
-                                    List<String> unsupportedKeys = new ArrayList<>();
-                                    for (String k : givenFilteredKeys) {
-                                        // 把userDef.supportKeys和 contextFactory.supportFields 进行匹配, 找出任何不能匹配(即不支持的属性)的属性name;
-                                        if (!(tuple2.f0.contains(k) || tuple2.f1.stream().anyMatch(k::startsWith))) {
-                                            allTrue = false; 
-                                            unsupportedKeys.add(k);// 说明该userDef.prop 为非法属性, 不匹配(等于或通配)该factory的任意supported字段
-                                        }
-                                    }
-                                    if(allTrue){
-                                        supportedFactories.add(factory);// 该factory所有用户配置属性,都是被支持的;
-                                    }
-                                }
-                                return supportedFactories;
-                            }
-                        }
-                    }
-                }
-				.createTableSource(properties);
-    }
-}
-
-// 2. 根据contect-type? 过滤出单个目标属性: CVS, Kafka 等;
-List<T> contextFactories = filterByContext(factoryClass,properties,classFactories);{//TableFactoryService.
-    List<T> matchingFactories = new ArrayList<>();
-    // 遍历所有 TableFactory的类: 是从哪里加载来的?这里由KafkaTableSourceSinkFactory, Kafka010Table..; Kafka09Table.., CsvBatchTable, CsvAppendTableSinkFactory;
-    for (T factory : classFactories) {
-        // 1. factory的必填属性; 即TableFactory.requiredContext() 返回值.keySet();
-        Map<String, String> requestedContext = normalizeContext(factory);
-        // 所谓plainContext就是 必填属性中去掉 xx.property-version的属性; 正常就只 c.type,c.version这2个属性;
-        Map<String, String> plainContext = new HashMap<>(requestedContext);
-        plainContext.remove(CONNECTOR_PROPERTY_VERSION);//移除必填中的 connector.property-version
-        
-        //2. 遍历每个 tableFactory的 必填属性,若 with传进的属性没有该 key(如 connector.type),或key对应的value不对,就添加到 miss & mismatch 表中;
-        Map<String, Tuple2<String, String>> mismatchedProperties = new HashMap<>();
-        Map<String, String> missingProperties = new HashMap<>();
-        for (Map.Entry<String, String> e : plainContext.entrySet()) {
-            if (properties.containsKey(e.getKey())) {// factory.requestField 存在 useDef.pros中,
-                String fromProperties = properties.get(e.getKey());
-                // 2.1 比较factory对匹配的属性的值(如type是否都等于kafka, version是否等于0.10),是否相等
-                if (!Objects.equals(fromProperties, e.getValue())) {
-                    // 将必填字段中 属性名称能匹配但属性值不相等的加到 mismatched, 用于后面报错提示?
-                    mismatchedProperties.put(e.getKey(), new Tuple2<>(e.getValue(), fromProperties));
-                }
-            } else {// 属于factory必填属性,但useDef.props中无此属性的; 加到missing中,该factory肯定不合格;
-                missingProperties.put(e.getKey(), e.getValue());
-            }
-        }
-        // 3. plainContext:必填属性中 key+value完全相等的 情况: matchedSize; 只要有必填中有任一缺失或value不对,都不算matchingFactory;
-        int matchedSize = plainContext.size() - mismatchedProperties.size() - missingProperties.size();
-        if (matchedSize == plainContext.size()) {
-            matchingFactories.add(factory); // 必填属性中 key+value完全相等的factory, 才加到 matchingFactories集合;
-        } else {
-            if (bestMatched == null || matchedSize > bestMatched.matchedSize) {
-                bestMatched = new ContextBestMatched<>(factory, matchedSize, mismatchedProperties, missingProperties);
-            }
-        }
-    }
-    if (matchingFactories.isEmpty()) { //一个匹配上的 tableFactory也没有,就抛 NoMatchingTableFactoryException 异常;
-        String bestMatchedMessage = null;
-        //noinspection unchecked
-        throw new NoMatchingTableFactoryException("Required context properties mismatch.",
-            bestMatchedMessage,factoryClass, (List<TableFactory>) classFactories, properties);
-    }
-    return matchingFactories;
 }
 
 

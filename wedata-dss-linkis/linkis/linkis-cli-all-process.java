@@ -497,6 +497,7 @@ DefaultEngineConnLaunchService.createEngineConnLaunchRequest(engineBuildRequest:
 	if (engineTypeOption.isDefined) {
 		getEngineLaunchBuilder(engineTypeLabel).buildEngineConn(engineBuildRequest);{//FlinkEngineConnLaunchBuilder 父类ProcessEngineConnLaunchBuilder.buildEngineConn()
 			engineConnBuildRequest match { case richer: RicherEngineConnBuildRequest => bmlResources.addAll(util.Arrays.asList(richer.getBmlResources: _*))}
+			
 			bmlResources.addAll(getBmlResources);{//JavaProcessEngineConnLaunchBuilder.getBmlResources()
 				val engineConnResource = engineConnResourceGenerator.getEngineConnBMLResources(engineType);{//EngineConnResourceService.
 					val engineConnBMLResourceRequest = new GetEngineConnResourceRequest
@@ -597,7 +598,19 @@ LinuxProcessEngineConnLaunchService.launchEngineConn(){
 								val bmlResourceDir = schema + Paths.get(publicDir, resourceId, version).toFile.getPath //file:///tmp/dsslinkisall/engConn/engineConnPublickDir/08385d14-ac1f-4543-8d0a-1aa90d954174/v000002
 								val fsPath = new FsPath(bmlResourceDir)
 								if (!fs.exists(fsPath)) {
-									ECMUtils.downLoadBmlResourceToLocal(resource, user, fsPath.getPath)
+									// 把
+									ECMUtils.downLoadBmlResourceToLocal(resource, user, fsPath.getPath);{
+										 // input= resource + user = 
+										val is = download(resource, userName).get("is").asInstanceOf[InputStream] ;{
+											val client: BmlClient = createBMLClient(userName);
+											var response: BmlDownloadResponse  = client.downloadShareResource(userName, resource.getResourceId, resource.getVersion)
+											map += "path" -> response.fullFilePath
+											map += "is" -> response.inputStream
+										}
+										val os = FileUtils.openOutputStream(new File(path + File.separator + resource.getFileName))
+										IOUtils.copy(is, os)
+										IOUtils.closeQuietly(os)
+									}
 									FileSystemUtils.mkdirs(fs, new FsPath(unzipDir), Utils.getJvmUser)
 									ZipUtils.unzip(bmlResourceDir + File.separator + resource.getFileName, unzipDir)
 									fs.delete(new FsPath(bmlResourceDir + File.separator + resource.getFileName))
