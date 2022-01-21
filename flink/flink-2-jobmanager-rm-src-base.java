@@ -1,4 +1,80 @@
 
+
+	// JmTemp.2 Hudi 与Hive同步,提交作业的 代码;
+	StreamWriteOperatorCoordinator.notifyCheckpointComplete(){
+		executor.execute(()->{
+			final boolean committed = commitInstant(this.instant);
+			if (committed) {
+				writeClient.scheduleCompaction(Option.empty());
+			}
+			startInstant();
+			// sync Hive if is enabled
+			syncHiveIfEnabled();{//StreamWriteOperatorCoordinator.syncHiveIfEnabled
+				if (tableState.syncHive) {this.hiveSyncExecutor.execute(this::syncHive, this.instant);}{//StreamWriteOperatorCoordinator.syncHive()
+					hiveSyncContext
+						.hiveSyncTool(){//HiveSyncContext.hiveSyncTool
+							return new HiveSyncTool(this.syncConfig, this.hiveConf, this.fs);{
+								super(configuration.getAllProperties(), fs);
+								this.hoodieHiveClient = new HoodieHiveClient(cfg, configuration, fs);{
+									if (!StringUtils.isNullOrEmpty(cfg.syncMode)) {
+										HiveSyncMode syncMode = HiveSyncMode.of(cfg.syncMode);
+										switch (syncMode) {
+											case HMS: ddlExecutor = new HMSDDLExecutor(configuration, cfg, fs); break;
+											case HIVEQL: ddlExecutor = new HiveQueryDDLExecutor(cfg, fs, configuration); break;
+											case JDBC: 
+												ddlExecutor = new JDBCExecutor(cfg, fs);{
+													this.config = config;
+													createHiveConnection(config.jdbcUrl, config.hiveUser, config.hivePass);{
+														// HiveDriver 位于 hive-exec-xx.jar中 ; 报错ClassNotFoundException: org.apache.hudi.org.apache.hive.jdbc.HiveDriver
+														Class.forName("org.apache.hive.jdbc.HiveDriver");
+														this.connection = DriverManager.getConnection(jdbcUrl, hiveUser, hivePass);{
+															return (getConnection(url, info, Reflection.getCallerClass()));{
+																for(DriverInfo aDriver : registeredDrivers) {
+																	Connection con = aDriver.driver.connect(url, info);{ //java.sql.Driver.connect()接口
+																		HiveDriver.connect(){
+																			return this.acceptsURL(url) ? new HiveConnection(url, info) : null;
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+												break;
+										}
+									}else{
+										ddlExecutor = cfg.useJdbc ? new JDBCExecutor(cfg, fs) : new HiveQueryDDLExecutor(cfg, fs, configuration);
+									}
+									// 这里调用了 hive-exec-xx.jar包的 Hive.get(HiveConf c) 方法; 会报错 NoSuchMethodError: org.apache.hadoop.hive.ql.metadata.Hive.get(Lorg
+									this.client = Hive.get(configuration).getMSC();{// org.apache.hadoop.hive.ql.metadata.Hive.get(HiveConf c)
+										return getInternal(c, false, false, true);
+									}
+								}
+							}
+						}
+						.syncHoodieTable();
+				}
+			}
+			
+			// sync metadata if is enabled
+			syncMetadataIfEnabled();
+			
+		});
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /** 1. JM模块: YarnSessionClusterEntrypoint进程 启动
 *
 */
@@ -43,165 +119,6 @@ Dispatcher.submitJob(JobGraph jobGraph, Time timeout){//Dispatcher.
 
 // 2.2 JobManager: flink-akka.actor.default-dispatcher-2 线程: 
 
-
-
-Dispatcher.persistAndRunJob(){
-	jobGraphWriter.putJobGraph(jobGraph);
-	
-    final CompletableFuture<Void> runJobFuture = runJob(jobGraph);{//Dispatcher.runJob
-        final CompletableFuture<JobManagerRunner> jobManagerRunnerFuture = createJobManagerRunner(jobGraph);{//Dispatcher.createJobManagerRunner
-            final RpcService rpcService = getRpcService();
-			return CompletableFuture.supplyAsync(()-{
-				JobManagerRunner runner =jobManagerRunnerFactory.createJobManagerRunner();{//DefaultJobManagerRunnerFactory.createJobManagerRunner()
-					JobMasterConfiguration jobMasterConfiguration =JobMasterConfiguration.fromConfiguration(configuration);
-					final SlotPoolFactory slotPoolFactory = SlotPoolFactory.fromConfiguration(configuration);
-					final SchedulerNGFactory schedulerNGFactory =SchedulerNGFactoryFactory.createSchedulerNGFactory(configuration);
-					final ShuffleMaster<?> shuffleMaster =ShuffleServiceLoader.loadShuffleServiceFactory(configuration).createShuffleMaster(configuration);
-					JobMasterServiceFactory jobMasterFactory = new DefaultJobMasterServiceFactory();
-					return new JobManagerRunnerImpl(jobGraph,jobMasterFactory,fatalErrorHandler,initializationTimestamp);{//new JobManagerRunnerImpl的构造函数
-						ClassLoader userCodeLoader =classLoaderLease.getOrResolveClassLoader();
-						leaderElectionService.start(this);
-						this.jobMasterService =jobMasterFactory.createJobMasterService(jobGraph, userCodeLoader);{//DefaultJobMasterServiceFactory.
-							return new JobMaster(new DefaultExecutionDeploymentTracker());{//new JobMaster() 构造函数中
-								resourceManagerLeaderRetriever =highAvailabilityServices.getResourceManagerLeaderRetriever();
-								this.schedulerNG = createScheduler(executionDeploymentTracker, jobManagerJobMetricGroup);{
-									return schedulerNGFactory.createInstance();{//DefaultSchedulerFactory.
-										DefaultSchedulerComponents schedulerComponents =createSchedulerComponents();
-										restartBackoffTimeStrategy =RestartBackoffTimeStrategyFactoryLoader.createRestartBackoffTimeStrategyFactory().create();
-										return new DefaultScheduler();{super(){// SchedulerBase构造方法, 构建执行计划Graph
-											this.executionGraph =createAndRestoreExecutionGraph();{
-												ExecutionGraph newExecutionGraph =createExecutionGraph();{//SchedulerBase.
-													// 核心步骤,构建 物理执行计划
-													return ExecutionGraphBuilder.buildGraph();{//ExecutionGraphBuilder.buildGraph()
-														JobInformation jobInformation =new JobInformation();
-														executionGraph.attachJobGraph(sortedTopology);
-														ExecutionGraph executionGraph =new ExecutionGraph();
-														executionGraph.setJsonPlan(JsonPlanGenerator.generatePlan(jobGraph));
-														for (JobVertex vertex : jobGraph.getVertices()) {
-															vertex.initializeOnMaster(classLoader);
-														}
-														List<JobVertex> sortedTopology = jobGraph.getVerticesSortedTopologicallyFromSources();
-														executionGraph.attachJobGraph(sortedTopology);{
-															ExecutionJobVertex ejv =new ExecutionJobVertex();{
-																List<SerializedValue<OperatorCoordinator.Provider>> coordinatorProviders =getJobVertex().getOperatorCoordinators();
-																for (final SerializedValue<OperatorCoordinator.Provider> provider :coordinatorProviders) {
-																	OperatorCoordinatorHolder.create(provider, this, graph.getUserClassLoader());{
-																		TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(classLoader);
-																		OperatorCoordinator.Provider provider =serializedProvider.deserializeValue(classLoader);
-																		
-																	}
-			
-															}
-															
-														}
-														
-														CheckpointIDCounter checkpointIdCounter= recoveryFactory.createCheckpointIDCounter(jobId);
-														CheckpointStatsTracker checkpointStatsTracker =new CheckpointStatsTracker();
-														rootBackend =StateBackendLoader.fromApplicationOrConfigOrDefault();
-														
-													}
-												}
-												CheckpointCoordinator checkpointCoordinator =newExecutionGraph.getCheckpointCoordinator();
-											}
-											inputsLocationsRetriever =new ExecutionGraphToInputsLocationsRetrieverAdapter(executionGraph);
-											this.coordinatorMap = createCoordinatorMap();
-										}}
-									}
-								}
-							}
-						}
-						jobMasterCreationFuture.complete(null);
-					}
-				}
-				runner.start();
-                return runner;
-			});
-			
-			
-        }
-        
-        return jobManagerRunnerFuture
-            .thenApply(FunctionUtils.uncheckedFunction(this::startJobManagerRunner(){
-                // 上面的 CompletableFuture.supplyAsync(); 执行完后, 就触发该startJobManagerRunner()执行;
-                Dispatcher.startJobManagerRunner();{
-                    jobManagerRunner.getResultFuture().handleAsync(()->{});
-                    
-                    jobManagerRunner.start();{// JobManagerRunnerImpl.start()
-                        leaderElectionService.start(this);{//EmbeddedLeaderService.EmbeddedLeaderElectionService
-                            addContender(this, contender);{
-                                if (!allLeaderContenders.add(service)) throw new IllegalStateException();
-                                
-                                updateLeader().whenComplete((aVoid, throwable) -> {fatalError(throwable);});{
-                                    EmbeddedLeaderService.updateLeader(){//
-                                        EmbeddedLeaderElectionService leaderService = allLeaderContenders.iterator().next();
-                                        
-                                        return execute(new GrantLeadershipCall(leaderService.contender, leaderSessionId, LOG));{
-                                            return CompletableFuture.runAsync(runnable, notificationExecutor);{
-                                                GrantLeadershipCall.run(){
-                                                    contender.grantLeadership(leaderSessionId);{//JobManagerRunnerImpl.
-                                                        leadershipOperation = leadershipOperation.thenCompose((ignored) -> {
-                                                            return verifyJobSchedulingStatusAndStartJobManager(leaderSessionID);{
-                                                                //代码如下
-                                                                final CompletableFuture<JobSchedulingStatus> jobSchedulingStatusFuture = getJobSchedulingStatus();
-                                                                return jobSchedulingStatusFuture.thenCompose(()->{
-                                                                    return startJobMaster(leaderSessionId);
-                                                                })
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }))
-            .thenApply(FunctionUtils.nullFn())
-            .whenCompleteAsync(
-                (ignored, throwable) -> {
-                    if (throwable != null) jobManagerRunnerFutures.remove(jobGraph.getJobID());
-                },
-                getMainThreadExecutor());
-    
-    }
-    
-    return runJobFuture.whenComplete(()->{jobGraphWriter.removeJobGraph(jobGraph.getJobID());});
-}
-
-
-	
-Caused by: java.lang.ClassNotFoundException: org.apache.flink.connectors.hive.HiveSource
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:382) ~[?:1.8.0_261]
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:418) ~[?:1.8.0_261]
-	at org.apache.flink.util.FlinkUserCodeClassLoader.loadClassWithoutExceptionHandling(FlinkUserCodeClassLoader.java:64) ~[flink-core-1.12.2.jar:1.12.2]
-	at org.apache.flink.util.ChildFirstClassLoader.loadClassWithoutExceptionHandling(ChildFirstClassLoader.java:65) ~[flink-core-1.12.2.jar:1.12.2]
-	at org.apache.flink.util.FlinkUserCodeClassLoader.loadClass(FlinkUserCodeClassLoader.java:48) ~[flink-core-1.12.2.jar:1.12.2]
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:351) ~[?:1.8.0_261]
-	at org.apache.flink.runtime.execution.librarycache.FlinkUserCodeClassLoaders$SafetyNetWrapperClassLoader.loadClass(FlinkUserCodeClassLoaders.java:172) ~[flink-runtime_2.11-1.12.2.jar:1.12.2]
-	at java.lang.Class.forName0(Native Method) ~[?:1.8.0_261]
-	at java.lang.Class.forName(Class.java:348) ~[?:1.8.0_261]
-	at org.apache.flink.util.InstantiationUtil$ClassLoaderObjectInputStream.resolveClass(InstantiationUtil.java:76) ~[flink-core-1.12.2.jar:1.12.2]
-	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1946) ~[?:1.8.0_261]
-	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1829) ~[?:1.8.0_261]
-	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:2120) ~[?:1.8.0_261]
-	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1646) ~[?:1.8.0_261]
-	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2365) ~[?:1.8.0_261]
-	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:2289) ~[?:1.8.0_261]
-	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:2147) ~[?:1.8.0_261]
-	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1646) ~[?:1.8.0_261]
-	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:482) ~[?:1.8.0_261]
-	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:440) ~[?:1.8.0_261]
-	at org.apache.flink.util.InstantiationUtil.deserializeObject(InstantiationUtil.java:615) ~[flink-core-1.12.2.jar:1.12.2]
-	at org.apache.flink.util.InstantiationUtil.deserializeObject(InstantiationUtil.java:600) ~[flink-core-1.12.2.jar:1.12.2]
-	at org.apache.flink.util.InstantiationUtil.deserializeObject(InstantiationUtil.java:587) ~[flink-core-1.12.2.jar:1.12.2]
-	at org.apache.flink.util.SerializedValue.deserializeValue(SerializedValue.java:67) ~[flink-core-1.12.2.jar:1.12.2]
-	at org.apache.flink.runtime.operators.coordination.OperatorCoordinatorHolder.create(OperatorCoordinatorHolder.java:337) ~[flink-runtime_2.11-1.12.2.jar:1.12.2]
-	at org.apache.flink.runtime.executiongraph.ExecutionJobVertex.<init>(ExecutionJobVertex.java:225) ~[flink-runtime_2.11-1.12.2.jar:1.12.2]
-	at org.apache.flink.runtime.executiongraph.ExecutionGraph.attachJobGraph(ExecutionGraph.java:866) ~[flink-runtime_2.11-1.12.2.jar:1.12.2]
-	at org.apache.flink.runtime.executiongraph.ExecutionGraphBuilder.buildGraph(ExecutionGraphBuilder.java:257) ~[flink-runtime_2.11-1.12.2.jar:1.12.2]
 
 
 FlinkUserCodeClassLoader.loadClass(){
@@ -297,7 +214,7 @@ Dispatcher.persistAndRunJob(){
 
 
 
-/** 3.xx JobManager进程: JM启动和管理
+/** 3.xx JobManager进程: JM启动和管理 : JobMaster.start()
 *
 */
 
@@ -313,11 +230,11 @@ verifyJobSchedulingStatusAndStartJobManager(){//JobManagerRunnerImpl.verifyJobSc
             return startJobMaster(leaderSessionId);{//JobManagerRunnerImpl.startJobMaster()
                 runningJobsRegistry.setJobRunning(jobGraph.getJobID());
                 startFuture = jobMasterService.start(new JobMasterId(leaderSessionId));{//JobMaster.start()
-                    start();
-                    
+                    start();{// 父方法 RpcEndpoint.start()
+						rpcServer.start();
+					}
                     return callAsyncWithoutFencing(() -> startJobExecution(newJobMasterId), RpcUtils.INF_TIMEOUT);{
                         // 中间一堆的装换;
-                        
                         JobMaster.startJobExecution(){
                             startJobMasterServices();{
                                 startHeartbeatServices();
@@ -346,7 +263,12 @@ verifyJobSchedulingStatusAndStartJobManager(){//JobManagerRunnerImpl.verifyJobSc
                                     }
                                 }
                             }
-                            resetAndStartScheduler();
+                            log.info("Starting execution of job {} ({}) under job master id {}.");
+							
+							resetAndStartScheduler();{
+								
+							}
+							return Acknowledge.get();
                         }
                         
                     }
@@ -358,6 +280,140 @@ verifyJobSchedulingStatusAndStartJobManager(){//JobManagerRunnerImpl.verifyJobSc
         }
     });
 }
+
+// 2.2 一次Job(管理这)的启动和 Job提交; 
+JobMaster.start(){//JobMaster.start()
+	start();{// 父方法 RpcEndpoint.start()
+		rpcServer.start();
+	}
+	return callAsyncWithoutFencing(() -> startJobExecution(newJobMasterId), RpcUtils.INF_TIMEOUT);{
+		// 中间一堆的装换;
+		JobMaster.startJobExecution(){
+			startJobMasterServices();{
+				startHeartbeatServices();
+				slotPool.start(getFencingToken(), getAddress(), getMainThreadExecutor());
+				scheduler.start(getMainThreadExecutor());
+				reconnectToResourceManager(new FlinkException("Starting JobMaster component."));
+				
+				resourceManagerLeaderRetriever.start(new ResourceManagerLeaderListener());{//
+					EmbeddedLeaderService.EmbeddedLeaderRetrievalService.start(){
+						addListener(this, listener);{//EmbeddedLeaderService.addListener()
+							notifyListener(currentLeaderAddress, currentLeaderSessionId, listener);{//EmbeddedLeaderService.notifyListener()
+								return CompletableFuture.runAsync(new NotifyOfLeaderCall(address, leaderSessionId, listener, LOG), notificationExecutor);{
+									NotifyOfLeaderCall.run(){
+										listener.notifyLeaderAddress(address, leaderSessionId);{
+											runAsync(() -> notifyOfNewResourceManagerLeader(){// 异步执行该 notifyOfNewResourceManagerLeader()方法;
+												ResourceManagerLeaderListener.notifyOfNewResourceManagerLeader(){
+													resourceManagerAddress = createResourceManagerAddress(newResourceManagerAddress, resourceManagerId);
+													reconnectToResourceManager(); // 源码详解下面;
+												}
+											});
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			log.info("Starting execution of job {} ({}) under job master id {}.");
+			
+			resetAndStartScheduler();{// JobManager.resetAndStartScheduler()
+				validateRunsInMainThread();
+				
+				final JobManagerJobMetricGroup newJobManagerJobMetricGroup = jobMetricGroupFactory.create(jobGraph);
+				final SchedulerNG newScheduler =createScheduler(executionDeploymentTracker, newJobManagerJobMetricGroup);
+				
+				// 执行资源调度; 
+				schedulerAssignedFuture =schedulerNG
+                            .getTerminationFuture()
+                            .handle((ignored, throwable) -> {
+                                        newScheduler.setMainThreadExecutor(getMainThreadExecutor());
+                                        assignScheduler(newScheduler, newJobManagerJobMetricGroup);
+                                        return null;
+                                    });
+									
+				// 调度完成, 就执行 作业运行; 
+				FutureUtils.assertNoException(schedulerAssignedFuture.thenRun(this::startScheduling));{//JobMaster.startScheduling()
+					jobStatusListener = new JobManagerJobStatusListener();
+					schedulerNG.startScheduling();{//SchedulerBase.startScheduling()
+						mainThreadExecutor.assertRunningInMainThread();
+						registerJobMetrics();
+						// 每个Operator都有在JM端的 Coordinator, 启动所有 OperatorCoordinator
+						startAllOperatorCoordinators();{
+							final Collection<OperatorCoordinatorHolder> coordinators = getAllCoordinators();
+							for (OperatorCoordinatorHolder coordinator : coordinators) {
+								coordinator.start();{//OperatorCoordinatorHolder.start()
+									mainThreadExecutor.assertRunningInMainThread();
+									coordinator.start();{
+										// Hudi 算子的 Coordinator, 用于hive的 sync同步; 
+										StreamWriteOperatorCoordinator.start(){
+											
+										}
+										
+										
+									}
+								}
+							}
+						}
+						
+						// 开始调度执行个Task的运行; 
+						startSchedulingInternal();{
+							
+						}
+					}
+				}
+			}
+			return Acknowledge.get();
+		}
+		
+	}
+}
+
+
+	// JM2.2.1 : Hudi的 OperatorCoordinator.start() 启动:  为 hive-sync功能完成 jdbc-hms相关的connect和初始化; 
+	StreamWriteOperatorCoordinator.start(){
+		reset();
+		initTableIfNotExists(this.conf);
+		this.executor = new CoordinatorExecutor(this.context, LOG);
+		if (tableState.syncHive) { //hive_sync.enable = true(默认=true)
+			initHiveSync();{//StreamWriteOperatorCoordinator.initHiveSync()
+				this.hiveSyncExecutor = new NonThrownExecutor(LOG, true);
+				this.hiveSyncContext = HiveSyncContext.create(conf);{//HiveSyncContext.create()
+					HiveSyncConfig syncConfig = buildSyncConfig(conf);{//HiveSyncContext.buildSyncConfig()
+						HiveSyncConfig hiveSyncConfig = new HiveSyncConfig();
+						hiveSyncConfig.basePath = conf.getString(FlinkOptions.PATH);
+						hiveSyncConfig.baseFileFormat = conf.getString(FlinkOptions.HIVE_SYNC_FILE_FORMAT);
+						hiveSyncConfig.usePreApacheInputFormat = false;
+						hiveSyncConfig.databaseName = conf.getString(FlinkOptions.HIVE_SYNC_DB);
+						hiveSyncConfig.tableName = conf.getString(FlinkOptions.HIVE_SYNC_TABLE);
+						hiveSyncConfig.syncMode = conf.getString(FlinkOptions.HIVE_SYNC_MODE);
+						hiveSyncConfig.hiveUser = conf.getString(FlinkOptions.HIVE_SYNC_USERNAME);// hive_sync.username 参数 (默认:hive)
+						hiveSyncConfig.hivePass = conf.getString(FlinkOptions.HIVE_SYNC_PASSWORD); // hive_sync.password  (默认:hive)
+						hiveSyncConfig.jdbcUrl = conf.getString(FlinkOptions.HIVE_SYNC_JDBC_URL); //hive_sync.jdbc_url, 默认( dbc:hive2://localhost:10000);
+						hiveSyncConfig.partitionFields = Arrays.asList(FilePathUtils.extractPartitionKeys(conf));
+						hiveSyncConfig.partitionValueExtractorClass = conf.getString(FlinkOptions.HIVE_SYNC_PARTITION_EXTRACTOR_CLASS_NAME);
+						hiveSyncConfig.useJdbc = conf.getBoolean(FlinkOptions.HIVE_SYNC_USE_JDBC);
+						return hiveSyncConfig;
+					}
+					return new HiveSyncContext(syncConfig, hiveConf, fs);
+				}
+			}
+		}
+		if (tableState.syncMetadata) {//metadata.enabled =true (默认 false)
+			initMetadataSync();{//StreamWriteOperatorCoordinator.initMetadataSync
+				this.metadataSyncExecutor = new NonThrownExecutor(LOG, true);
+			}
+		}
+		
+	}
+	
+
+
+
+
+
+
 
 
 // 3.xx JM进程: ResourceManager 资源调度: 
