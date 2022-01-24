@@ -611,6 +611,49 @@ CliClient.callCommand(){
 	}
 
 
+
+lambda$getSinkRuntimeProvider$0:160, HoodieTableSink (org.apache.hudi.table)
+consumeDataStream:-1, 380077824 (org.apache.hudi.table.HoodieTableSink$$Lambda$1168)
+createSinkTransformation:95, CommonPhysicalSink (org.apache.flink.table.planner.plan.nodes.common)
+translateToPlanInternal:103, StreamExecSink (org.apache.flink.table.planner.plan.nodes.physical.stream)
+translateToPlanInternal:43, StreamExecSink (org.apache.flink.table.planner.plan.nodes.physical.stream)
+translateToPlan:59, ExecNode$class (org.apache.flink.table.planner.plan.nodes.exec)
+translateToPlan:43, StreamExecSink (org.apache.flink.table.planner.plan.nodes.physical.stream)
+apply:66, StreamPlanner$$anonfun$translateToPlan$1 (org.apache.flink.table.planner.delegation)
+apply:65, StreamPlanner$$anonfun$translateToPlan$1 (org.apache.flink.table.planner.delegation)
+apply:234, TraversableLike$$anonfun$map$1 (scala.collection)
+apply:234, TraversableLike$$anonfun$map$1 (scala.collection)
+foreach:891, Iterator$class (scala.collection)
+foreach:1334, AbstractIterator (scala.collection)
+foreach:72, IterableLike$class (scala.collection)
+foreach:54, AbstractIterable (scala.collection)
+map:234, TraversableLike$class (scala.collection)
+map:104, AbstractTraversable (scala.collection)
+translateToPlan:65, StreamPlanner (org.apache.flink.table.planner.delegation)
+translate:162, PlannerBase (org.apache.flink.table.planner.delegation)
+translate:1329, TableEnvironmentImpl (org.apache.flink.table.api.internal)
+translateAndClearBuffer:1321, TableEnvironmentImpl (org.apache.flink.table.api.internal)
+getPipeline:328, StreamTableEnvironmentImpl (org.apache.flink.table.api.bridge.java.internal)
+lambda$createPipeline$1:287, ExecutionContext (org.apache.flink.table.client.gateway.local)
+get:-1, 827715984 (org.apache.flink.table.client.gateway.local.ExecutionContext$$Lambda$715)
+wrapClassLoader:256, ExecutionContext (org.apache.flink.table.client.gateway.local)
+createPipeline:282, ExecutionContext (org.apache.flink.table.client.gateway.local)
+executeUpdateInternal:490, LocalExecutor (org.apache.flink.table.client.gateway.local)
+executeUpdate:428, LocalExecutor (org.apache.flink.table.client.gateway.local)
+callInsert:690, CliClient (org.apache.flink.table.client.cli)
+callCommand:327, CliClient (org.apache.flink.table.client.cli)
+accept:-1, 57973803 (org.apache.flink.table.client.cli.CliClient$$Lambda$713)
+ifPresent:159, Optional (java.util)
+open:214, CliClient (org.apache.flink.table.client.cli)
+openCli:144, SqlClient (org.apache.flink.table.client)
+start:115, SqlClient (org.apache.flink.table.client)
+main:201, SqlClient (org.apache.flink.table.client)
+
+
+
+
+
+
 	// 3.3.4  set”Ô∑®
 	CliClient.callSet(){
 		if (cmdCall.operands.length == 0) {
