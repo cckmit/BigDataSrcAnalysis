@@ -147,30 +147,18 @@ JobMaster.resetAndStartScheduler(){
 // ckp2. JobManager中 固定间隔 触发完成 Checkpoint的 详细流程; 
 // 这还是在 JobMaster进程中; 
 
-run:1841, CheckpointCoordinator$ScheduledTrigger (org.apache.flink.runtime.checkpoint)
-call:511, Executors$RunnableAdapter (java.util.concurrent)
-runAndReset:308, FutureTask (java.util.concurrent)
-access$301:180, ScheduledThreadPoolExecutor$ScheduledFutureTask (java.util.concurrent)
-run:294, ScheduledThreadPoolExecutor$ScheduledFutureTask (java.util.concurrent)
-runWorker:1149, ThreadPoolExecutor (java.util.concurrent)
-run:624, ThreadPoolExecutor$Worker (java.util.concurrent)
-run:748, Thread (java.lang)
-
-
 // CheckpointCoordinator.ScheduledTrigger.triggerCheckpoint() 固定频率 checkpointId 事件,
 
 timer.scheduleAtFixedRate(new ScheduledTrigger(),initDelay, baseInterval, TimeUnit.MILLISECONDS);{// ScheduledExecutorServiceAdapter.scheduleAtFixedRate()
     // 这里就启动 Checkpoint.duration定时频率的线程,取做checkpoint;
     return scheduledExecutorService.scheduleAtFixedRate(command, initialDelay, period, unit);{//Executors$DelegatedScheduledExecutorService.
-        
         CheckpointCoordinator.ScheduledTrigger.run(){
             triggerCheckpoint(System.currentTimeMillis(), true);{//ScheduledTrigger.triggerCheckpoint()
                 return triggerCheckpoint(timestamp, checkpointProperties, null, isPeriodic, false);{//CheckpointCoordinator.triggerCheckpoint()
                     for (Execution execution: executions) {
                         execution.triggerCheckpoint(checkpointID, timestamp, checkpointOptions);{// Execution.triggerCheckpoint()
                             triggerCheckpointHelper(checkpointId, timestamp, checkpointOptions, false);{
-                                taskManagerGateway.triggerCheckpoint(attemptId, getVertex().getJobId(), checkpointId, timestamp, 
-                                checkpointOptions, advanceToEndOfEventTime);{//RpcTaskManagerGateway.triggerCheckpoint()
+                                taskManagerGateway.triggerCheckpoint(attemptId, jobId, checkpointId, timestamp,);{//RpcTaskManagerGateway.triggerCheckpoint()
                                     // 通过akka 动态代理机制: triggerCheckpoint:-1, $Proxy15  -> invoke:129, AkkaInvocationHandler ..
                                     
                                     // 到另一个进程,或miniCluster中的TM线程里:-> TaskExecutor.triggerCheckpoint()
@@ -502,20 +490,6 @@ Task.run().doRun(){
 
 
 
-logCompletedInternal:67, AbstractSnapshotStrategy (org.apache.flink.runtime.state)
-logSyncCompleted:54, AbstractSnapshotStrategy (org.apache.flink.runtime.state)
-snapshot:237, DefaultOperatorStateBackend (org.apache.flink.runtime.state)
-snapshotState:213, StreamOperatorStateHandler (org.apache.flink.streaming.api.operators)
-snapshotState:162, StreamOperatorStateHandler (org.apache.flink.streaming.api.operators)
-snapshotState:371, AbstractStreamOperator (org.apache.flink.streaming.api.operators)
-checkpointStreamOperator:686, SubtaskCheckpointCoordinatorImpl (org.apache.flink.streaming.runtime.tasks)
-buildOperatorSnapshotFutures:607, SubtaskCheckpointCoordinatorImpl (org.apache.flink.streaming.runtime.tasks)
-takeSnapshotSync:572, SubtaskCheckpointCoordinatorImpl (org.apache.flink.streaming.runtime.tasks)
-checkpointState:298, SubtaskCheckpointCoordinatorImpl (org.apache.flink.streaming.runtime.tasks)
-lambda$performCheckpoint$9:1004, StreamTask (org.apache.flink.streaming.runtime.tasks)
-
-
-
 
 // ckp4. TaskExecutor 中, operatorChain各算子准备 CheckpointBarrier并广播出去;
 	// TaskExecutor.triggerCheckpoint() -> SourceStreamTask.triggerCheckpointAsync() 中新启线程执行 StreamTask.triggerCheckpoint()
@@ -608,6 +582,7 @@ lambda$performCheckpoint$9:1004, StreamTask (org.apache.flink.streaming.runtime.
 							callInternal();
 							logAsyncSnapshotComplete(startTime);
 						}
+						
 						reportCompletedSnapshotStates();
 					}
 				}
@@ -935,6 +910,8 @@ lambda$performCheckpoint$9:1004, StreamTask (org.apache.flink.streaming.runtime.
 
 	// ckp4.5 异步完成各ckp的持久化,并报告完成情况; 
 	// SubtaskCheckpointCoordinatorImpl.checkpointState() -> finishAndReportAsync() - asyncOperationsThreadPool.execute() 新启线程 异步 checkpoint并 report给 TM/JM; 
+	// 第一步: new OperatorSnapshotFinalizer() -> callInternal() -> write(): 向外村 hdfs/memory/etc write(b) 字节流; 
+	// 第二步: reportCompletedSnapshotStates(),发起 Rpc 远程调用JobMaster.acknowledgeCheckpoint()
 	AsyncCheckpointRunnable.run(){
 		final long asyncStartDelayMillis = (asyncStartNanos - asyncConstructionNanos) / 1_000_000L;
 		for (Map.Entry<OperatorID, OperatorSnapshotFutures> entry :operatorSnapshotsInProgress.entrySet()) {
@@ -949,8 +926,6 @@ lambda$performCheckpoint$9:1004, StreamTask (org.apache.flink.streaming.runtime.
 								CheckpointStateOutputStream localOut =streamFactory.createCheckpointStateOutputStream();
 								snapshotCloseableRegistry.registerCloseable(localOut);
 								List<StateMetaInfoSnapshot> broadcastMetaInfoSnapshots =new ArrayList<>(registeredBroadcastStatesDeepCopies.size());
-								
-								// ... write them all in the checkpoint stream ...
 								DataOutputView dov = new DataOutputViewStreamWrapper(localOut);
 								OperatorBackendSerializationProxy backendSerializationProxy =new OperatorBackendSerializationProxy(operatorMetaInfoSnapshots, broadcastMetaInfoSnapshots);
 								backendSerializationProxy.write(dov);{//OperatorBackendSerializationProxy.write(dov)
@@ -1001,6 +976,7 @@ lambda$performCheckpoint$9:1004, StreamTask (org.apache.flink.streaming.runtime.
 																}
 																
 																out.write(bytearr, 0, utflen+2);{// 
+																
 																	FsCheckpointStreamFactory.FsCheckpointStateOutputStream.write(byte[] b, int off, int len){
 																		if (len < writeBuffer.length) {
 																			final int remaining = writeBuffer.length - pos;
@@ -1012,6 +988,14 @@ lambda$performCheckpoint$9:1004, StreamTask (org.apache.flink.streaming.runtime.
 																			outStream.write(b, off, len);
 																		}
 																	}
+																	
+																	MemCheckpointStreamFactory.MemoryCheckpointOutputStream.write(byte[] b, int off, int len){
+																		os.write(b, off, len);{//ByteArrayOutputStreamWithPos.write()
+																			
+																		}
+																		isEmpty = false;
+																	}
+																	
 																}
 															}
 														}
@@ -1033,17 +1017,6 @@ lambda$performCheckpoint$9:1004, StreamTask (org.apache.flink.streaming.runtime.
 				}
 				SnapshotResult<OperatorStateHandle> operatorRaw =FutureUtils.runIfNotDoneAndGet(snapshotFutures.getOperatorStateRawFuture());
 				SnapshotResult<StateObjectCollection<InputChannelStateHandle>> inputChannel =snapshotFutures.getInputChannelStateFuture().get();
-				
-				SnapshotResult<StateObjectCollection<ResultSubpartitionStateHandle>> resultSubpartition =snapshotFutures.getResultSubpartitionStateFuture().get();
-				jobManagerOwnedState =OperatorSubtaskState.builder()
-						.setManagedOperatorState(singletonOrEmpty(operatorManaged.getJobManagerOwnedSnapshot()))
-						.setRawOperatorState(singletonOrEmpty(operatorRaw.getJobManagerOwnedSnapshot()))
-						.setManagedKeyedState(singletonOrEmpty(keyedManaged.getJobManagerOwnedSnapshot()))
-						.setRawKeyedState(singletonOrEmpty(keyedRaw.getJobManagerOwnedSnapshot()))
-						.setInputChannelState(emptyIfNull(inputChannel.getJobManagerOwnedSnapshot()))
-						.setResultSubpartitionState(emptyIfNull(resultSubpartition.getJobManagerOwnedSnapshot()))
-						.build();
-
 			}
 			
 			bytesPersistedDuringAlignment +=finalizedSnapshots.getJobManagerOwnedState().getResultSubpartitionState().getStateSize();
@@ -1051,87 +1024,30 @@ lambda$performCheckpoint$9:1004, StreamTask (org.apache.flink.streaming.runtime.
 			jobManagerTaskOperatorSubtaskStates.putSubtaskStateByOperatorID(operatorID, finalizedSnapshots.getJobManagerOwnedState());
 		}
 		checkpointMetrics.setAsyncDurationMillis(asyncDurationMillis);
+		// 是Running 状态,且set Completed成功,才会report master, Rpc调用 JobMaster.acknowledgeCheckpoint()
 		if (asyncCheckpointState.compareAndSet(AsyncCheckpointState.RUNNING, AsyncCheckpointState.COMPLETED)) {
-			reportCompletedSnapshotStates();
+			reportCompletedSnapshotStates();{//AsyncCheckpointRunnable.reportCompletedSnapshotStates
+				boolean hasAckState = acknowledgedTaskStateSnapshot.hasState();
+				boolean hasLocalState = localTaskStateSnapshot.hasState();
+				taskEnvironment.getTaskStateManager()
+					.reportTaskStateSnapshots(checkpointMetaData,acknowledgedTaskStateSnapshot,localTaskStateSnapshot);{//TaskStateManagerImpl.reportTaskStateSnapshots()
+						localStateStore.storeLocalState(checkpointId, localState);
+						checkpointResponder.acknowledgeCheckpoint(jobId, executionAttemptID, checkpointId, acknowledgedState);{//RpcCheckpointResponder.acknowledgeCheckpoint()
+							// 发起Rpc请求调用, 远程 CheckpointCoordinatorGateway的实现类: JobMaster Rpc调用; 
+							checkpointCoordinatorGateway.acknowledgeCheckpoint(jobID, executionAttemptID, checkpointId, checkpointMetrics, subtaskState);
+						}
+					}
+				
+			}
 		}
 	}
 
-
-write:218, FsCheckpointStreamFactory$FsCheckpointStateOutputStream (org.apache.flink.runtime.state.filesystem)
-write:42, ForwardingOutputStream (org.apache.flink.runtime.util)
-write:88, DataOutputStream (java.io)
-writeString:837, StringValue (org.apache.flink.types)
-serialize:68, StringSerializer (org.apache.flink.api.common.typeutils.base)
-serialize:31, StringSerializer (org.apache.flink.api.common.typeutils.base)
-serialize:349, PojoSerializer (org.apache.flink.api.java.typeutils.runtime)
-serialize:147, CompositeSerializer (org.apache.flink.api.common.typeutils)
-writeState:136, CopyOnWriteStateMapSnapshot (org.apache.flink.runtime.state.heap)
-writeStateInKeyGroup:105, AbstractStateTableSnapshot (org.apache.flink.runtime.state.heap)
-writeStateInKeyGroup:38, CopyOnWriteStateTableSnapshot (org.apache.flink.runtime.state.heap)
-callInternal:204, HeapSnapshotStrategy$1 (org.apache.flink.runtime.state.heap)
-callInternal:167, HeapSnapshotStrategy$1 (org.apache.flink.runtime.state.heap)
-call:78, AsyncSnapshotCallable (org.apache.flink.runtime.state)
-run:266, FutureTask (java.util.concurrent)
-runIfNotDoneAndGet:618, FutureUtils (org.apache.flink.runtime.concurrent)
-<init>:54, OperatorSnapshotFinalizer (org.apache.flink.streaming.api.operators)
-run:127, AsyncCheckpointRunnable (org.apache.flink.streaming.runtime.tasks)
-runWorker:1149, ThreadPoolExecutor (java.util.concurrent)
-run:624, ThreadPoolExecutor$Worker (java.util.concurrent)
-run:748, Thread (java.lang)
-
-
-write:218, FsCheckpointStreamFactory$FsCheckpointStateOutputStream (org.apache.flink.runtime.state.filesystem)
-writeBoolean:139, DataOutputStream (java.io)
-write:123, KeyedBackendSerializationProxy (org.apache.flink.runtime.state)
-callInternal:181, HeapSnapshotStrategy$1 (org.apache.flink.runtime.state.heap)
-callInternal:167, HeapSnapshotStrategy$1 (org.apache.flink.runtime.state.heap)
-call:78, AsyncSnapshotCallable (org.apache.flink.runtime.state)
-run:266, FutureTask (java.util.concurrent)
-runIfNotDoneAndGet:618, FutureUtils (org.apache.flink.runtime.concurrent)
-<init>:54, OperatorSnapshotFinalizer (org.apache.flink.streaming.api.operators)
-run:127, AsyncCheckpointRunnable (org.apache.flink.streaming.runtime.tasks)
-runWorker:1149, ThreadPoolExecutor (java.util.concurrent)
-run:624, ThreadPoolExecutor$Worker (java.util.concurrent)
-run:748, Thread (java.lang)
-
-
-write:218, FsCheckpointStreamFactory$FsCheckpointStateOutputStream (org.apache.flink.runtime.state.filesystem)
-writeInt:198, DataOutputStream (java.io)
-write:41, VersionedIOReadableWritable (org.apache.flink.core.io)
-write:120, KeyedBackendSerializationProxy (org.apache.flink.runtime.state)
-callInternal:181, HeapSnapshotStrategy$1 (org.apache.flink.runtime.state.heap)
-callInternal:167, HeapSnapshotStrategy$1 (org.apache.flink.runtime.state.heap)
-call:78, AsyncSnapshotCallable (org.apache.flink.runtime.state)
-run:266, FutureTask (java.util.concurrent)
-runIfNotDoneAndGet:618, FutureUtils (org.apache.flink.runtime.concurrent)
-<init>:54, OperatorSnapshotFinalizer (org.apache.flink.streaming.api.operators)
-run:127, AsyncCheckpointRunnable (org.apache.flink.streaming.runtime.tasks)
-runWorker:1149, ThreadPoolExecutor (java.util.concurrent)
-run:624, ThreadPoolExecutor$Worker (java.util.concurrent)
-run:748, Thread (java.lang)
 
 
 
 // ckp5. Operator 算子的 ckp处理;
 
 // 不同算子的 snapshotState 状态快照 实现方法 
-ListCheckpointed.snapshotState();
-CheckpointedFunction.snapshotState(FunctionSnapshotContext context){
-	 //用户自实现Operator的 保存快照接口方法;
-    ExampleIntegerSource.snapshotState();
-	
-	
-	AbstractUdfStreamOperator.snapshotState();{
-		
-	}
-	
-	
-}
-
-
-
-// ckp6. Sink 算子的 ckp处理 和 发给 JM
-
 
 
 
@@ -1159,7 +1075,7 @@ CheckpointedFunction.snapshotState(FunctionSnapshotContext context){
 							switch (ackResult){
 								case SUCCESS:
 									if (checkpoint.isFullyAcknowledged()) {
-										completePendingCheckpoint(checkpoint);{
+										completePendingCheckpoint(checkpoint);{//CheckpointCoordinator.completePendingCheckpoint
 											Map<OperatorID, OperatorState> operatorStates = pendingCheckpoint.getOperatorStates();
 											sharedStateRegistry.registerAll(operatorStates.values());
 											
@@ -1209,7 +1125,7 @@ CheckpointedFunction.snapshotState(FunctionSnapshotContext context){
 	// LOG: AbstractHoodieWriteClient [] Committing 20220124103157 action deltacommit
 	// LOG: StreamWriteOperatorCoordinator [] Commit instant [20220124103157] success!
 
-	OperatorCoordinatorHolder.notifyCheckpointComplete(){
+	org.apache.flink.runtime.operators.coordination.OperatorCoordinatorHolder.notifyCheckpointComplete(){
 		mainThreadExecutor.execute(() -> coordinator.notifyCheckpointComplete(checkpointId));{//StreamWriteOperatorCoordinator.notifyCheckpointComplete()
 			executor.execute(()->{
 				final boolean committed = commitInstant(this.instant);{
@@ -1340,7 +1256,6 @@ CheckpointedFunction.snapshotState(FunctionSnapshotContext context){
 					syncHiveIfEnabled();{// StreamWriteOperatorCoordinator.syncHiveIfEnabled()
 						if (tableState.syncHive) {
 							this.hiveSyncExecutor.execute(this::syncHive, "sync hive metadata for instant %s", this.instant);{
-								// 另起线程 异步完成 syncHive Hive同步
 								StreamWriteOperatorCoordinator.syncHive(); {
 									HiveSyncTool syncTool = hiveSyncContext.hiveSyncTool();{
 										new HiveSyncTool(this.syncConfig, this.hiveConf, this.fs);
@@ -1451,7 +1366,90 @@ CheckpointedFunction.snapshotState(FunctionSnapshotContext context){
 
 
 
+// ckp8 CheckPoint 异常抛出和处理 相关源码
 
+	CheckpointCoordinator.abortPendingCheckpoint(pendingCheckpoint,exception){
+		abortPendingCheckpoint(pendingCheckpoint, exception, null);{
+			if (!pendingCheckpoint.isDisposed()) {
+				try {
+					pendingCheckpoint.abort();
+					if (pendingCheckpoint.getProps().isSavepoint() && pendingCheckpoint.getProps().isSynchronous()) {
+						failureManager.handleSynchronousSavepointFailure(exception);
+					} else if (executionAttemptID != null) {
+						failureManager.handleTaskLevelCheckpointException(exception, checkpointId(), executionAttemptID);
+					} else {// 
+						failureManager.handleJobLevelCheckpointException(exception, checkpointId()){//CheckpointFailureManager.handleJobLevelCheckpointException()
+							handleCheckpointException(exception, checkpointId, failureCallback::failJob);{
+								if (checkpointId > lastSucceededCheckpointId) {
+									checkFailureCounter(exception, checkpointId);
+									if (continuousFailureCounter.get() > tolerableCpFailureNumber) {
+										clearCount();
+										// 即此异常 超出ckp可容易上限: FlinkRuntimeException: Exceeded checkpoint tolerable failure threshold
+										errorHandler.accept(new FlinkRuntimeException(EXCEEDED_CHECKPOINT_TOLERABLE_FAILURE_MESSAGE));
+									}
+								}
+							}
+						}
+					}
+				}finally {
+					sendAbortedMessages();
+					pendingCheckpoints.remove(pendingCheckpoint.getCheckpointId());
+					scheduleTriggerRequest();
+				}
+			}
+		}
+	}
+
+	// ckp8.1 因 ckp expired过期导致的 ckp取消; 
+	{
+		// 1. 再 JobManger: CheckpointCoordinator.ScheduledTrigger.triggerCheckpoint() -> CheckpointCoordinator.triggerCheckpoint() 中 第一给就是异步 createPendingCheckpoint()
+		CheckpointCoordinator.createPendingCheckpoint(){
+			PendingCheckpoint checkpoint =new PendingCheckpoint();
+			// 默认在创建 Ckeckpoint后 delay 10分钟后 就算超时,取消调; 
+			CheckpointCoordinator.createPendingCheckpoint(){
+				ScheduledFuture<?> cancellerHandle =timer.schedule(new CheckpointCanceller(checkpoint),
+					checkpointTimeout,// 10 * 60 * 1000, 默认10分钟; 通过 execution.checkpointing.timeout
+					TimeUnit.MILLISECONDS);
+				boolean setOk = checkpoint.setCancellerHandle(cancellerHandle);{
+					if (this.cancellerHandle == null) {
+						if (!disposed) {
+							this.cancellerHandle = cancellerHandle;
+							return true;
+						} else {
+							return false;
+						}
+					}else {
+						throw new IllegalStateException("A canceller handle was already set");
+					}
+				}
+				if (!setOk) {// 若setOk = false,表示曾经cancel 或已经disposed 了, 就取消 cancellerHandle线程;
+					cancellerHandle.cancel(false);
+				}
+			}
+		}
+	}
+	CheckpointCoordinator.CheckpointCanceller.run(){
+		if (!pendingCheckpoint.isDisposed()) {
+			LOG.info("Checkpoint {} of job {} expired before completing.",pendingCheckpoint.getCheckpointId(),job);
+			// CHECKPOINT_EXPIRED: "Checkpoint expired before completing."
+			abortPendingCheckpoint(pendingCheckpoint,new CheckpointException(CHECKPOINT_EXPIRED));{
+				// CheckpointCoordinator.abortPendingCheckpoint(pendingCheckpoint,exception) 详解如下: 
+			}
+		}
+	}
+	
+	// ckp8.2 
+	
+	CheckpointCoordinator.failUnacknowledgedPendingCheckpointsFor
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 
